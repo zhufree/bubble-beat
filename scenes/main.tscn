@@ -34,11 +34,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="Chick" type="Sprite2D" parent="MarginContainer/HBoxContainer/LeftCharContainer"]
-position = Vector2(136, 146)
+position = Vector2(135, 220)
 texture = ExtResource("1_jyhfs")
 
 [node name="Duck" type="Sprite2D" parent="MarginContainer/HBoxContainer/LeftCharContainer"]
-position = Vector2(133, 460)
+position = Vector2(132, 429)
 texture = ExtResource("2_tbgi4")
 
 [node name="TrackContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
@@ -47,17 +47,19 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
 
 [node name="Tracks" parent="MarginContainer/HBoxContainer/TrackContainer" instance=ExtResource("3_tbgi4")]
+layout_mode = 2
+size_flags_vertical = 3
 
 [node name="RightCharContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="Hippo" type="Sprite2D" parent="MarginContainer/HBoxContainer/RightCharContainer"]
-position = Vector2(132, 463)
+position = Vector2(134, 426)
 texture = ExtResource("3_tefeu")
 
 [node name="Parrot" type="Sprite2D" parent="MarginContainer/HBoxContainer/RightCharContainer"]
-position = Vector2(130, 149)
+position = Vector2(132, 207)
 texture = ExtResource("4_o6xl0")
 
 [node name="UI" type="CanvasLayer" parent="."]

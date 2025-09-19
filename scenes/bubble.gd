@@ -6,21 +6,80 @@ extends Node2D
 @onready var yellow: Sprite2D = $Yellow
 @onready var collision_shape_2d: CollisionShape2D = $HitArea/CollisionShape2D
 
-var lane: int = 0 # 轨道索引（0-3）
-var speed: float = 275.0 # 像素/秒（2秒到判定线）
+var lane_index: int = 0 # 轨道索引（0-3）
+var speed: float = 275.0 # 像素/秒，将由tracks.gd设置
+var beat_interval: float = 0.5 # 拍间隔
+var birth_time: float = 0.0 # 气泡生成时间
+var has_passed_line1: bool = false
+var has_passed_line2: bool = false
+var bubble_color: Enums.BubbleColor # 气泡颜色
 
 func _ready():
-	position.x = lane * 200 + 100 # 轨道中心
-	position.y = 600 # 底部
+	# 记录气泡生成的时间戳，用于后续计算气泡经过判定线的时间是否符合预期
+	# 使用UNIX时间戳更加精确和可靠
+	birth_time = Time.get_unix_time_from_system()
+
+func set_beat_interval(interval: float):
+	beat_interval = interval
+
+func set_speed(new_speed: float):
+	speed = new_speed
+
+func set_bubble_position(container_width: float, start_y: float):
+	var track_width = container_width / 4
+	position.x = (lane_index-1) * track_width + track_width / 2 # 轨道中心
+	position.y = start_y
+
 
 func set_color(color: Enums.BubbleColor):
+	bubble_color = color # 保存颜色信息
 	match color:
-		Enums.BubbleColor.BLUE: $Blue.visible = true
-		Enums.BubbleColor.GREEN: $Green.visible = true
-		Enums.BubbleColor.RED: $Red.visible = true
-		Enums.BubbleColor.YELLOW: $Yellow.visible = true
+		Enums.BubbleColor.YELLOW: 
+			$Yellow.visible = true
+			lane_index = 1
+		Enums.BubbleColor.GREEN: 
+			$Green.visible = true
+			lane_index = 2
+		Enums.BubbleColor.BLUE: 
+			$Blue.visible = true
+			lane_index = 3
+		Enums.BubbleColor.RED: 
+			$Red.visible = true
+			lane_index = 4
+
+# 获取气泡颜色（供判定系统使用）
+func get_bubble_color() -> Enums.BubbleColor:
+	return bubble_color
+		
 
 func _process(delta):
 	position.y -= speed * delta # 向上移动
-	if position.y < 0: # 越过顶部
+	
+	# 检查是否经过判定线（简单的Y坐标检查）
+	# 这里需要从父节点获取判定线位置
+	var parent_tracks = get_parent()
+	if parent_tracks and parent_tracks.has_method("get_judgment_line_positions"):
+		var line_positions = parent_tracks.get_judgment_line_positions()
+		var line1_y = line_positions[0]
+		var line2_y = line_positions[1]
+		
+		# 检查是否经过上方判定线
+		if not has_passed_line1 and position.y <= line1_y:
+			has_passed_line1 = true
+			# 计算气泡从生成到现在的时间，用于验证是否在预期的拍数上经过判定线
+			var current_time = Time.get_unix_time_from_system()
+			var elapsed_time = current_time - birth_time
+			var expected_beats = elapsed_time / beat_interval
+			print("气泡经过上方判定线: 经过时间=", elapsed_time, "秒, 预期拍数=", expected_beats)
+		
+		# 检查是否经过下方判定线
+		if not has_passed_line2 and position.y <= line2_y:
+			has_passed_line2 = true
+			# 计算气泡从生成到现在的时间，用于验证是否在预期的拍数上经过判定线
+			var current_time = Time.get_unix_time_from_system()
+			var elapsed_time = current_time - birth_time
+			var expected_beats = elapsed_time / beat_interval
+			print("气泡经过下方判定线: 经过时间=", elapsed_time, "秒, 预期拍数=", expected_beats)
+	
+	if position.y < -100: # 越过顶部
 		queue_free() # 销毁

@@ -1,46 +1,99 @@
-[gd_scene load_steps=2 format=3 uid="uid://ndfsgckdjnlx"]
+[gd_scene load_steps=4 format=3 uid="uid://ndfsgckdjnlx"]
 
 [ext_resource type="Script" uid="uid://cl48c2ecgford" path="res://scenes/tracks.gd" id="1_ikf7h"]
 
-[node name="Tracks" type="Node2D"]
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_ikf7h"]
+a = Vector2(1150, 0)
+b = Vector2(0, 0)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_oy45g"]
+a = Vector2(1155, 213)
+b = Vector2(1, 213)
+
+[node name="GameArea" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_ikf7h")
 
-[node name="Track-1" type="Node2D" parent="."]
-
-[node name="ColorRect" type="ColorRect" parent="Track-1"]
+[node name="TrackContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.40784314, 1, 1, 1)
 
-[node name="Track-2" type="Node2D" parent="."]
+[node name="Track1" type="ColorRect" parent="TrackContainer"]
+modulate = Color(1, 1, 1, 0.58431375)
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(0.8122166, 0.6162832, 0.3790812, 1)
 
-[node name="ColorRect" type="ColorRect" parent="Track-2"]
+[node name="Track2" type="ColorRect" parent="TrackContainer"]
+modulate = Color(1, 1, 1, 0.58431375)
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(0.50334454, 0.9472974, 0.7970643, 1)
+
+[node name="Track3" type="ColorRect" parent="TrackContainer"]
+modulate = Color(1, 1, 1, 0.58431375)
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(0.5019608, 1, 1, 1)
+
+[node name="Track4" type="ColorRect" parent="TrackContainer"]
+modulate = Color(1, 1, 1, 0.58431375)
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(0.8863656, 0.40752074, 0.33618978, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.90977895, 0.9286789, 0.51905525, 1)
 
-[node name="Track-3" type="Node2D" parent="."]
+[node name="Control" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
 
-[node name="ColorRect" type="ColorRect" parent="Track-3"]
-anchors_preset = 15
+[node name="JudgmentLineContainer" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="JudgmentLine1" type="Area2D" parent="VBoxContainer/JudgmentLineContainer"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VBoxContainer/JudgmentLineContainer/JudgmentLine1"]
+shape = SubResource("SegmentShape2D_ikf7h")
+
+[node name="JudgmentLine2" type="Area2D" parent="VBoxContainer/JudgmentLineContainer"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VBoxContainer/JudgmentLineContainer/JudgmentLine2"]
+shape = SubResource("SegmentShape2D_oy45g")
+
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer/JudgmentLineContainer"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 2.0
+grow_horizontal = 2
+
+[node name="ColorRect2" type="ColorRect" parent="VBoxContainer/JudgmentLineContainer"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_bottom = 2.0
 grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.9833705, 0.85584545, 0.90912384, 1)
+grow_vertical = 0
 
-[node name="Track-4" type="Node2D" parent="."]
-
-[node name="ColorRect" type="ColorRect" parent="Track-4"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.81898767, 0.90753466, 0.9994808, 1)
+[node name="Control3" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
