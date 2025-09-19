@@ -1,0 +1,65 @@
+[gd_scene load_steps=7 format=3 uid="uid://crugjb6ckvs0s"]
+
+[ext_resource type="Texture2D" uid="uid://f5dt6ydwxsxe" path="res://assets/sprites/chick.png" id="1_jyhfs"]
+[ext_resource type="Script" uid="uid://c0b2k5wdopjoi" path="res://scenes/main.gd" id="1_tefeu"]
+[ext_resource type="Texture2D" uid="uid://cf1uwiogbuhdj" path="res://assets/sprites/duck.png" id="2_tbgi4"]
+[ext_resource type="PackedScene" uid="uid://ndfsgckdjnlx" path="res://scenes/tracks.tscn" id="3_tbgi4"]
+[ext_resource type="Texture2D" uid="uid://dbxhfk4f1nro" path="res://assets/sprites/hippo.png" id="3_tefeu"]
+[ext_resource type="Texture2D" uid="uid://cu8o6gx8chc6y" path="res://assets/sprites/parrot.png" id="4_o6xl0"]
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_tefeu")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_right = 50
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="LeftCharContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Chick" type="Sprite2D" parent="MarginContainer/HBoxContainer/LeftCharContainer"]
+position = Vector2(136, 146)
+texture = ExtResource("1_jyhfs")
+
+[node name="Duck" type="Sprite2D" parent="MarginContainer/HBoxContainer/LeftCharContainer"]
+position = Vector2(133, 460)
+texture = ExtResource("2_tbgi4")
+
+[node name="TrackContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="Tracks" parent="MarginContainer/HBoxContainer/TrackContainer" instance=ExtResource("3_tbgi4")]
+
+[node name="RightCharContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Hippo" type="Sprite2D" parent="MarginContainer/HBoxContainer/RightCharContainer"]
+position = Vector2(132, 463)
+texture = ExtResource("3_tefeu")
+
+[node name="Parrot" type="Sprite2D" parent="MarginContainer/HBoxContainer/RightCharContainer"]
+position = Vector2(130, 149)
+texture = ExtResource("4_o6xl0")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="SongPlayer" type="AudioStreamPlayer2D" parent="."]

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SongData" load_steps=3 format=3 uid="uid://bagankjw5fbro"]
+
+[ext_resource type="Script" uid="uid://d0eeck06d6u3" path="res://models/song_data.gd" id="1_ddp1n"]
+[ext_resource type="AudioStream" uid="uid://cosvgstbjcb8y" path="res://assets/songs/Waiting For Love.mp3" id="2_u1fqa"]
+
+[resource]
+script = ExtResource("1_ddp1n")
+name = "Waiting For Love"
+stream = ExtResource("2_u1fqa")
+BPM = 128
+metadata/_custom_type_script = "uid://d0eeck06d6u3"

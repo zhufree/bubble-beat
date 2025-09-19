@@ -24,6 +24,7 @@
 │   ├── fonts/          # 字体文件 (.ttf, .otf)
 │   └── audio/          # 音效和背景音乐 (.wav, .ogg)
 │
+├── models/             # 定义数据模型 
 ├── resources/          # Godot 数据资源 (.tres, .res)，如角色配置、技能数据等
 │
 ├── scenes/             # 包含核心游戏逻辑的场景
@@ -54,21 +55,21 @@
 为保持项目清晰，所有文件和场景的命名需遵循以下规则：
 
 1.  **UI 控件 / 通用脚本 (PascalCase)**
-    *   **适用范围**: `views/` 目录下的所有场景和脚本，以及 `scripts/` 目录下的通用脚本。
-    *   **规则**: 使用大驼峰命名法 (PascalCase)。
-    *   **示例**:
-        *   `MainMenu.tscn`
-        *   `HealthBar.tscn`
-        *   `PlayerController.gd`
-        *   `GameStateManager.gd` (在 `scripts/autoload/` 中)
+	*   **适用范围**: `views/` 目录下的所有场景和脚本，以及 `scripts/` 目录下的通用脚本。
+	*   **规则**: 使用大驼峰命名法 (PascalCase)。
+	*   **示例**:
+		*   `MainMenu.tscn`
+		*   `HealthBar.tscn`
+		*   `PlayerController.gd`
+		*   `GameStateManager.gd` (在 `scripts/autoload/` 中)
 
 2.  **游戏逻辑场景 (snake_case)**
-    *   **适用范围**: `scenes/` 目录下的所有文件。
-    *   **规则**: 使用下划线命名法 (snake_case)。场景文件、对应的脚本和说明文档必须使用相同的文件名。
-    *   **示例**:
-        *   `level_one.tscn`
-        *   `level_one.gd`
-        *   `level_one.md`
+	*   **适用范围**: `scenes/` 目录下的所有文件。
+	*   **规则**: 使用下划线命名法 (snake_case)。场景文件、对应的脚本和说明文档必须使用相同的文件名。
+	*   **示例**:
+		*   `level_one.tscn`
+		*   `level_one.gd`
+		*   `level_one.md`
 
 ---
 
@@ -116,26 +117,26 @@ var _current_state: State = State.IDLE
 # 11. 内置虚函数 (Built-in Virtual Functions)
 # e.g., _init, _ready, _process, _physics_process, _input, etc.
 func _ready():
-    current_health = MAX_HEALTH
+	current_health = MAX_HEALTH
 
 func _physics_process(delta):
-    pass
+	pass
 
 # 12. 公共方法 (Public Methods)
 func take_damage(amount: int):
-    current_health -= amount
-    health_changed.emit(current_health)
-    if current_health <= 0:
-        died.emit()
+	current_health -= amount
+	health_changed.emit(current_health)
+	if current_health <= 0:
+		died.emit()
 
 # 13. 私有方法 (Private Methods, 以下划线 `_` 开头)
 func _update_animation():
-    pass
+	pass
 
 # 14. 信号回调方法 (Signal Callbacks)
 # 命名约定: _on_[NodeName]_[signal_name]
 func _on_hitbox_area_entered(area):
-    pass
+	pass
 ```
 
 ### 4.2 命名约束
@@ -154,7 +155,7 @@ func _on_hitbox_area_entered(area):
 
 *   **复杂逻辑说明**: 如果当前实现的内容、算法或系统逻辑比较复杂（例如：状态机、复杂的 UI 交互、程序化生成算法等），必须创建对应的 Markdown (`.md`) 文件进行说明。
 *   **文件位置**: 该说明文档应与对应的场景/脚本放在同一目录下，并使用相同的 **snake_case** 命名。
-    *   例如，`scenes/` 目录下的 `inventory_system.tscn` 和 `inventory_system.gd`，其说明文档为 `inventory_system.md`。
+	*   例如，`scenes/` 目录下的 `inventory_system.tscn` 和 `inventory_system.gd`，其说明文档为 `inventory_system.md`。
 *   **索引更新**: 创建新的说明文档后，**必须**在项目根目录的 `index.md` 文件中添加指向该文档的链接和简要描述，以维护一个集中的文档索引。
 
 ---
@@ -174,11 +175,11 @@ func _on_hitbox_area_entered(area):
 *   **简单至上 (KISS):** 追求代码和设计的极致简洁与直观，避免不必要的复杂性。
 *   **精益求精 (YAGNI):** 仅实现当前明确所需的功能，抵制过度设计和不必要的未来特性预留。
 *   **坚实基础 (SOLID):**
-    *   **S (单一职责):** 各组件、类、函数只承担一项明确职责。
-    *   **O (开放/封闭):** 功能扩展无需修改现有代码。
-    *   **L (里氏替换):** 子类型可无缝替换其基类型。
-    *   **I (接口隔离):** 接口应专一，避免“胖接口”。
-    *   **D (依赖倒置):** 依赖抽象而非具体实现。
+	*   **S (单一职责):** 各组件、类、函数只承担一项明确职责。
+	*   **O (开放/封闭):** 功能扩展无需修改现有代码。
+	*   **L (里氏替换):** 子类型可无缝替换其基类型。
+	*   **I (接口隔离):** 接口应专一，避免“胖接口”。
+	*   **D (依赖倒置):** 依赖抽象而非具体实现。
 *   **杜绝重复 (DRY):** 识别并消除代码或逻辑中的重复模式，提升复用性。
 
 ### AI 工作流程与输出要求
@@ -186,40 +187,40 @@ func _on_hitbox_area_entered(area):
 请严格遵循以下工作流程和输出要求：
 
 1.  **任务定义与分解：**
-    * 详细审阅提供的资料/代码/项目描述，全面掌握其当前架构、核心组件、业务逻辑及痛点。
-    * 在理解的基础上，初步识别项目中潜在的**KISS, YAGNI, DRY, SOLID**原则应用点或违背现象。
-    * 清晰定义本次迭代的具体任务范围和可衡量的预期成果。
-    * 如果任务复杂，将其分解为更小的、可管理的部分。
+	* 详细审阅提供的资料/代码/项目描述，全面掌握其当前架构、核心组件、业务逻辑及痛点。
+	* 在理解的基础上，初步识别项目中潜在的**KISS, YAGNI, DRY, SOLID**原则应用点或违背现象。
+	* 清晰定义本次迭代的具体任务范围和可衡量的预期成果。
+	* 如果任务复杂，将其分解为更小的、可管理的部分。
 
 2.  **查询最新文档**
-    - 使用 **Context7** (AI文档查询工具) 获取最新的API参考和类文档
-    - 重点检查 Godot 4.5 新特性：确认使用 Callable 替代旧版 `connect()` 语法
-    - 确保生成的代码使用最新的最佳实践和API
-    * **指令示例**: "Always use `context7` when I need code generation. Use library `godotengine_en_stable` for API and docs."
+	- 使用 **Context7** (AI文档查询工具) 获取最新的API参考和类文档
+	- 重点检查 Godot 4.5 新特性：确认使用 Callable 替代旧版 `connect()` 语法
+	- 确保生成的代码使用最新的最佳实践和API
+	* **指令示例**: "Always use `context7` when I need code generation. Use library `godotengine_en_stable` for API and docs."
 
 3.  **代码生成**
-    - 向 AI 提交包含清晰指令和项目相关上下文（如现有代码）的请求。
-    - 结合从 `context7` 获取的最新信息，指导 AI 生成符合项目规范、逻辑正确且版本兼容的代码。
-    * 这些代码需要满足**KISS, YAGNI, DRY, SOLID**原则。例如：
-        * “将此模块拆分为更小的服务，以遵循SRP和OCP。”
-        * “为避免DRY，将重复的XXX逻辑抽象为通用函数。”
-        * “简化了Y功能的用户流，体现KISS原则。”
-        * “移除了Z冗余设计，遵循YAGNI原则。”
+	- 向 AI 提交包含清晰指令和项目相关上下文（如现有代码）的请求。
+	- 结合从 `context7` 获取的最新信息，指导 AI 生成符合项目规范、逻辑正确且版本兼容的代码。
+	* 这些代码需要满足**KISS, YAGNI, DRY, SOLID**原则。例如：
+		* “将此模块拆分为更小的服务，以遵循SRP和OCP。”
+		* “为避免DRY，将重复的XXX逻辑抽象为通用函数。”
+		* “简化了Y功能的用户流，体现KISS原则。”
+		* “移除了Z冗余设计，遵循YAGNI原则。”
 
 4.   **项目调试**
-    *   **集成**: 将 AI 生成或修改的代码集成到项目中。
-    *   **运行**: 在终端中，使用 `godot-mcp` 启动项目进行测试。 `godot-mcp run_project`
-    *   **调试**: 运行后，主动获取控制台输出以检查错误或警告。 `godot-mcp get_debug_output`
-    *   **修正**: 根据控制台输出的错误信息，结合 AI 或自行分析定位并修正问题。这是一个循环过程：**运行 -> 获取输出 -> 修正代码 -> 重新运行**。
-    *   **停止**: 功能验证通过后，停止项目运行。`godot-mcp stop_project`
+	*   **集成**: 将 AI 生成或修改的代码集成到项目中。
+	*   **运行**: 在终端中，使用 `godot-mcp` 启动项目进行测试。 `godot-mcp run_project`
+	*   **调试**: 运行后，主动获取控制台输出以检查错误或警告。 `godot-mcp get_debug_output`
+	*   **修正**: 根据控制台输出的错误信息，结合 AI 或自行分析定位并修正问题。这是一个循环过程：**运行 -> 获取输出 -> 修正代码 -> 重新运行**。
+	*   **停止**: 功能验证通过后，停止项目运行。`godot-mcp stop_project`
 
 5.  **总结、反思与展望（汇报阶段）：**
-    *   提供一个清晰、结构化且包含**实际代码/设计变动建议（如果适用）**的总结报告。
-    *   报告中必须包含：
-        *   **本次迭代已完成的核心任务**及其具体成果。
-        *   **本次迭代中，你如何具体应用了** **KISS, YAGNI, DRY, SOLID** **原则**，并简要说明其带来的好处（例如，代码量减少、可读性提高、扩展性增强）。
-        *   **遇到的挑战**以及如何克服。
-        *   **下一步的明确计划和建议。**
+	*   提供一个清晰、结构化且包含**实际代码/设计变动建议（如果适用）**的总结报告。
+	*   报告中必须包含：
+		*   **本次迭代已完成的核心任务**及其具体成果。
+		*   **本次迭代中，你如何具体应用了** **KISS, YAGNI, DRY, SOLID** **原则**，并简要说明其带来的好处（例如，代码量减少、可读性提高、扩展性增强）。
+		*   **遇到的挑战**以及如何克服。
+		*   **下一步的明确计划和建议。**
 
 ---
 

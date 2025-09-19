@@ -1,0 +1,46 @@
+[gd_scene load_steps=2 format=3 uid="uid://ndfsgckdjnlx"]
+
+[ext_resource type="Script" uid="uid://cl48c2ecgford" path="res://scenes/tracks.gd" id="1_ikf7h"]
+
+[node name="Tracks" type="Node2D"]
+script = ExtResource("1_ikf7h")
+
+[node name="Track-1" type="Node2D" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="Track-1"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.40784314, 1, 1, 1)
+
+[node name="Track-2" type="Node2D" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="Track-2"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.90977895, 0.9286789, 0.51905525, 1)
+
+[node name="Track-3" type="Node2D" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="Track-3"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.9833705, 0.85584545, 0.90912384, 1)
+
+[node name="Track-4" type="Node2D" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="Track-4"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.81898767, 0.90753466, 0.9994808, 1)
