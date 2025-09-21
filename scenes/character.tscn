@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://bgepodd3p86s5"]
+[gd_scene load_steps=4 format=3 uid="uid://bgepodd3p86s5"]
 
 [ext_resource type="Texture2D" uid="uid://f5dt6ydwxsxe" path="res://assets/sprites/chick.png" id="1_agfs1"]
 [ext_resource type="Script" uid="uid://qqruoa5sok2" path="res://scenes/character.gd" id="1_rkhd4"]
+[ext_resource type="FontFile" uid="uid://la5t8k4njf56" path="res://assets/fonts/DynaPuff/DynaPuff_SemiCondensed-Regular.ttf" id="2_lrhn5"]
 
 [node name="Character" type="VBoxContainer"]
 offset_right = 40.0
@@ -10,6 +11,7 @@ script = ExtResource("1_rkhd4")
 
 [node name="NameLabel" type="Label" parent="."]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_lrhn5")
 theme_override_font_sizes/font_size = 24
 horizontal_alignment = 1
 
@@ -19,6 +21,7 @@ texture = ExtResource("1_agfs1")
 
 [node name="HitLabel" type="Label" parent="."]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_lrhn5")
 theme_override_font_sizes/font_size = 24
 text = "Hit:"
 horizontal_alignment = 1

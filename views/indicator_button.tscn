@@ -1,0 +1,97 @@
+[gd_scene load_steps=10 format=3 uid="uid://ct6uqela0dqu5"]
+
+[ext_resource type="Texture2D" uid="uid://b4ei7ag3rxbqy" path="res://assets/images/UI/right.png" id="1_ebign"]
+[ext_resource type="Script" uid="uid://d4abpqoqogrwr" path="res://views/indicator_button.gd" id="1_qlv7w"]
+[ext_resource type="FontFile" uid="uid://dsdw7pnwyylgt" path="res://assets/fonts/DynaPuff/DynaPuff-Medium.ttf" id="2_wajnc"]
+[ext_resource type="Texture2D" uid="uid://tjvubjvphpvm" path="res://assets/images/UI/left.png" id="3_div38"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qlv7w"]
+bg_color = Color(0.8085421, 0.51724243, 0.40728298, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.96028787, 0.75140125, 0.60375106, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_njbk8"]
+bg_color = Color(0.86483103, 0.48781472, 0.27553222, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.96028787, 0.75140125, 0.60375106, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rcyg5"]
+bg_color = Color(0.86483103, 0.48781472, 0.27553222, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.96028787, 0.75140125, 0.60375106, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_51mke"]
+bg_color = Color(0.74419636, 0.5487785, 0.47562194, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.96028787, 0.75140125, 0.60375106, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_umge7"]
+bg_color = Color(0.86483103, 0.48781472, 0.27553222, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.96028787, 0.75140125, 0.60375106, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[node name="ButtonContainer" type="HBoxContainer"]
+alignment = 1
+script = ExtResource("1_qlv7w")
+
+[node name="RightArrow" type="TextureRect" parent="."]
+visible = false
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("1_ebign")
+stretch_mode = 4
+
+[node name="Button" type="Button" parent="."]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("2_wajnc")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxFlat_qlv7w")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_njbk8")
+theme_override_styles/hover = SubResource("StyleBoxFlat_rcyg5")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_51mke")
+theme_override_styles/focus = SubResource("StyleBoxFlat_umge7")
+text = "Play!"
+
+[node name="LeftArrow" type="TextureRect" parent="."]
+visible = false
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("3_div38")
+stretch_mode = 4
