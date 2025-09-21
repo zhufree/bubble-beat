@@ -77,7 +77,8 @@ func _process(delta):
 			# 计算气泡从生成到现在的时间，用于验证是否在预期的拍数上经过判定线
 			var current_time = Time.get_unix_time_from_system()
 			var elapsed_time = current_time - birth_time
-			var expected_beats = elapsed_time / beat_interval
+
 	
 	if position.y < -100: # 越过顶部
 		queue_free() # 销毁
+		EventBus.emit_signal("update_score", -(5 - Global.difficulty) * 5)

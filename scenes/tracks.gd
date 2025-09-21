@@ -23,7 +23,6 @@ var spawn_y: float = 0.0
 var bubble_speed: float = 0.0
 var beats_between_lines: float = 2.0 # 两根判定线之间相隔2拍
 var beats_to_first_line: float = 4.0 # 从生成到第一根判定线4拍
-var difficulty: float = 4.0 # 难度系数
 
 # 按键判定系统
 var bubbles_in_judgment_zone_1: Array = [] # 在第一条判定线区域内的气泡
@@ -60,7 +59,7 @@ func _process(delta):
 	time_since_last_spawn += delta
 	area_width = get_size().x
 	
-	var spawn_interval = beat_interval * difficulty
+	var spawn_interval = beat_interval * Global.difficulty
 	if time_since_last_spawn >= spawn_interval:
 		spawn_bubble()
 		time_since_last_spawn = 0.0
@@ -166,11 +165,9 @@ func handle_key_press(action: String):
 		print("未找到对应的颜色")
 		return
 	
-	# 根据颜色规则确定在哪个判定线查找气泡
 	var required_line = color_judgment_rules[target_color]
 	var target_bubbles_array = null
 	
-	# 触发判定线动画
 	animate_judgment_line(target_color)
 	
 	if required_line == 1:
@@ -180,7 +177,6 @@ func handle_key_press(action: String):
 		target_bubbles_array = bubbles_in_judgment_zone_2
 		print("查找第二条判定线上的", target_color, "气泡")
 	
-	# 在指定判定线区域内查找匹配颜色的气泡
 	var hit_bubble = null
 	for bubble in target_bubbles_array:
 		if bubble.get_bubble_color() == target_color:
@@ -188,10 +184,9 @@ func handle_key_press(action: String):
 			break
 	
 	if hit_bubble:
-		# 击破气泡
 		print("击破气泡! 颜色: ", target_color, ", 在第", required_line, "条判定线")
 		EventBus.emit_signal("update_hit", color_character[target_color], 1)
-		# 从两个列表中移除
+		EventBus.emit_signal("update_score", (5 - Global.difficulty) * 10)
 		bubbles_in_judgment_zone_1.erase(hit_bubble)
 		bubbles_in_judgment_zone_2.erase(hit_bubble)
 		bubble_nodes.erase(hit_bubble)
@@ -199,22 +194,19 @@ func handle_key_press(action: String):
 	else:
 		print("Miss! 没有在第", required_line, "条判定线找到匹配的气泡，颜色: ", target_color)
 
+
 var is_animating = false
-# 判定线动画效果
 func animate_judgment_line(target_color):
 	if is_animating:
 		return
 	is_animating = true
-	# 根据颜色确定要激活的判定线
 	var line_to_animate = null
 	var original_width = 0
 	var original_color = Color.WHITE
 	var target_line_color = Color.WHITE
 	
-	# 根据颜色规则确定要激活的判定线
 	var required_line = color_judgment_rules[target_color]
 	
-	# 设置目标颜色
 	match target_color:
 		Enums.BubbleColor.RED:
 			target_line_color = Color(1, 0, 0) # 红色
@@ -231,25 +223,18 @@ func animate_judgment_line(target_color):
 	else:
 		line_to_animate = color_line_2
 	
-	# 保存原始宽度和颜色
 	original_width = line_to_animate.size.y
 	original_color = line_to_animate.color
 	
-	# 创建一个动画序列
 	var tween = create_tween()
 	
-	# 第一阶段：宽度增加一倍，颜色变为目标颜色
 	tween.tween_property(line_to_animate, "size:y", original_width * 3, 0.1)
 	tween.parallel().tween_property(line_to_animate, "color", target_line_color, 0.1)
 	
-	# 第二阶段：闪烁三次（颜色在目标颜色和白色之间切换）
 	for i in range(2):
-		# 变为白色
 		tween.tween_property(line_to_animate, "color", Color.WHITE, 0.05)
-		# 变回目标颜色
 		tween.tween_property(line_to_animate, "color", target_line_color, 0.05)
 	
-	# 第三阶段：恢复原始状态
 	tween.tween_property(line_to_animate, "size:y", original_width, 0.1)
 	tween.parallel().tween_property(line_to_animate, "color", original_color, 0.1)
 

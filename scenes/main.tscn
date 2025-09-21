@@ -17,17 +17,27 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_tefeu")
 
-[node name="ScoreLabel" type="Label" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -0.5
-offset_right = 0.5
-offset_bottom = 23.0
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 67.0
 grow_horizontal = 2
+alignment = 1
+
+[node name="ScoreLabel" type="Label" parent="HBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
 size_flags_vertical = 0
+theme_override_font_sizes/font_size = 48
 text = "Score:"
+
+[node name="ComboLabel" type="Label" parent="HBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 48
+text = "Combo:"
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
