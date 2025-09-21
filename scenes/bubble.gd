@@ -70,7 +70,6 @@ func _process(delta):
 			var current_time = Time.get_unix_time_from_system()
 			var elapsed_time = current_time - birth_time
 			var expected_beats = elapsed_time / beat_interval
-			print("气泡经过上方判定线: 经过时间=", elapsed_time, "秒, 预期拍数=", expected_beats)
 		
 		# 检查是否经过下方判定线
 		if not has_passed_line2 and position.y <= line2_y:
@@ -79,7 +78,6 @@ func _process(delta):
 			var current_time = Time.get_unix_time_from_system()
 			var elapsed_time = current_time - birth_time
 			var expected_beats = elapsed_time / beat_interval
-			print("气泡经过下方判定线: 经过时间=", elapsed_time, "秒, 预期拍数=", expected_beats)
 	
 	if position.y < -100: # 越过顶部
 		queue_free() # 销毁

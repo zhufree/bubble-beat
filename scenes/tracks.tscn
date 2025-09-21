@@ -77,14 +77,14 @@ shape = SubResource("SegmentShape2D_ikf7h")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="VBoxContainer/JudgmentLineContainer/JudgmentLine2"]
 shape = SubResource("SegmentShape2D_oy45g")
 
-[node name="ColorRect" type="ColorRect" parent="VBoxContainer/JudgmentLineContainer"]
+[node name="ColorLine1" type="ColorRect" parent="VBoxContainer/JudgmentLineContainer"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 2.0
 grow_horizontal = 2
 
-[node name="ColorRect2" type="ColorRect" parent="VBoxContainer/JudgmentLineContainer"]
+[node name="ColorLine2" type="ColorRect" parent="VBoxContainer/JudgmentLineContainer"]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0

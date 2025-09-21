@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://crugjb6ckvs0s"]
+[gd_scene load_steps=8 format=3 uid="uid://crugjb6ckvs0s"]
 
 [ext_resource type="Texture2D" uid="uid://f5dt6ydwxsxe" path="res://assets/sprites/chick.png" id="1_jyhfs"]
 [ext_resource type="Script" uid="uid://c0b2k5wdopjoi" path="res://scenes/main.gd" id="1_tefeu"]
 [ext_resource type="Texture2D" uid="uid://cf1uwiogbuhdj" path="res://assets/sprites/duck.png" id="2_tbgi4"]
+[ext_resource type="PackedScene" uid="uid://bgepodd3p86s5" path="res://scenes/character.tscn" id="2_tefeu"]
 [ext_resource type="PackedScene" uid="uid://ndfsgckdjnlx" path="res://scenes/tracks.tscn" id="3_tbgi4"]
 [ext_resource type="Texture2D" uid="uid://dbxhfk4f1nro" path="res://assets/sprites/hippo.png" id="3_tefeu"]
 [ext_resource type="Texture2D" uid="uid://cu8o6gx8chc6y" path="res://assets/sprites/parrot.png" id="4_o6xl0"]
@@ -16,6 +17,18 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_tefeu")
 
+[node name="ScoreLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -0.5
+offset_right = 0.5
+offset_bottom = 23.0
+grow_horizontal = 2
+size_flags_vertical = 0
+text = "Score:"
+
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -23,7 +36,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 50
 theme_override_constants/margin_right = 50
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
@@ -32,35 +44,44 @@ layout_mode = 2
 [node name="LeftCharContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+alignment = 1
 
-[node name="Chick" type="Sprite2D" parent="MarginContainer/HBoxContainer/LeftCharContainer"]
-position = Vector2(135, 220)
-texture = ExtResource("1_jyhfs")
+[node name="Chick" parent="MarginContainer/HBoxContainer/LeftCharContainer" instance=ExtResource("2_tefeu")]
+layout_mode = 2
+size_flags_horizontal = 4
+alignment = 1
+character_avatar = ExtResource("1_jyhfs")
+character_name = "Chick"
 
-[node name="Duck" type="Sprite2D" parent="MarginContainer/HBoxContainer/LeftCharContainer"]
-position = Vector2(132, 429)
-texture = ExtResource("2_tbgi4")
+[node name="Duck" parent="MarginContainer/HBoxContainer/LeftCharContainer" instance=ExtResource("2_tefeu")]
+layout_mode = 2
+size_flags_horizontal = 4
+alignment = 1
+character_avatar = ExtResource("2_tbgi4")
+character_name = "Duck"
 
-[node name="TrackContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+[node name="Tracks" parent="MarginContainer/HBoxContainer" instance=ExtResource("3_tbgi4")]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 2.0
-
-[node name="Tracks" parent="MarginContainer/HBoxContainer/TrackContainer" instance=ExtResource("3_tbgi4")]
-layout_mode = 2
 size_flags_vertical = 3
+size_flags_stretch_ratio = 3.0
 
 [node name="RightCharContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+alignment = 1
 
-[node name="Hippo" type="Sprite2D" parent="MarginContainer/HBoxContainer/RightCharContainer"]
-position = Vector2(134, 426)
-texture = ExtResource("3_tefeu")
+[node name="Parrot" parent="MarginContainer/HBoxContainer/RightCharContainer" instance=ExtResource("2_tefeu")]
+layout_mode = 2
+size_flags_horizontal = 4
+character_avatar = ExtResource("4_o6xl0")
+character_name = "Parrot"
 
-[node name="Parrot" type="Sprite2D" parent="MarginContainer/HBoxContainer/RightCharContainer"]
-position = Vector2(132, 207)
-texture = ExtResource("4_o6xl0")
+[node name="Hippo" parent="MarginContainer/HBoxContainer/RightCharContainer" instance=ExtResource("2_tefeu")]
+layout_mode = 2
+size_flags_horizontal = 4
+character_avatar = ExtResource("3_tefeu")
+character_name = "Hippo"
 
 [node name="UI" type="CanvasLayer" parent="."]
 
