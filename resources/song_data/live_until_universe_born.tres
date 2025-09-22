@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SongData" load_steps=3 format=3 uid="uid://cdodivh8jmw8c"]
+
+[ext_resource type="Script" uid="uid://d0eeck06d6u3" path="res://models/song_data.gd" id="1_cadpr"]
+[ext_resource type="AudioStream" uid="uid://bqjoekhc32on1" path="res://assets/songs/活到宇宙破茧时.mp3" id="2_stted"]
+
+[resource]
+script = ExtResource("1_cadpr")
+name = "活到宇宙破茧时"
+stream = ExtResource("2_stted")
+BPM = 120
+metadata/_custom_type_script = "uid://d0eeck06d6u3"

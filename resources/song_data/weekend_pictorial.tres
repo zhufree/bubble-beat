@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SongData" load_steps=3 format=3 uid="uid://ccihy75nv6bln"]
+
+[ext_resource type="Script" uid="uid://d0eeck06d6u3" path="res://models/song_data.gd" id="1_hptl3"]
+[ext_resource type="AudioStream" uid="uid://bwg7lfxahb768" path="res://assets/songs/周末画报.mp3" id="2_piofb"]
+
+[resource]
+script = ExtResource("1_hptl3")
+name = "周末画报"
+stream = ExtResource("2_piofb")
+BPM = 118
+metadata/_custom_type_script = "uid://d0eeck06d6u3"

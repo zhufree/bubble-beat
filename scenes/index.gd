@@ -23,7 +23,7 @@ func _process(_delta):
 
 	elif Input.is_action_just_pressed("ok"):
 		if current_button_index == 0:
-			get_tree().change_scene_to_file("res://scenes/main.tscn")
+			get_tree().change_scene_to_file("res://scenes/song_list.tscn")
 		else:
 			get_tree().quit()
 

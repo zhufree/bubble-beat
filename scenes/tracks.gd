@@ -60,7 +60,7 @@ func _process(delta):
 	area_width = get_size().x
 	
 	var spawn_interval = beat_interval * Global.difficulty
-	if time_since_last_spawn >= spawn_interval:
+	if time_since_last_spawn >= spawn_interval and Global.game_status == Enums.GameStatus.PLAYING:
 		spawn_bubble()
 		time_since_last_spawn = 0.0
 	

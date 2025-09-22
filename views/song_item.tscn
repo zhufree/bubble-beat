@@ -1,0 +1,59 @@
+[gd_scene load_steps=4 format=3 uid="uid://bqwxk7yvhqvkr"]
+
+[ext_resource type="Script" uid="uid://dcc7qn5j0b6t8" path="res://views/song_item.gd" id="1_1x8vf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lc2j7"]
+bg_color = Color(0.8352941, 0.39607844, 0.32941177, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.94011927, 0.41123104, 0.49295312, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pi8j4"]
+bg_color = Color(0.9019608, 0.30588236, 0.32941177, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.94011927, 0.41123104, 0.49295312, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[node name="SongItem" type="Button"]
+custom_minimum_size = Vector2(300, 80)
+theme_override_styles/normal = SubResource("StyleBoxFlat_lc2j7")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_pi8j4")
+theme_override_styles/hover = SubResource("StyleBoxFlat_pi8j4")
+theme_override_styles/focus = SubResource("StyleBoxFlat_pi8j4")
+script = ExtResource("1_1x8vf")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 8.0
+offset_right = -16.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SongNameLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Song Name"
+vertical_alignment = 1
+
+[node name="BPMLabel" type="Label" parent="VBoxContainer"]
+modulate = Color(0.8, 0.8, 0.8, 1)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "BPM: 120"
