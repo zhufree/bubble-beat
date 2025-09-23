@@ -1,10 +1,12 @@
 extends Control
 
 
-@onready var judgment_line_1: Area2D = $VBoxContainer/JudgmentLineContainer/JudgmentLine1
-@onready var judgment_line_2: Area2D = $VBoxContainer/JudgmentLineContainer/JudgmentLine2
-@onready var color_line_1: ColorRect = $VBoxContainer/JudgmentLineContainer/ColorLine1
-@onready var color_line_2: ColorRect = $VBoxContainer/JudgmentLineContainer/ColorLine2
+@onready var judgment_line_1: Area2D = $JudgmentLineContainer/JudgmentLine1
+@onready var collision_shape_2d_1: CollisionShape2D = $JudgmentLineContainer/JudgmentLine1/CollisionShape2D1
+@onready var judgment_line_2: Area2D = $JudgmentLineContainer/JudgmentLine2
+@onready var collision_shape_2d_2: CollisionShape2D = $JudgmentLineContainer/JudgmentLine2/CollisionShape2D2
+@onready var color_line_1: ColorRect = $JudgmentLineContainer/ColorLine1
+@onready var color_line_2: ColorRect = $JudgmentLineContainer/ColorLine2
 
 var area_width: float = 400.0 # 默认，稍后更新
 var track_width: float = 100.0 # 默认
@@ -72,7 +74,27 @@ func _physics_process(delta: float) -> void:
 	check_input()
 
 func calculate_positions_and_timing():
-	# 先获取当前判定线的全局位置作为参考
+	# 获取JudgmentLineContainer的大小（现在占据整个父布局）
+	var container = $JudgmentLineContainer
+	var container_height = container.get_size().y
+	var container_width = container.get_size().x
+	
+	# 计算JudgmentLineContainer内的三等分位置
+	var section_height = container_height / 3.0
+	var target_line1_y = section_height          # 1/3 处
+	var target_line2_y = section_height * 2      # 2/3 处
+	
+	print("=== 计算判定线位置（基于JudgmentLineContainer） ===")
+	print("Container高度: ", container_height)
+	print("Container宽度: ", container_width)
+	print("每段高度: ", section_height)
+	print("目标Line1位置: ", target_line1_y)
+	print("目标Line2位置: ", target_line2_y)
+	
+	# 重新设置判定线位置
+	reposition_judgment_lines(target_line1_y, target_line2_y, container_width)
+	
+	# 更新全局坐标变量（用于气泡计算）
 	judgment_line_1_y = judgment_line_1.global_position.y
 	judgment_line_2_y = judgment_line_2.global_position.y
 	
@@ -82,10 +104,10 @@ func calculate_positions_and_timing():
 		judgment_line_1_y = judgment_line_2_y
 		judgment_line_2_y = temp
 	
-	print("当前判定线1 Y坐标: ", judgment_line_1_y)
-	print("当前判定线2 Y坐标: ", judgment_line_2_y)
+	print("实际Line1全局Y: ", judgment_line_1_y)
+	print("实际Line2全局Y: ", judgment_line_2_y)
 	
-	# 气泡从屏幕最底端生成
+	# 气泡从屏幕最底端生成（使用整个tracks的高度）
 	spawn_y = get_size().y
 	
 	# 计算气泡速度：确保从生成到第一根判定线（上方）用时beats_to_first_line拍
@@ -96,6 +118,77 @@ func calculate_positions_and_timing():
 	print("气泡生成位置: ", spawn_y)
 	print("到第一条线距离: ", distance_to_first_line)
 	print("气泡速度: ", bubble_speed)
+
+# 重新定位判定线和颜色线
+func reposition_judgment_lines(line1_y: float, line2_y: float, width: float):
+	# 获取JudgmentLineContainer（现在占据整个父布局）
+	var container = $JudgmentLineContainer
+	var container_size = container.get_size()
+	
+	print("Container大小: ", container_size)
+	print("Container占据整个父布局")
+	
+	# 由于container现在占据整个父布局，直接使用计算出的位置
+	# line1_y和line2_y已经是相对于整个tracks的位置
+	var relative_line1_y = line1_y
+	var relative_line2_y = line2_y
+	
+	print("直接使用的Line1 Y: ", relative_line1_y)
+	print("直接使用的Line2 Y: ", relative_line2_y)
+	
+	# 设置判定线位置
+	judgment_line_1.position = Vector2(0, relative_line1_y)
+	judgment_line_2.position = Vector2(0, relative_line2_y)
+	
+	# 设置颜色线位置和大小
+	# ColorRect有20px高度，需要调整位置使其中心点在目标Y坐标上
+	var color_line_height = 20.0
+	color_line_1.position = Vector2(0, relative_line1_y - color_line_height / 2.0)
+	color_line_2.position = Vector2(0, relative_line2_y - color_line_height / 2.0)
+	color_line_1.size = Vector2(width, color_line_height)
+	color_line_2.size = Vector2(width, color_line_height)
+	
+	# 调整CollisionShape2D的宽度与Area2D一致
+	adjust_collision_shapes_width(width)
+	
+	print("设置完成 - Line1位置: ", judgment_line_1.position)
+	print("设置完成 - Line2位置: ", judgment_line_2.position)
+	print("设置完成 - ColorLine1位置: ", color_line_1.position)
+	print("设置完成 - ColorLine2位置: ", color_line_2.position)
+
+# 调整碰撞形状的宽度
+func adjust_collision_shapes_width(width: float):
+	# 获取CollisionShape2D的形状资源
+	var shape1 = collision_shape_2d_1.shape
+	var shape2 = collision_shape_2d_2.shape
+	
+	print("=== 调整CollisionShape宽度 ===")
+	print("目标宽度: ", width)
+	
+	# 如果是RectangleShape2D，调整其大小
+	if shape1 is RectangleShape2D:
+		var rect_shape1 = shape1 as RectangleShape2D
+		var current_height1 = rect_shape1.size.y
+		rect_shape1.size = Vector2(width, current_height1)
+		print("CollisionShape1调整为: ", rect_shape1.size)
+	
+	if shape2 is RectangleShape2D:
+		var rect_shape2 = shape2 as RectangleShape2D
+		var current_height2 = rect_shape2.size.y
+		rect_shape2.size = Vector2(width, current_height2)
+		print("CollisionShape2调整为: ", rect_shape2.size)
+	
+	# 确保CollisionShape2D的位置居中
+	# RectangleShape2D以中心点为基准，所以X需要设置为宽度的一半
+	# Y坐标需要根据判定线的位置来计算，确保中心点对齐
+	collision_shape_2d_1.position.x = width / 2.0
+	collision_shape_2d_1.position.y = 0
+	collision_shape_2d_2.position.x = width / 2.0
+	collision_shape_2d_2.position.y = 0
+	
+	print("CollisionShape位置调整为: x = ", width / 2.0, ", y = 0")
+	
+	print("CollisionShape宽度调整完成")
 
 
 func spawn_bubble():
@@ -130,7 +223,6 @@ func _on_judgment_line_1_entered(area):
 	if is_instance_valid(bubble) and bubble.has_method("get_bubble_color"):
 		if bubble not in bubbles_in_judgment_zone_1:
 			bubbles_in_judgment_zone_1.append(bubble)
-			print("气泡进入第一条判定线区域，颜色: ", bubble.get_bubble_color(), " 当前区域内气泡数: ", bubbles_in_judgment_zone_1.size())
 
 # 气泡的HitArea离开第一条判定线区域
 func _on_judgment_line_1_exited(area):
@@ -139,7 +231,6 @@ func _on_judgment_line_1_exited(area):
 	if is_instance_valid(bubble) and bubble.has_method("get_bubble_color"):
 		if bubble in bubbles_in_judgment_zone_1:
 			bubbles_in_judgment_zone_1.erase(bubble)
-			print("气泡离开第一条判定线区域，颜色: ", bubble.get_bubble_color(), " 当前区域内气泡数: ", bubbles_in_judgment_zone_1.size())
 
 # 气泡的HitArea进入第二条判定线区域
 func _on_judgment_line_2_entered(area):
@@ -148,7 +239,6 @@ func _on_judgment_line_2_entered(area):
 	if is_instance_valid(bubble) and bubble.has_method("get_bubble_color"):
 		if bubble not in bubbles_in_judgment_zone_2:
 			bubbles_in_judgment_zone_2.append(bubble)
-			print("气泡进入第二条判定线区域，颜色: ", bubble.get_bubble_color(), " 当前区域内气泡数: ", bubbles_in_judgment_zone_2.size())
 
 # 气泡的HitArea离开第二条判定线区域
 func _on_judgment_line_2_exited(area):
@@ -157,7 +247,6 @@ func _on_judgment_line_2_exited(area):
 	if is_instance_valid(bubble) and bubble.has_method("get_bubble_color"):
 		if bubble in bubbles_in_judgment_zone_2:
 			bubbles_in_judgment_zone_2.erase(bubble)
-			print("气泡离开第二条判定线区域，颜色: ", bubble.get_bubble_color(), " 当前区域内气泡数: ", bubbles_in_judgment_zone_2.size())
 
 # 检测按键输入
 func check_input():
@@ -174,7 +263,6 @@ func handle_key_press(action: String):
 			break
 	
 	if target_color == null:
-		print("未找到对应的颜色")
 		return
 	
 	var required_line = color_judgment_rules[target_color]
@@ -187,10 +275,8 @@ func handle_key_press(action: String):
 	
 	if required_line == 1:
 		target_bubbles_array = bubbles_in_judgment_zone_1
-		print("查找第一条判定线上的", target_color, "气泡")
 	elif required_line == 2:
 		target_bubbles_array = bubbles_in_judgment_zone_2
-		print("查找第二条判定线上的", target_color, "气泡")
 	
 	var hit_bubble = null
 	# 创建目标数组的副本，避免在遍历时修改原数组
@@ -204,16 +290,10 @@ func handle_key_press(action: String):
 				break
 	
 	if hit_bubble:
-		print("击破气泡! 颜色: ", target_color, ", 在第", required_line, "条判定线")
 		EventBus.emit_signal("update_hit", color_character[target_color], 1)
 		EventBus.emit_signal("update_score", (5 - Global.difficulty) * 10)
-		
-		# 安全地从所有相关数组中删除气泡
 		safe_remove_bubble(hit_bubble)
 	else:
-		print("Miss! 没有在第", required_line, "条判定线找到匹配的气泡，颜色: ", target_color)
-		# 调试信息：显示当前判定区域内的气泡
-		print("当前第", required_line, "条判定线区域内的气泡数量: ", target_bubbles_array.size())
 		for bubble in target_bubbles_array:
 			if is_instance_valid(bubble) and bubble.has_method("get_bubble_color"):
 				print("  - 气泡颜色: ", bubble.get_bubble_color())
@@ -227,10 +307,8 @@ func animate_judgment_line(target_color):
 	
 	# 检查对应的判定线是否已在动画中
 	if required_line == 1 and is_line_1_animating:
-		print("第1条判定线正在动画中，跳过动画")
 		return
 	elif required_line == 2 and is_line_2_animating:
-		print("第2条判定线正在动画中，跳过动画")
 		return
 	
 	# 标记对应的判定线为动画中
@@ -279,10 +357,8 @@ func animate_judgment_line(target_color):
 	tween.finished.connect(func(): 
 		if required_line == 1:
 			is_line_1_animating = false
-			print("第1条判定线动画结束")
 		else:
 			is_line_2_animating = false
-			print("第2条判定线动画结束")
 	)
 
 # 安全地删除气泡，确保从所有相关数组中移除
@@ -293,17 +369,13 @@ func safe_remove_bubble(bubble):
 	# 从判定区域数组中移除
 	if bubble in bubbles_in_judgment_zone_1:
 		bubbles_in_judgment_zone_1.erase(bubble)
-		print("从第一条判定线区域移除气泡")
 	
 	if bubble in bubbles_in_judgment_zone_2:
 		bubbles_in_judgment_zone_2.erase(bubble)
-		print("从第二条判定线区域移除气泡")
 	
 	# 从总气泡列表中移除
 	if bubble in bubble_nodes:
 		bubble_nodes.erase(bubble)
-		print("从气泡节点列表移除气泡")
 	
 	# 销毁气泡节点
 	bubble.queue_free()
-	print("气泡已标记为删除")
