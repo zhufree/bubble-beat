@@ -36,10 +36,10 @@ var color_to_action = {
 }
 # 颜色对应的判定线规则
 var color_judgment_rules = {
-	Enums.BubbleColor.GREEN: 2,  # 绿色只能在第一条判定线消除
-	Enums.BubbleColor.BLUE: 2,   # 蓝色只能在第一条判定线消除
-	Enums.BubbleColor.YELLOW: 1, # 黄色只能在第二条判定线消除
-	Enums.BubbleColor.RED: 1     # 红色只能在第二条判定线消除
+	Enums.BubbleColor.GREEN: 2,  # 绿色只能在第2条判定线消除
+	Enums.BubbleColor.BLUE: 2,   # 蓝色只能在第2条判定线消除
+	Enums.BubbleColor.YELLOW: 1, # 黄色只能在第1条判定线消除
+	Enums.BubbleColor.RED: 1     # 红色只能在第1条判定线消除
 }
 var color_character = {
 	Enums.BubbleColor.GREEN: "Duck",
@@ -55,9 +55,14 @@ func _ready():
 	calculate_positions_and_timing()
 	setup_judgment_line_signals()
 
-func _process(delta):
+func _physics_process(delta: float) -> void:
 	time_since_last_spawn += delta
-	area_width = get_size().x
+	var new_width = get_size().x
+	
+	# 如果窗口大小发生变化，重新计算位置
+	if abs(area_width - new_width) > 1.0:
+		area_width = new_width
+		calculate_positions_and_timing()
 	
 	var spawn_interval = beat_interval * Global.difficulty
 	if time_since_last_spawn >= spawn_interval and Global.game_status == Enums.GameStatus.PLAYING:
@@ -67,7 +72,7 @@ func _process(delta):
 	check_input()
 
 func calculate_positions_and_timing():
-	# 获取判定线的Y坐标
+	# 先获取当前判定线的全局位置作为参考
 	judgment_line_1_y = judgment_line_1.global_position.y
 	judgment_line_2_y = judgment_line_2.global_position.y
 	
@@ -77,6 +82,9 @@ func calculate_positions_and_timing():
 		judgment_line_1_y = judgment_line_2_y
 		judgment_line_2_y = temp
 	
+	print("当前判定线1 Y坐标: ", judgment_line_1_y)
+	print("当前判定线2 Y坐标: ", judgment_line_2_y)
+	
 	# 气泡从屏幕最底端生成
 	spawn_y = get_size().y
 	
@@ -84,6 +92,10 @@ func calculate_positions_and_timing():
 	var distance_to_first_line = spawn_y - judgment_line_1_y
 	var time_to_first_line = beats_to_first_line * beat_interval
 	bubble_speed = distance_to_first_line / time_to_first_line
+	
+	print("气泡生成位置: ", spawn_y)
+	print("到第一条线距离: ", distance_to_first_line)
+	print("气泡速度: ", bubble_speed)
 
 
 func spawn_bubble():
@@ -115,37 +127,37 @@ func setup_judgment_line_signals():
 func _on_judgment_line_1_entered(area):
 	# 获取气泡节点（HitArea的父节点）
 	var bubble = area.get_parent()
-	if bubble.has_method("get_bubble_color"):
+	if is_instance_valid(bubble) and bubble.has_method("get_bubble_color"):
 		if bubble not in bubbles_in_judgment_zone_1:
 			bubbles_in_judgment_zone_1.append(bubble)
-			print("气泡进入第一条判定线区域，颜色: ", bubble.get_bubble_color())
+			print("气泡进入第一条判定线区域，颜色: ", bubble.get_bubble_color(), " 当前区域内气泡数: ", bubbles_in_judgment_zone_1.size())
 
 # 气泡的HitArea离开第一条判定线区域
 func _on_judgment_line_1_exited(area):
 	# 获取气泡节点（HitArea的父节点）
 	var bubble = area.get_parent()
-	if bubble.has_method("get_bubble_color"):
+	if is_instance_valid(bubble) and bubble.has_method("get_bubble_color"):
 		if bubble in bubbles_in_judgment_zone_1:
 			bubbles_in_judgment_zone_1.erase(bubble)
-			print("气泡离开第一条判定线区域，颜色: ", bubble.get_bubble_color())
+			print("气泡离开第一条判定线区域，颜色: ", bubble.get_bubble_color(), " 当前区域内气泡数: ", bubbles_in_judgment_zone_1.size())
 
 # 气泡的HitArea进入第二条判定线区域
 func _on_judgment_line_2_entered(area):
 	# 获取气泡节点（HitArea的父节点）
 	var bubble = area.get_parent()
-	if bubble.has_method("get_bubble_color"):
+	if is_instance_valid(bubble) and bubble.has_method("get_bubble_color"):
 		if bubble not in bubbles_in_judgment_zone_2:
 			bubbles_in_judgment_zone_2.append(bubble)
-			print("气泡进入第二条判定线区域，颜色: ", bubble.get_bubble_color())
+			print("气泡进入第二条判定线区域，颜色: ", bubble.get_bubble_color(), " 当前区域内气泡数: ", bubbles_in_judgment_zone_2.size())
 
 # 气泡的HitArea离开第二条判定线区域
 func _on_judgment_line_2_exited(area):
 	# 获取气泡节点（HitArea的父节点）
 	var bubble = area.get_parent()
-	if bubble.has_method("get_bubble_color"):
+	if is_instance_valid(bubble) and bubble.has_method("get_bubble_color"):
 		if bubble in bubbles_in_judgment_zone_2:
 			bubbles_in_judgment_zone_2.erase(bubble)
-			print("气泡离开第二条判定线区域，颜色: ", bubble.get_bubble_color())
+			print("气泡离开第二条判定线区域，颜色: ", bubble.get_bubble_color(), " 当前区域内气泡数: ", bubbles_in_judgment_zone_2.size())
 
 # 检测按键输入
 func check_input():
@@ -170,6 +182,9 @@ func handle_key_press(action: String):
 	
 	animate_judgment_line(target_color)
 	
+	# 发送信号给对应的角色显示边框
+	EventBus.emit_signal("show_character_border", color_character[target_color])
+	
 	if required_line == 1:
 		target_bubbles_array = bubbles_in_judgment_zone_1
 		print("查找第一条判定线上的", target_color, "气泡")
@@ -178,34 +193,56 @@ func handle_key_press(action: String):
 		print("查找第二条判定线上的", target_color, "气泡")
 	
 	var hit_bubble = null
-	for bubble in target_bubbles_array:
-		if bubble.get_bubble_color() == target_color:
-			hit_bubble = bubble
-			break
+	# 创建目标数组的副本，避免在遍历时修改原数组
+	var target_bubbles_copy = target_bubbles_array.duplicate()
+	
+	for bubble in target_bubbles_copy:
+		# 验证气泡仍然存在且有效
+		if is_instance_valid(bubble) and bubble.has_method("get_bubble_color"):
+			if bubble.get_bubble_color() == target_color:
+				hit_bubble = bubble
+				break
 	
 	if hit_bubble:
 		print("击破气泡! 颜色: ", target_color, ", 在第", required_line, "条判定线")
 		EventBus.emit_signal("update_hit", color_character[target_color], 1)
 		EventBus.emit_signal("update_score", (5 - Global.difficulty) * 10)
-		bubbles_in_judgment_zone_1.erase(hit_bubble)
-		bubbles_in_judgment_zone_2.erase(hit_bubble)
-		bubble_nodes.erase(hit_bubble)
-		hit_bubble.queue_free()
+		
+		# 安全地从所有相关数组中删除气泡
+		safe_remove_bubble(hit_bubble)
 	else:
 		print("Miss! 没有在第", required_line, "条判定线找到匹配的气泡，颜色: ", target_color)
+		# 调试信息：显示当前判定区域内的气泡
+		print("当前第", required_line, "条判定线区域内的气泡数量: ", target_bubbles_array.size())
+		for bubble in target_bubbles_array:
+			if is_instance_valid(bubble) and bubble.has_method("get_bubble_color"):
+				print("  - 气泡颜色: ", bubble.get_bubble_color())
 
 
-var is_animating = false
+var is_line_1_animating = false  # 第1条判定线是否在动画中
+var is_line_2_animating = false  # 第2条判定线是否在动画中
+
 func animate_judgment_line(target_color):
-	if is_animating:
+	var required_line = color_judgment_rules[target_color]
+	
+	# 检查对应的判定线是否已在动画中
+	if required_line == 1 and is_line_1_animating:
+		print("第1条判定线正在动画中，跳过动画")
 		return
-	is_animating = true
+	elif required_line == 2 and is_line_2_animating:
+		print("第2条判定线正在动画中，跳过动画")
+		return
+	
+	# 标记对应的判定线为动画中
+	if required_line == 1:
+		is_line_1_animating = true
+	else:
+		is_line_2_animating = true
+	
 	var line_to_animate = null
 	var original_width = 0
 	var original_color = Color.WHITE
 	var target_line_color = Color.WHITE
-	
-	var required_line = color_judgment_rules[target_color]
 	
 	match target_color:
 		Enums.BubbleColor.RED:
@@ -228,7 +265,7 @@ func animate_judgment_line(target_color):
 	
 	var tween = create_tween()
 	
-	tween.tween_property(line_to_animate, "size:y", original_width * 3, 0.1)
+	tween.tween_property(line_to_animate, "size:y", original_width * 1.5, 0.1)
 	tween.parallel().tween_property(line_to_animate, "color", target_line_color, 0.1)
 	
 	for i in range(2):
@@ -238,4 +275,35 @@ func animate_judgment_line(target_color):
 	tween.tween_property(line_to_animate, "size:y", original_width, 0.1)
 	tween.parallel().tween_property(line_to_animate, "color", original_color, 0.1)
 
-	tween.finished.connect(func(): is_animating = false)
+	# 动画结束时重置对应判定线的动画状态
+	tween.finished.connect(func(): 
+		if required_line == 1:
+			is_line_1_animating = false
+			print("第1条判定线动画结束")
+		else:
+			is_line_2_animating = false
+			print("第2条判定线动画结束")
+	)
+
+# 安全地删除气泡，确保从所有相关数组中移除
+func safe_remove_bubble(bubble):
+	if not is_instance_valid(bubble):
+		return
+	
+	# 从判定区域数组中移除
+	if bubble in bubbles_in_judgment_zone_1:
+		bubbles_in_judgment_zone_1.erase(bubble)
+		print("从第一条判定线区域移除气泡")
+	
+	if bubble in bubbles_in_judgment_zone_2:
+		bubbles_in_judgment_zone_2.erase(bubble)
+		print("从第二条判定线区域移除气泡")
+	
+	# 从总气泡列表中移除
+	if bubble in bubble_nodes:
+		bubble_nodes.erase(bubble)
+		print("从气泡节点列表移除气泡")
+	
+	# 销毁气泡节点
+	bubble.queue_free()
+	print("气泡已标记为删除")

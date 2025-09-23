@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://ndfsgckdjnlx" path="res://scenes/tracks.tscn" id="3_tbgi4"]
 [ext_resource type="Texture2D" uid="uid://dbxhfk4f1nro" path="res://assets/sprites/hippo.png" id="3_tefeu"]
 [ext_resource type="Texture2D" uid="uid://cu8o6gx8chc6y" path="res://assets/sprites/parrot.png" id="4_o6xl0"]
-[ext_resource type="PackedScene" path="res://views/game_result_modal.tscn" id="9_modal"]
+[ext_resource type="PackedScene" uid="uid://bqscnchqapmui" path="res://views/game_result_modal.tscn" id="9_modal"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -72,14 +72,12 @@ alignment = 1
 [node name="Chick" parent="MarginContainer/HBoxContainer/LeftCharContainer" instance=ExtResource("2_tefeu")]
 layout_mode = 2
 size_flags_horizontal = 4
-alignment = 1
 character_avatar = ExtResource("1_jyhfs")
 character_name = "Chick"
 
 [node name="Duck" parent="MarginContainer/HBoxContainer/LeftCharContainer" instance=ExtResource("2_tefeu")]
 layout_mode = 2
 size_flags_horizontal = 4
-alignment = 1
 character_avatar = ExtResource("2_tbgi4")
 character_name = "Duck"
 
@@ -110,7 +108,5 @@ character_name = "Hippo"
 
 [node name="GameResultModal" parent="UI" instance=ExtResource("9_modal")]
 visible = false
-grow_horizontal = 2
-grow_vertical = 2
 
 [node name="SongPlayer" type="AudioStreamPlayer2D" parent="."]

@@ -4,10 +4,10 @@ extends Control
 @onready var tracks: Control = $MarginContainer/HBoxContainer/Tracks
 @onready var score_label: Label = $HBoxContainer/ScoreLabel
 @onready var combo_label: Label = $HBoxContainer/ComboLabel
-@onready var chick: VBoxContainer = $MarginContainer/HBoxContainer/LeftCharContainer/Chick
-@onready var duck: VBoxContainer = $MarginContainer/HBoxContainer/LeftCharContainer/Duck
-@onready var parrot: VBoxContainer = $MarginContainer/HBoxContainer/RightCharContainer/Parrot
-@onready var hippo: VBoxContainer = $MarginContainer/HBoxContainer/RightCharContainer/Hippo
+@onready var chick: Control = $MarginContainer/HBoxContainer/LeftCharContainer/Chick
+@onready var duck: Control = $MarginContainer/HBoxContainer/LeftCharContainer/Duck
+@onready var parrot: Control = $MarginContainer/HBoxContainer/RightCharContainer/Parrot
+@onready var hippo: Control = $MarginContainer/HBoxContainer/RightCharContainer/Hippo
 
 var song: SongData
 var combo = 0

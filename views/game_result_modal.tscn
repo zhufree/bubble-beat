@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://bqscnchqapmui"]
+[gd_scene load_steps=6 format=3 uid="uid://bqscnchqapmui"]
 
 [ext_resource type="Script" uid="uid://dpvv2ewb7jl0v" path="res://views/game_result_modal.gd" id="1_modal"]
 [ext_resource type="FontFile" uid="uid://bw0de4xsiw3nr" path="res://assets/fonts/DynaPuff/DynaPuff-SemiBold.ttf" id="2_font"]
@@ -14,6 +14,12 @@ corner_radius_top_left = 15
 corner_radius_top_right = 15
 corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q1jh0"]
+bg_color = Color(0.5774341, 0.617245, 0.5326643, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yo6u8"]
+bg_color = Color(0.44796455, 0.484429, 0.40744576, 1)
 
 [node name="GameResultModal" type="Control"]
 layout_mode = 3
@@ -63,26 +69,31 @@ theme_override_constants/separation = 30
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 36
-text = "游戏结束"
+text = "Game Over"
 horizontal_alignment = 1
 
 [node name="ScoreLabel" type="Label" parent="CenterContainer/ModalPanel/VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 24
-text = "最终得分: 0"
+text = "Final Score: 0"
 horizontal_alignment = 1
 
 [node name="ComboLabel" type="Label" parent="CenterContainer/ModalPanel/VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 24
-text = "最高连击: 0"
+text = "Max Combo: 0"
 horizontal_alignment = 1
 
 [node name="ReturnButton" type="Button" parent="CenterContainer/ModalPanel/VBoxContainer"]
 custom_minimum_size = Vector2(200, 70)
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 24
-text = "返回歌曲列表"
+theme_override_styles/normal = SubResource("StyleBoxFlat_q1jh0")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_yo6u8")
+theme_override_styles/hover = SubResource("StyleBoxFlat_yo6u8")
+theme_override_styles/focus = SubResource("StyleBoxFlat_yo6u8")
+text = "Back"

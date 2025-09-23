@@ -2,13 +2,11 @@
 
 [ext_resource type="Script" uid="uid://cl48c2ecgford" path="res://scenes/tracks.gd" id="1_ikf7h"]
 
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_ikf7h"]
-a = Vector2(1150, 0)
-b = Vector2(0, 0)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ikf7h"]
+size = Vector2(1165, 20)
 
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_oy45g"]
-a = Vector2(1155, 213)
-b = Vector2(1, 213)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oy45g"]
+size = Vector2(1166, 20)
 
 [node name="GameArea" type="Control"]
 layout_mode = 3
@@ -70,19 +68,25 @@ size_flags_vertical = 3
 [node name="JudgmentLine1" type="Area2D" parent="VBoxContainer/JudgmentLineContainer"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="VBoxContainer/JudgmentLineContainer/JudgmentLine1"]
-shape = SubResource("SegmentShape2D_ikf7h")
+position = Vector2(572.5, 0)
+shape = SubResource("RectangleShape2D_ikf7h")
 
 [node name="JudgmentLine2" type="Area2D" parent="VBoxContainer/JudgmentLineContainer"]
+position = Vector2(0, 213)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="VBoxContainer/JudgmentLineContainer/JudgmentLine2"]
-shape = SubResource("SegmentShape2D_oy45g")
+position = Vector2(573, 0)
+shape = SubResource("RectangleShape2D_oy45g")
 
 [node name="ColorLine1" type="ColorRect" parent="VBoxContainer/JudgmentLineContainer"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 2.0
+offset_top = -10.0
+offset_bottom = 10.0
 grow_horizontal = 2
+pivot_offset = Vector2(576, 10)
+color = Color(0.62237126, 0.68086964, 0.7858782, 1)
 
 [node name="ColorLine2" type="ColorRect" parent="VBoxContainer/JudgmentLineContainer"]
 layout_mode = 1
@@ -90,9 +94,12 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_bottom = 2.0
+offset_top = -10.0
+offset_bottom = 10.0
 grow_horizontal = 2
 grow_vertical = 0
+pivot_offset = Vector2(576, 10)
+color = Color(0.62237126, 0.68086964, 0.7858782, 1)
 
 [node name="Control3" type="Control" parent="VBoxContainer"]
 layout_mode = 2

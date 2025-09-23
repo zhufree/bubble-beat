@@ -25,8 +25,8 @@ func _on_game_finished(final_score: int, max_combo: int):
 	show_result(final_score, max_combo)
 
 func show_result(final_score: int, max_combo: int):
-	score_label.text = "最终得分: " + str(final_score)
-	combo_label.text = "最高连击: " + str(max_combo)
+	score_label.text = "Final Score: " + str(final_score)
+	combo_label.text = "Max Combo: " + str(max_combo)
 	
 	# 显示弹窗
 	visible = true

@@ -52,7 +52,7 @@ func get_bubble_color() -> Enums.BubbleColor:
 	return bubble_color
 		
 
-func _process(delta):
+func _physics_process(delta: float) -> void:
 	position.y -= speed * delta # 向上移动
 	
 	# 检查是否经过判定线（简单的Y坐标检查）
@@ -63,20 +63,11 @@ func _process(delta):
 		var line1_y = line_positions[0]
 		var line2_y = line_positions[1]
 		
-		# 检查是否经过上方判定线
 		if not has_passed_line1 and position.y <= line1_y:
 			has_passed_line1 = true
-			# 计算气泡从生成到现在的时间，用于验证是否在预期的拍数上经过判定线
-			var current_time = Time.get_unix_time_from_system()
-			var elapsed_time = current_time - birth_time
-			var expected_beats = elapsed_time / beat_interval
 		
-		# 检查是否经过下方判定线
 		if not has_passed_line2 and position.y <= line2_y:
 			has_passed_line2 = true
-			# 计算气泡从生成到现在的时间，用于验证是否在预期的拍数上经过判定线
-			var current_time = Time.get_unix_time_from_system()
-			var elapsed_time = current_time - birth_time
 
 	
 	if position.y < -100: # 越过顶部
