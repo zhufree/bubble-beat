@@ -15,8 +15,6 @@ var has_passed_line2: bool = false
 var bubble_color: Enums.BubbleColor # 气泡颜色
 
 func _ready():
-	# 记录气泡生成的时间戳，用于后续计算气泡经过判定线的时间是否符合预期
-	# 使用UNIX时间戳更加精确和可靠
 	birth_time = Time.get_unix_time_from_system()
 
 func set_beat_interval(interval: float):
@@ -55,8 +53,6 @@ func get_bubble_color() -> Enums.BubbleColor:
 func _physics_process(delta: float) -> void:
 	position.y -= speed * delta # 向上移动
 	
-	# 检查是否经过判定线（简单的Y坐标检查）
-	# 这里需要从父节点获取判定线位置
 	var parent_tracks = get_parent()
 	if parent_tracks and parent_tracks.has_method("get_judgment_line_positions"):
 		var line_positions = parent_tracks.get_judgment_line_positions()

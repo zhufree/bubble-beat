@@ -53,9 +53,7 @@ func _on_update_score(amount: int):
 	combo_label.text = "Combo:" + str(combo)
 
 func _on_song_finished():
-	# 保存最终分数和最大连击数到Global
 	Global.final_score = score
 	Global.max_combo = max_combo
 	Global.game_status = Enums.GameStatus.FINISHED
-	# 发送游戏结束信号
 	EventBus.game_finished.emit(score, max_combo)

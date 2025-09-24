@@ -9,8 +9,6 @@ var song_items: Array[SongItem] = []
 var current_selected_index: int = 0
 var grid_columns: int = 3
 
-# signal song_selected(song: SongData)
-
 func _ready():
 	load_songs()
 	display_songs()
@@ -20,13 +18,13 @@ func _ready():
 		select_song_item(0)
 
 func _input(event):
-	if event.is_action_pressed("ui_up"):
+	if event.is_action_pressed("up"):
 		navigate_up()
-	elif event.is_action_pressed("ui_down"):
+	elif event.is_action_pressed("down"):
 		navigate_down()
-	elif event.is_action_pressed("ui_left"):
+	elif event.is_action_pressed("left"):
 		navigate_left()
-	elif event.is_action_pressed("ui_right"):
+	elif event.is_action_pressed("right"):
 		navigate_right()
 	elif event.is_action_pressed("ok"):
 		if song_items.size() > current_selected_index:
