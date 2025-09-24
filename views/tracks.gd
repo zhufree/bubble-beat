@@ -14,7 +14,7 @@ var lanes: int = 4
 var song = preload("res://resources/song_data/waiting_for_love.tres")
 var beat_interval: float = 60.0 / song.BPM # 0.5秒/拍
 var time_since_last_spawn: float = 0.0
-var bubble_scene = preload("res://scenes/bubble.tscn")
+var bubble_scene = preload("res://views/bubble.tscn")
 var colors = [Enums.BubbleColor.RED, Enums.BubbleColor.BLUE, Enums.BubbleColor.GREEN, Enums.BubbleColor.YELLOW]
 var bubble_nodes = []
 
