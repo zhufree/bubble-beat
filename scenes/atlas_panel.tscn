@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://cthb0stqukkwk"]
 
 [ext_resource type="FontFile" uid="uid://dqreqag786lld" path="res://assets/fonts/DynaPuff/DynaPuff-Regular.ttf" id="1_6c3e6"]
-[ext_resource type="Script" uid="uid://c88vg4mlyuus1" path="res://views/atlas/atlas_panel.gd" id="1_spi2c"]
+[ext_resource type="Script" uid="uid://c88vg4mlyuus1" path="res://scenes/atlas_panel.gd" id="1_spi2c"]
 [ext_resource type="PackedScene" uid="uid://bmdl1bfnmpevj" path="res://views/atlas/atlas_line.tscn" id="2_6c3e6"]
 [ext_resource type="Texture2D" uid="uid://cf1uwiogbuhdj" path="res://assets/sprites/duck.png" id="4_77rqp"]
 [ext_resource type="FontFile" uid="uid://t365v4x5q70g" path="res://assets/fonts/DynaPuff/DynaPuff-Medium.ttf" id="5_8dahc"]

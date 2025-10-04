@@ -47,7 +47,7 @@ func set_selected(selected: bool):
 
 func update_visual_state():
 	if is_selected:
-		margin_line.color = Color(0.0, 0.58, 0.949, 1.0) # 选中时的高亮色
+		margin_line.color = Color("ec8658") # 选中时的高亮色
 	else:
 		margin_line.color = Color(1.2, 1.2, 1.2, 0.0)
 

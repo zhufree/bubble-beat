@@ -14,7 +14,7 @@ offset_bottom = -448.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.8, 0.8)
-color = Color(0.9272847, 0.5245972, 0.3435298, 1)
+color = Color(0.9254902, 0.5254902, 0.34509805, 1)
 script = ExtResource("1_vwbs5")
 
 [node name="Title" type="Label" parent="."]

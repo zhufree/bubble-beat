@@ -10,7 +10,7 @@ class_name AtlasLine
 @export_group("Bird Settings")
 @export var bird_type: Enums.BirdType = Enums.BirdType.CHICK
 
-var bird_button_scene = preload("res://scenes/atlas_bird_item.tscn")
+var bird_button_scene = preload("res://views/atlas/atlas_bird_item.tscn")
 var bird_items: Array[AtlasBirdItem] = []
 var bird_data_list: Array[BirdData] = []
 var current_selected_index: int = -1
@@ -38,7 +38,7 @@ func select_line(selected: bool):
 	if is_selected:
 		color = Color(0.0, 0.58, 0.949) # 选中时的高亮色
 	else:
-		color = Color(0.839, 0.238, 0.098)
+		color = Color("ec8658")
 		clear_selection()
 	select_bird_item(-1)
 

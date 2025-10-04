@@ -31,6 +31,7 @@ func select_line(index: int):
 		atlas_line_list[i].select_line(i == index)
 	
 	current_selected_index = index
+	atlas_line_list[index].select_line(true)
 
 # 向上导航
 func navigate_up():
