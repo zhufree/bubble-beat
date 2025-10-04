@@ -1,13 +1,14 @@
 extends Control
 
 @onready var play_button: HBoxContainer = $ColorRect/MarginContainer/VBoxContainer/PlayButton
+@onready var atlas_button: HBoxContainer = $ColorRect/MarginContainer/VBoxContainer/AtlasButton
 @onready var quit_button: HBoxContainer = $ColorRect/MarginContainer/VBoxContainer/QuitButton
 
 var current_button_index: int = 0
 var buttons = []
 
 func _ready():
-	buttons = [play_button, quit_button]
+	buttons = [play_button, atlas_button, quit_button]
 	update_button_selection()
 
 func _process(_delta):
@@ -24,6 +25,8 @@ func _process(_delta):
 	elif Input.is_action_just_pressed("ok"):
 		if current_button_index == 0:
 			get_tree().change_scene_to_file("res://scenes/song_list.tscn")
+		elif current_button_index == 1:
+			get_tree().change_scene_to_file("res://scenes/atlas_panel.tscn")
 		else:
 			get_tree().quit()
 

@@ -1,0 +1,44 @@
+[gd_scene load_steps=4 format=3 uid="uid://dm8lfmbe8aqvf"]
+
+[ext_resource type="Script" uid="uid://u406w4e5bm40" path="res://views/atlas/atlas_bird_item.gd" id="2_2206x"]
+[ext_resource type="Texture2D" uid="uid://cf1uwiogbuhdj" path="res://assets/sprites/duck.png" id="2_fnoeh"]
+[ext_resource type="FontFile" uid="uid://t365v4x5q70g" path="res://assets/fonts/DynaPuff/DynaPuff-Medium.ttf" id="3_1aia7"]
+
+[node name="AtlasBirdItem" type="TextureButton"]
+offset_right = 128.0
+offset_bottom = 128.0
+stretch_mode = 3
+script = ExtResource("2_2206x")
+
+[node name="MarginLine" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 128.0
+offset_bottom = 128.0
+color = Color(0, 0.5803922, 0.9490196, 1)
+
+[node name="BirdIcon" type="TextureRect" parent="MarginLine"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = -60.0
+offset_right = 60.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_fnoeh")
+expand_mode = 1
+
+[node name="StateLabel" type="Label" parent="."]
+layout_mode = 0
+offset_top = 98.0
+offset_right = 128.0
+offset_bottom = 124.0
+theme_override_colors/font_color = Color(0.3529412, 0.1882353, 0, 1)
+theme_override_fonts/font = ExtResource("3_1aia7")
+text = "NameOrLocked"
+horizontal_alignment = 1
+vertical_alignment = 1

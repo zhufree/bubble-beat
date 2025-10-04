@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://shgutmrejcwc"]
 
-[ext_resource type="FontFile" uid="uid://ccotpqchcnmsp" path="res://assets/fonts/DynaPuff/DynaPuff-Bold.ttf" id="1_45a1r"]
+[ext_resource type="FontFile" uid="uid://yedh3be47ovt" path="res://assets/fonts/DynaPuff/DynaPuff-Bold.ttf" id="1_45a1r"]
 [ext_resource type="Script" uid="uid://cjm4fumgpipre" path="res://scenes/index.gd" id="1_74d6c"]
 [ext_resource type="PackedScene" uid="uid://ct6uqela0dqu5" path="res://views/indicator_button.tscn" id="2_igtc1"]
 
@@ -48,6 +48,11 @@ horizontal_alignment = 1
 
 [node name="PlayButton" parent="ColorRect/MarginContainer/VBoxContainer" instance=ExtResource("2_igtc1")]
 layout_mode = 2
+selected = true
+
+[node name="AtlasButton" parent="ColorRect/MarginContainer/VBoxContainer" instance=ExtResource("2_igtc1")]
+layout_mode = 2
+button_text = "Atlas"
 selected = true
 
 [node name="QuitButton" parent="ColorRect/MarginContainer/VBoxContainer" instance=ExtResource("2_igtc1")]
