@@ -1,7 +1,7 @@
 extends Node
 
 # 静态小鸟数据
-var bird_data_list: Array = []
+var bird_data_list: Array[BirdData] = []
 # 动态小鸟进度 (Dictionary[String, BirdProgress])
 var bird_progress_dict: Dictionary = {}
 
@@ -9,8 +9,16 @@ var bird_progress_dict: Dictionary = {}
 const PROGRESS_SAVE_PATH = "user://bird_progress.save"
 
 func _ready():
+	# 测试用,先删除
+	delete_save_file()
+
 	load_bird_data()
 	load_bird_progress()
+	# 默认解锁
+	unlock_bird("Sunny")
+	unlock_bird("Ruby")
+	unlock_bird("Sprout")
+	unlock_bird("Chirpy")
 
 # 加载所有小鸟静态数据
 func load_bird_data():
@@ -61,13 +69,21 @@ func add_bird_count(bird_name: String, amount: int = 1) -> void:
 		save_bird_progress()
 
 # 获取所有已解锁的小鸟
-func get_unlocked_birds() -> Array:
+func get_unlocked_bird_progress_datas() -> Array[BirdProgress]:
 	var unlocked = []
 	for bird in bird_data_list:
 		var progress = get_bird_progress(bird.name)
 		if progress and progress.is_unlocked:
 			unlocked.append(bird)
 	return unlocked
+
+func get_unlocked_bird_datas() -> Array[BirdData]:
+	var unlocked_datas: Array[BirdData] = []
+	for bird in bird_data_list:
+		var progress = get_bird_progress(bird.name)
+		if progress and progress.is_unlocked:
+			unlocked_datas.append(bird)
+	return unlocked_datas
 
 # 获取所有小鸟（包含进度信息）
 func get_all_birds_with_progress() -> Array:
@@ -113,3 +129,20 @@ func load_bird_progress():
 				progress.is_unlocked = progress_data.get("is_unlocked", false)
 				progress.count = progress_data.get("count", 0)
 				bird_progress_dict[bird_name] = progress
+
+# 删除存档（重置所有进度）
+func delete_save_file():
+	# 删除存档文件
+	if FileAccess.file_exists(PROGRESS_SAVE_PATH):
+		DirAccess.remove_absolute(PROGRESS_SAVE_PATH)
+	
+	# 重置内存中的进度数据
+	bird_progress_dict.clear()
+	
+	# 重新初始化所有小鸟的进度
+	for bird in bird_data_list:
+		var progress = preload("res://models/bird_progress.gd").new()
+		progress.bird_id = bird.name
+		bird_progress_dict[bird.name] = progress
+	
+	print("存档已删除，进度已重置")

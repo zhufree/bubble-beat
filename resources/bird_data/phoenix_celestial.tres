@@ -1,11 +1,10 @@
 [gd_resource type="Resource" script_class="BirdData" load_steps=2 format=3 uid="uid://b2tl0a6yo8uwy"]
 
-[ext_resource type="Script" path="res://models/bird_data.gd" id="1_bird_data"]
+[ext_resource type="Script" uid="uid://c3cuvsbvfuuy0" path="res://models/bird_data.gd" id="1_bird_data"]
 
 [resource]
 script = ExtResource("1_bird_data")
 name = "Phoenix"
 colors = Array[int]([1, 2, 3, 4])
 bird_type = 3
-needFusion = true
 metadata/_custom_type_script = "uid://c3cuvsbvfuuy0"

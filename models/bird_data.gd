@@ -9,6 +9,7 @@ class_name BirdData
 @export var bird_type: Enums.BirdType = Enums.BirdType.CHICK
 @export var needFusion: bool = false # 是否需要合成解锁
 @export var unlockNeedBirds: Array[String] = [] # 解锁所需的小鸟（默认空，表示无要求）
+@export var unlockCondition: String = "World is Mine" # 解锁所需的小鸟（默认空，表示无要求）
 
 
 # 获取图标纹理资源

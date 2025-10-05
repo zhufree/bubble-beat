@@ -5,7 +5,6 @@ class_name AtlasLine
 @onready var title: Label = $Title
 @onready var bird_container: HBoxContainer = $HBoxContainer
 
-
 ## 设置该行显示的鸟类类型
 @export_group("Bird Settings")
 @export var bird_type: Enums.BirdType = Enums.BirdType.CHICK
@@ -15,10 +14,13 @@ var bird_items: Array[AtlasBirdItem] = []
 var bird_data_list: Array[BirdData] = []
 var current_selected_index: int = -1
 var is_selected: bool = false
+var atlas_panel_script = null
 
 
 func _input(event):
 	if not is_selected:
+		return ;
+	if atlas_panel_script.is_in_second_panel:
 		return ;
 	if event.is_action_pressed("left"):
 		navigate_left()
@@ -27,8 +29,11 @@ func _input(event):
 	elif event.is_action_pressed("ok"):
 		if bird_items.size() > current_selected_index:
 			_on_bird_selected(bird_items[current_selected_index].bird_data)
+		# 消费事件，阻止继续传播
+		get_viewport().set_input_as_handled()
 			
-func init() -> void:
+func init(atlas_panel: AtlasPanel) -> void:
+	atlas_panel_script = atlas_panel
 	current_selected_index = -1
 	load_bird_data()
 	display_birds()
@@ -66,18 +71,17 @@ func load_bird_data():
 		
 		while file_name != "":
 			file_count += 1
-			print("发现文件: %s" % file_name)
+			# print("发现文件: %s" % file_name)
 			
 			# 根据 bird_type 过滤小鸟
 			if file_name.ends_with(".tres"):
-				print("  -> 是.tres文件")
-				print("  -> 检查是否包含 '%s': %s" % [string_name, file_name.contains(string_name)])
-				
+				# print("  -> 是.tres文件")
+				# print("  -> 检查是否包含 '%s': %s" % [string_name, file_name.contains(string_name)])
 				if file_name.contains(string_name):
 					matched_files += 1
 					# 使用path_join确保路径正确拼接
 					var full_path = bird_data_path.path_join(file_name)
-					print("  -> 匹配！完整路径: %s" % full_path)
+					# print("  -> 匹配！完整路径: %s" % full_path)
 					
 					# 加载为BirdData资源
 					var bird_resource = load(full_path) as BirdData
@@ -105,18 +109,17 @@ func load_bird_data():
 	bird_data_list.sort_custom(func(a, b): return a.name < b.name)
 
 func display_birds():
-	# 清除现有的歌曲项
+	# 清除现有的小鸟项
 	for child in bird_container.get_children():
 		child.queue_free()
 	
 	bird_items.clear()
 
-	# 创建歌曲项
+	# 创建小鸟项
 	for bird in bird_data_list:
 		var bird_item = bird_button_scene.instantiate()
 		bird_container.add_child(bird_item)
-		bird_item.setup_bird_data(bird)
-		bird_item.bird_selected.connect(_on_bird_selected)
+		bird_item.setup_bird_data(self as AtlasLine, bird)
 		bird_items.append(bird_item)
 
 func select_bird_item(index: int):
@@ -140,7 +143,14 @@ func navigate_right():
 
 func _on_bird_selected(bird: BirdData):
 	print("Selected bird: %s" % bird.name)
-	# 可以在这里显示鸟的详细信息或触发其他逻辑
+	atlas_panel_script._on_bird_selected(self, bird)
+
+func update_and_clear_cur_selection():
+	if current_selected_index < 0 or current_selected_index >= bird_items.size():
+		return
+	var bird_item = bird_items[current_selected_index]
+	bird_item.update_display()
+	clear_selection()
 
 func clear_selection():
 	# 清除所有选中状态

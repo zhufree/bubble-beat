@@ -26,7 +26,7 @@ func _process(_delta):
 		if current_button_index == 0:
 			get_tree().change_scene_to_file("res://scenes/song_list.tscn")
 		elif current_button_index == 1:
-			get_tree().change_scene_to_file("res://scenes/atlas_panel.tscn")
+			get_tree().change_scene_to_file("res://views/atlas/atlas_panel.tscn")
 		else:
 			get_tree().quit()
 

@@ -32,7 +32,7 @@ func set_selected(selected: bool):
 
 func update_visual_state():
 	if is_selected:
-		modulate = Color(1.2, 1.2, 1.0)  # 选中时的高亮色
+		modulate = Color(1.2, 1.2, 1.0) # 选中时的高亮色
 	else:
 		modulate = Color.WHITE
 

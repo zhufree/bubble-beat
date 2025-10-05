@@ -1,0 +1,115 @@
+[gd_scene load_steps=5 format=3 uid="uid://doo31l7wwwfuc"]
+
+[ext_resource type="Script" uid="uid://blopgojun6r0k" path="res://views/bird_item_list.gd" id="1_ma62k"]
+[ext_resource type="FontFile" uid="uid://cqcchygy6mgi7" path="res://assets/fonts/DynaPuff/DynaPuff-SemiBold.ttf" id="1_qesy3"]
+[ext_resource type="PackedScene" uid="uid://d1qqej71vdgmr" path="res://views/choose_bird_item.tscn" id="2_mlavv"]
+[ext_resource type="FontFile" uid="uid://dqreqag786lld" path="res://assets/fonts/DynaPuff/DynaPuff-Regular.ttf" id="3_mlavv"]
+
+[node name="BirdItemList" type="Control" node_paths=PackedStringArray("ready_bird_item_list")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ma62k")
+ready_bird_item_list = [NodePath("BirdsContainer/ChooseBirdItem"), NodePath("BirdsContainer/ChooseBirdItem2"), NodePath("BirdsContainer/ChooseBirdItem3"), NodePath("BirdsContainer/ChooseBirdItem4")]
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.68105334, 0.6008689, 0.82184666, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_qesy3")
+theme_override_font_sizes/font_size = 68
+text = "Choose Your Beat Birds!"
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+clip_contents = false
+custom_minimum_size = Vector2(800, 300)
+layout_mode = 0
+offset_left = 199.0
+offset_top = 102.0
+offset_right = 999.0
+offset_bottom = 410.0
+size_flags_vertical = 3
+
+[node name="ChooseContainer" type="GridContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 150
+theme_override_constants/v_separation = 150
+columns = 5
+
+[node name="BirdsContainer" type="GridContainer" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 302.00003
+offset_top = 395.0
+offset_right = 752.0
+offset_bottom = 395.0
+scale = Vector2(0.9, 0.9)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 150
+theme_override_constants/v_separation = 150
+columns = 5
+
+[node name="ChooseBirdItem" parent="BirdsContainer" instance=ExtResource("2_mlavv")]
+layout_mode = 2
+
+[node name="ChooseBirdItem2" parent="BirdsContainer" instance=ExtResource("2_mlavv")]
+layout_mode = 2
+
+[node name="ChooseBirdItem3" parent="BirdsContainer" instance=ExtResource("2_mlavv")]
+layout_mode = 2
+
+[node name="ChooseBirdItem4" parent="BirdsContainer" instance=ExtResource("2_mlavv")]
+layout_mode = 2
+
+[node name="beginLable" type="Label" parent="."]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 531.0
+offset_right = 1116.0
+offset_bottom = 613.0
+theme_override_fonts/font = ExtResource("1_qesy3")
+theme_override_font_sizes/font_size = 50
+text = "Press enter one more time to begin game!"
+horizontal_alignment = 1
+
+[node name="GuideIntro" type="Label" parent="."]
+layout_mode = 0
+offset_left = 42.0
+offset_top = 510.0
+offset_right = 1098.0
+offset_bottom = 627.0
+theme_override_colors/font_color = Color(0, 0.19578671, 0.100382514, 1)
+theme_override_fonts/font = ExtResource("3_mlavv")
+theme_override_font_sizes/font_size = 30
+text = "W/S/A/D: Navigate birds
+Press enter to choose Press again to cancel
+you have to choose four birds to be ready"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2

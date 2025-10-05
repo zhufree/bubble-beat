@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://dieqci03f46sk"]
+
+[ext_resource type="Texture2D" uid="uid://do0o0gb1u46od" path="res://assets/sprites/bubbles/green.png" id="1_mmfnu"]
+
+[node name="BirdColorIcon" type="TextureRect"]
+clip_contents = true
+custom_minimum_size = Vector2(50, 50)
+texture = ExtResource("1_mmfnu")
+expand_mode = 1

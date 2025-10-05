@@ -121,4 +121,4 @@ func navigate_right():
 func _on_song_selected(song: SongData):
 	print("选中歌曲: ", song.name, " BPM: ", song.BPM)
 	Global.selected_song = songs[current_selected_index]
-	get_tree().change_scene_to_file("res://scenes/main.tscn")
+	get_tree().change_scene_to_file("res://scenes/bird_item_list.tscn")
