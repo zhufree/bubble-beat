@@ -15,7 +15,7 @@ func _ready():
 	guide_intro.text = _get_guide_intro(0)
 	for line in atlas_line_list:
 		line.init(self)
-	
+	EventBus.connect("update_guide_text", update_guide_text)
 	# 初始化，选择第一行
 	if atlas_line_list.size() > 0:
 		select_line(0)
@@ -89,6 +89,9 @@ func exit_to_index():
 	else:
 		# 否则退出到主界面
 		get_tree().change_scene_to_file("res://scenes/index.tscn")
+
+func update_guide_text(type: int):
+	guide_intro.text = _get_guide_intro(type)
 
 func _get_guide_intro(type: int) -> String:
 	var text = "W/S : Navigate categories          A/D: Navigate birds        Esc: back to menu"

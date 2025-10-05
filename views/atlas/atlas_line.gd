@@ -27,7 +27,8 @@ func _input(event):
 	elif event.is_action_pressed("right"):
 		navigate_right()
 	elif event.is_action_pressed("ok"):
-		if bird_items.size() > current_selected_index:
+		if current_selected_index >= 0 and current_selected_index < bird_items.size():
+			# 触发选中事件
 			_on_bird_selected(bird_items[current_selected_index].bird_data)
 		# 消费事件，阻止继续传播
 		get_viewport().set_input_as_handled()
@@ -148,8 +149,8 @@ func _on_bird_selected(bird: BirdData):
 func update_and_clear_cur_selection():
 	if current_selected_index < 0 or current_selected_index >= bird_items.size():
 		return
-	var bird_item = bird_items[current_selected_index]
-	bird_item.update_display()
+	for i in range(bird_items.size()):
+		bird_items[i].update_display()
 	clear_selection()
 
 func clear_selection():

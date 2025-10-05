@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://doo31l7wwwfuc"]
+[gd_scene load_steps=6 format=3 uid="uid://doo31l7wwwfuc"]
 
 [ext_resource type="Script" uid="uid://blopgojun6r0k" path="res://views/bird_item_list.gd" id="1_ma62k"]
 [ext_resource type="FontFile" uid="uid://cqcchygy6mgi7" path="res://assets/fonts/DynaPuff/DynaPuff-SemiBold.ttf" id="1_qesy3"]
 [ext_resource type="PackedScene" uid="uid://d1qqej71vdgmr" path="res://views/choose_bird_item.tscn" id="2_mlavv"]
 [ext_resource type="FontFile" uid="uid://dqreqag786lld" path="res://assets/fonts/DynaPuff/DynaPuff-Regular.ttf" id="3_mlavv"]
+[ext_resource type="FontFile" uid="uid://t365v4x5q70g" path="res://assets/fonts/DynaPuff/DynaPuff-Medium.ttf" id="4_3gddc"]
 
 [node name="BirdItemList" type="Control" node_paths=PackedStringArray("ready_bird_item_list")]
 layout_mode = 3
@@ -62,7 +63,6 @@ theme_override_constants/v_separation = 150
 columns = 5
 
 [node name="BirdsContainer" type="GridContainer" parent="."]
-visible = false
 layout_mode = 0
 offset_left = 302.00003
 offset_top = 395.0
@@ -78,14 +78,62 @@ columns = 5
 [node name="ChooseBirdItem" parent="BirdsContainer" instance=ExtResource("2_mlavv")]
 layout_mode = 2
 
+[node name="Label" type="Label" parent="BirdsContainer/ChooseBirdItem"]
+layout_mode = 0
+offset_left = 36.666626
+offset_top = -42.222225
+offset_right = 86.666626
+offset_bottom = 7.777775
+theme_override_fonts/font = ExtResource("4_3gddc")
+theme_override_font_sizes/font_size = 32
+text = "(E)"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="ChooseBirdItem2" parent="BirdsContainer" instance=ExtResource("2_mlavv")]
 layout_mode = 2
+
+[node name="Label" type="Label" parent="BirdsContainer/ChooseBirdItem2"]
+layout_mode = 0
+offset_left = 36.666626
+offset_top = -42.222225
+offset_right = 86.666626
+offset_bottom = 7.777775
+theme_override_fonts/font = ExtResource("4_3gddc")
+theme_override_font_sizes/font_size = 32
+text = "(D)"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="ChooseBirdItem3" parent="BirdsContainer" instance=ExtResource("2_mlavv")]
 layout_mode = 2
 
+[node name="Label" type="Label" parent="BirdsContainer/ChooseBirdItem3"]
+layout_mode = 0
+offset_left = 36.666626
+offset_top = -42.222225
+offset_right = 86.666626
+offset_bottom = 7.777775
+theme_override_fonts/font = ExtResource("4_3gddc")
+theme_override_font_sizes/font_size = 32
+text = "(O)"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="ChooseBirdItem4" parent="BirdsContainer" instance=ExtResource("2_mlavv")]
 layout_mode = 2
+
+[node name="Label" type="Label" parent="BirdsContainer/ChooseBirdItem4"]
+layout_mode = 0
+offset_left = 36.666626
+offset_top = -42.222225
+offset_right = 86.666626
+offset_bottom = 7.777775
+theme_override_fonts/font = ExtResource("4_3gddc")
+theme_override_font_sizes/font_size = 32
+text = "(K)"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="beginLable" type="Label" parent="."]
 layout_mode = 0
@@ -94,8 +142,10 @@ offset_top = 531.0
 offset_right = 1116.0
 offset_bottom = 613.0
 theme_override_fonts/font = ExtResource("1_qesy3")
-theme_override_font_sizes/font_size = 50
-text = "Press space to begin game!"
+theme_override_font_sizes/font_size = 30
+text = "E/D/I/J mains you can press the keycode 
+to manipulate the bird which under the keycode to beat bubbles
+Press space to begin game! Have a good time :)"
 horizontal_alignment = 1
 
 [node name="GuideIntro" type="Label" parent="."]

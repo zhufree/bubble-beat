@@ -40,6 +40,7 @@ func _input(event):
 		if is_ready_to_fusion and bird_data:
 			BirdManager.unlock_bird(bird_data.name)
 			_initIntroPanel()
+			EventBus.emit_signal("update_guide_text", 2)
 			# 消费事件，阻止继续传播
 			get_viewport().set_input_as_handled()
 
