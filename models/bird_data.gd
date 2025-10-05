@@ -10,13 +10,18 @@ class_name BirdData
 @export var needFusion: bool = false # 是否需要合成解锁
 @export var unlockNeedBirds: Array[String] = [] # 解锁所需的小鸟（默认空，表示无要求）
 @export var unlockCondition: String = "World is Mine" # 解锁所需的小鸟（默认空，表示无要求）
-
+var default_icon_path = "res://assets/sprites/chick.png"
 
 # 获取图标纹理资源
 func get_icon_texture() -> Texture2D:
 	if icon_path.is_empty():
-		return null
-	return load(icon_path) as Texture2D
+		return load(default_icon_path)
+	var texture = load(icon_path)
+	if texture is Texture2D:
+		return texture
+	else:
+		return load(default_icon_path)
+
 
 # 检查是否包含指定颜色
 func has_color(color: Enums.BubbleColor) -> bool:

@@ -3,14 +3,14 @@
 [ext_resource type="Texture2D" uid="uid://f5dt6ydwxsxe" path="res://assets/sprites/chick.png" id="1_jyhfs"]
 [ext_resource type="Script" uid="uid://c0b2k5wdopjoi" path="res://scenes/main.gd" id="1_tefeu"]
 [ext_resource type="Texture2D" uid="uid://cf1uwiogbuhdj" path="res://assets/sprites/duck.png" id="2_tbgi4"]
-[ext_resource type="PackedScene" uid="uid://bgepodd3p86s5" path="res://views/character.tscn" id="2_tefeu"]
-[ext_resource type="FontFile" uid="uid://caema0p1pff7t" path="res://assets/fonts/DynaPuff/DynaPuff_Condensed-Regular.ttf" id="2_tipki"]
+[ext_resource type="PackedScene" uid="uid://bgepodd3p86s5" path="res://views/bird_enitity.tscn" id="2_tefeu"]
+[ext_resource type="FontFile" uid="uid://dst0wyrye1b5c" path="res://assets/fonts/DynaPuff/DynaPuff_Condensed-Regular.ttf" id="2_tipki"]
 [ext_resource type="PackedScene" uid="uid://ndfsgckdjnlx" path="res://views/tracks.tscn" id="3_tbgi4"]
 [ext_resource type="Texture2D" uid="uid://dbxhfk4f1nro" path="res://assets/sprites/hippo.png" id="3_tefeu"]
 [ext_resource type="Texture2D" uid="uid://cu8o6gx8chc6y" path="res://assets/sprites/parrot.png" id="4_o6xl0"]
 [ext_resource type="PackedScene" uid="uid://bqscnchqapmui" path="res://views/game_result_modal.tscn" id="9_modal"]
 
-[node name="Main" type="Control"]
+[node name="Main" type="Control" node_paths=PackedStringArray("bird_entities")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -18,6 +18,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_tefeu")
+bird_entities = [NodePath("MarginContainer/HBoxContainer/LeftCharContainer/Chick"), NodePath("MarginContainer/HBoxContainer/LeftCharContainer/Duck"), NodePath("MarginContainer/HBoxContainer/RightCharContainer/Parrot"), NodePath("MarginContainer/HBoxContainer/RightCharContainer/Hippo")]
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
@@ -74,12 +75,14 @@ layout_mode = 2
 size_flags_horizontal = 4
 character_avatar = ExtResource("1_jyhfs")
 character_name = "Chick"
+key_code = 1
 
 [node name="Duck" parent="MarginContainer/HBoxContainer/LeftCharContainer" instance=ExtResource("2_tefeu")]
 layout_mode = 2
 size_flags_horizontal = 4
 character_avatar = ExtResource("2_tbgi4")
 character_name = "Duck"
+key_code = 2
 
 [node name="Tracks" parent="MarginContainer/HBoxContainer" instance=ExtResource("3_tbgi4")]
 layout_mode = 2
@@ -97,12 +100,14 @@ layout_mode = 2
 size_flags_horizontal = 4
 character_avatar = ExtResource("4_o6xl0")
 character_name = "Parrot"
+key_code = 3
 
 [node name="Hippo" parent="MarginContainer/HBoxContainer/RightCharContainer" instance=ExtResource("2_tefeu")]
 layout_mode = 2
 size_flags_horizontal = 4
 character_avatar = ExtResource("3_tefeu")
 character_name = "Hippo"
+key_code = 4
 
 [node name="UI" type="CanvasLayer" parent="."]
 

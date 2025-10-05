@@ -15,7 +15,7 @@ var song = preload("res://resources/song_data/waiting_for_love.tres")
 var beat_interval: float = 60.0 / song.BPM # 0.5秒/拍
 var time_since_last_spawn: float = 0.0
 var bubble_scene = preload("res://views/bubble.tscn")
-var colors = [Enums.BubbleColor.RED, Enums.BubbleColor.BLUE, Enums.BubbleColor.GREEN, Enums.BubbleColor.YELLOW]
+var colors = [Enums.BubbleColor.RED, Enums.BubbleColor.BLUE, Enums.BubbleColor.GREEN, Enums.BubbleColor.YELLOW, Enums.BubbleColor.PURPLE, Enums.BubbleColor.BLACK, Enums.BubbleColor.WHITE]
 var bubble_nodes = []
 
 # 判定线位置和时间计算
@@ -29,21 +29,22 @@ var beats_to_first_line: float = 4.0 # 从生成到第一根判定线4拍
 # 按键判定系统
 var bubbles_in_judgment_zone_1: Array = [] # 在第一条判定线区域内的气泡
 var bubbles_in_judgment_zone_2: Array = [] # 在第二条判定线区域内的气泡
-var input_actions = ["red", "yellow", "blue", "green"] # 对应的输入动作
-var color_to_action = {
+var input_actions = ["E", "D", "O", "K"] # 对应的输入动作
+var color_to_action: Dictionary = {
 	Enums.BubbleColor.RED: "red",
-	Enums.BubbleColor.YELLOW: "yellow", 
+	Enums.BubbleColor.YELLOW: "yellow",
 	Enums.BubbleColor.BLUE: "blue",
 	Enums.BubbleColor.GREEN: "green"
 }
+
 # 颜色对应的判定线规则
-var color_judgment_rules = {
-	Enums.BubbleColor.GREEN: 2,  # 绿色只能在第2条判定线消除
-	Enums.BubbleColor.BLUE: 2,   # 蓝色只能在第2条判定线消除
+var color_judgment_rules: Dictionary = {
+	Enums.BubbleColor.GREEN: 2, # 绿色只能在第2条判定线消除
+	Enums.BubbleColor.BLUE: 2, # 蓝色只能在第2条判定线消除
 	Enums.BubbleColor.YELLOW: 1, # 黄色只能在第1条判定线消除
-	Enums.BubbleColor.RED: 1     # 红色只能在第1条判定线消除
+	Enums.BubbleColor.RED: 1 # 红色只能在第1条判定线消除
 }
-var color_character = {
+var color_character: Dictionary = {
 	Enums.BubbleColor.GREEN: "Duck",
 	Enums.BubbleColor.BLUE: "Hippo",
 	Enums.BubbleColor.YELLOW: "Chick",
@@ -56,6 +57,30 @@ func _ready():
 	await get_tree().process_frame
 	calculate_positions_and_timing()
 	setup_judgment_line_signals()
+	EventBus.connect("update_judgement_rules", _update_judgement_rules)
+	_update_judgement_rules()
+
+func _update_judgement_rules():
+	# 从Global获取最新的判定规则
+	color_to_action.clear()
+	color_judgment_rules.clear()
+	color_character.clear()
+	colors = song.colors
+	if Global.selected_birds.size() != 4:
+		print("Error: selected_birds size is not 4")
+		return
+	update_judgement_rules_by_single_data(Global.selected_birds[0], "E", 1)
+	update_judgement_rules_by_single_data(Global.selected_birds[1], "D", 2)
+	update_judgement_rules_by_single_data(Global.selected_birds[2], "O", 1)
+	update_judgement_rules_by_single_data(Global.selected_birds[3], "K", 2)
+
+
+func update_judgement_rules_by_single_data(bird_data: BirdData, key_action: String, line_rule: int):
+	# 更新单个鸟类的判定规则
+	for color in bird_data.colors:
+		color_to_action[color] = key_action
+		color_judgment_rules[color] = line_rule
+		color_character[color] = bird_data.name
 
 func _physics_process(delta: float) -> void:
 	time_since_last_spawn += delta
@@ -81,8 +106,8 @@ func calculate_positions_and_timing():
 	
 	# 计算JudgmentLineContainer内的三等分位置
 	var section_height = container_height / 3.0
-	var target_line1_y = section_height          # 1/3 处
-	var target_line2_y = section_height * 2      # 2/3 处
+	var target_line1_y = section_height # 1/3 处
+	var target_line2_y = section_height * 2 # 2/3 处
 	
 	print("=== 计算判定线位置（基于JudgmentLineContainer） ===")
 	print("Container高度: ", container_height)
@@ -299,8 +324,8 @@ func handle_key_press(action: String):
 				print("  - 气泡颜色: ", bubble.get_bubble_color())
 
 
-var is_line_1_animating = false  # 第1条判定线是否在动画中
-var is_line_2_animating = false  # 第2条判定线是否在动画中
+var is_line_1_animating = false # 第1条判定线是否在动画中
+var is_line_2_animating = false # 第2条判定线是否在动画中
 
 func animate_judgment_line(target_color):
 	var required_line = color_judgment_rules[target_color]
@@ -331,6 +356,12 @@ func animate_judgment_line(target_color):
 			target_line_color = Color(0, 0, 1) # 蓝色
 		Enums.BubbleColor.GREEN:
 			target_line_color = Color(0, 1, 0) # 绿色
+		Enums.BubbleColor.PURPLE:
+			target_line_color = Color(0.5, 0, 0.5)
+		Enums.BubbleColor.BLACK:
+			target_line_color = Color(0, 0, 0)
+		Enums.BubbleColor.WHITE:
+			target_line_color = Color(1, 1, 1)
 	
 	# 选择要激活的判定线
 	if required_line == 1:
@@ -354,7 +385,7 @@ func animate_judgment_line(target_color):
 	tween.parallel().tween_property(line_to_animate, "color", original_color, 0.1)
 
 	# 动画结束时重置对应判定线的动画状态
-	tween.finished.connect(func(): 
+	tween.finished.connect(func():
 		if required_line == 1:
 			is_line_1_animating = false
 		else:
