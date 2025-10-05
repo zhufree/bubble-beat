@@ -27,9 +27,14 @@ func _ready():
 
 func _input(event):
 	# 如果只有更少鸟类，禁用移动和选择操作
-	if choose_bird_item_list.size() < 4:
+	if choose_bird_item_list.size() <= 4:
 		if event.is_action_pressed("ui_cancel"):
 			_on_cancel_pressed()
+		elif event.is_action_pressed("enter_game"):
+			var selected_count = selected_indexs.size()
+			print("当前已选择鸟类数量: %d" % selected_count)
+			if selected_count == 4:
+				_on_game_begin()
 		return
 	
 	# 正常的导航和选择逻辑
@@ -42,18 +47,18 @@ func _input(event):
 	elif event.is_action_pressed("right"):
 		navigate_right()
 	elif event.is_action_pressed("ok"):
+		toggle_bird_selection()
+		# 安全地处理输入事件
+		var viewport = get_viewport()
+		if viewport:
+			viewport.set_input_as_handled()
+	elif event.is_action_pressed("ui_cancel"):
+		_on_cancel_pressed()
+	elif event.is_action_pressed("enter_game"):
 		var selected_count = selected_indexs.size()
 		print("当前已选择鸟类数量: %d" % selected_count)
 		if selected_count == 4:
 			_on_game_begin()
-		else:
-			toggle_bird_selection()
-			# 安全地处理输入事件
-			var viewport = get_viewport()
-			if viewport:
-				viewport.set_input_as_handled()
-	elif event.is_action_pressed("ui_cancel"):
-		_on_cancel_pressed()
 
 func load_bird_data():
 	# 使用 BirdManager 加载所有鸟类数据

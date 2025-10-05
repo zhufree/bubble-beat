@@ -95,7 +95,7 @@ offset_right = 1116.0
 offset_bottom = 613.0
 theme_override_fonts/font = ExtResource("1_qesy3")
 theme_override_font_sizes/font_size = 50
-text = "Press enter one more time to begin game!"
+text = "Press space to begin game!"
 horizontal_alignment = 1
 
 [node name="GuideIntro" type="Label" parent="."]
