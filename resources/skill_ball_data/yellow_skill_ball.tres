@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="SkillBall" load_steps=3 format=3 uid="uid://2tswkxsrei5r"]
+
+[ext_resource type="Script" uid="uid://cllncpdjb3jj3" path="res://models/skill_ball_data.gd" id="1_5iqqf"]
+[ext_resource type="Texture2D" uid="uid://c3c3jx1cp2ibg" path="res://assets/sprites/bubbles/yellow.png" id="1_eo7mp"]
+
+[resource]
+script = ExtResource("1_5iqqf")
+skill_color = 3
+icon = ExtResource("1_eo7mp")
+metadata/_custom_type_script = "uid://cllncpdjb3jj3"

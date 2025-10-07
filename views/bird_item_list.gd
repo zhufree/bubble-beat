@@ -9,7 +9,7 @@ extends Control
 
 var bird_item_scene = preload("res://views/choose_bird_item.tscn")
 var choose_bird_item_list: Array[ChooseBirdItem] = []
-var bird_data_list: Array[BirdData] = []
+var bird_slot_list: Array[BirdSlot] = []
 var selected_indexs: Array[int] = []
 var current_selected_index: int = 0
 var grid_columns: int = 5 # 根据场景文件中的配置
@@ -62,8 +62,8 @@ func _input(event):
 
 func load_bird_data():
 	# 使用 BirdManager 加载所有鸟类数据
-	var all_birds = BirdManager.get_unlocked_bird_datas()
-	bird_data_list = all_birds
+	var all_birds = BirdManager.game_save.birds
+	bird_slot_list = all_birds
 
 func display_birds():
 	# 清除现有的鸟类项
@@ -73,14 +73,14 @@ func display_birds():
 	choose_bird_item_list.clear()
 	
 	# 在待选容器中创建鸟类项
-	for bird in bird_data_list:
+	for bird in bird_slot_list:
 		var bird_item = create_bird_item(bird)
 		choose_container.add_child(bird_item)
 		choose_bird_item_list.append(bird_item)
 
-func create_bird_item(bird_data: BirdData) -> ChooseBirdItem:
+func create_bird_item(bird_slot: BirdSlot) -> ChooseBirdItem:
 	var bird_item = bird_item_scene.instantiate() as ChooseBirdItem
-	bird_item.setup_bird_data(bird_data)
+	bird_item.setup_bird_slot(bird_slot)
 	return bird_item
 
 func _init_birds_container():
@@ -171,7 +171,7 @@ func toggle_bird_selection():
 		# 取消选择
 		selected_indexs.erase(bird_index)
 		bird_item.set_selected(false)
-		print("取消选择鸟类: %s" % bird_data_list[bird_index].name)
+		print("取消选择鸟类: %s" % bird_slot_list[bird_index].get_bird_name())
 	else:
 		# 检查是否还有空位（最多4个）
 		if selected_indexs.size() >= 4:
@@ -181,7 +181,7 @@ func toggle_bird_selection():
 		# 选择鸟类
 		selected_indexs.append(bird_index)
 		bird_item.set_selected(true)
-		print("选择鸟类: %s" % bird_data_list[bird_index].name)
+		print("选择鸟类: %s" % bird_slot_list[bird_index].get_bird_name())
 	
 	# 重新组织右侧容器的显示
 	_update_selected_birds_display()
@@ -199,7 +199,7 @@ func _update_selected_birds_display():
 	for i in range(selected_indexs.size()):
 		if i < ready_bird_item_list.size():
 			var bird_index = selected_indexs[i]
-			ready_bird_item_list[i].setup_bird_data(bird_data_list[bird_index])
+			ready_bird_item_list[i].setup_bird_data(bird_slot_list[bird_index])
 			ready_bird_item_list[i].visible = true
 
 func _update_display_containers():
@@ -223,9 +223,9 @@ func _on_cancel_pressed():
 	# 返回主菜单或上一个场景
 	get_tree().change_scene_to_file("res://scenes/song_list.tscn") # 调整路径
 
-func get_selected_birds() -> Array[BirdData]:
-	var selected_birds: Array[BirdData] = []
+func get_selected_birds() -> Array[BirdSlot]:
+	var selected_birds: Array[BirdSlot] = []
 	for index in selected_indexs:
-		if index < bird_data_list.size():
-			selected_birds.append(bird_data_list[index])
+		if index < bird_slot_list.size():
+			selected_birds.append(bird_slot_list[index])
 	return selected_birds

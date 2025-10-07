@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://bwqyb06iy7ff0"]
+
+[node name="SkillBall" type="Sprite2D"]

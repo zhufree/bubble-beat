@@ -9,7 +9,7 @@ class_name AtlasBirdItem
 
 var bird_data: BirdData
 var is_selected: bool = false
-var bird_progress: BirdProgress
+var is_unlocked: bool = false
 var atlas_line_script: AtlasLine = null
 
 func _ready():
@@ -19,7 +19,7 @@ func _ready():
 func setup_bird_data(atlas_line: AtlasLine, data: BirdData):
 	bird_data = data
 	atlas_line_script = atlas_line
-	bird_progress = BirdManager.get_bird_progress(data.name)
+	is_unlocked = BirdManager.get_bird_atlas(data.name)
 	set_selected(false)
 	update_display()
 	
@@ -28,7 +28,7 @@ func update_display():
 	if bird_icon and bird_data.get_icon_texture():
 		bird_icon.texture = bird_data.get_icon_texture()
 	if state_label:
-		if (bird_progress.is_unlocked):
+		if is_unlocked:
 			state_label.text = bird_data.name
 		else:
 			state_label.text = "Unlock"

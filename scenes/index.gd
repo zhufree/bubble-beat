@@ -1,6 +1,7 @@
 extends Control
 
 @onready var play_button: HBoxContainer = $ColorRect/MarginContainer/VBoxContainer/PlayButton
+@onready var bird_house_button: HBoxContainer = $ColorRect/MarginContainer/VBoxContainer/BirdHouseButton
 @onready var atlas_button: HBoxContainer = $ColorRect/MarginContainer/VBoxContainer/AtlasButton
 @onready var quit_button: HBoxContainer = $ColorRect/MarginContainer/VBoxContainer/QuitButton
 
@@ -8,7 +9,7 @@ var current_button_index: int = 0
 var buttons = []
 
 func _ready():
-	buttons = [play_button, atlas_button, quit_button]
+	buttons = [play_button,bird_house_button, atlas_button, quit_button]
 	update_button_selection()
 
 func _process(_delta):
@@ -26,6 +27,8 @@ func _process(_delta):
 		if current_button_index == 0:
 			get_tree().change_scene_to_file("res://scenes/song_list.tscn")
 		elif current_button_index == 1:
+			print("还没有鸟房功能。")
+		elif current_button_index == 2:
 			get_tree().change_scene_to_file("res://views/atlas/atlas_panel.tscn")
 		else:
 			get_tree().quit()

@@ -19,9 +19,9 @@ var atlas_panel_script = null
 
 func _input(event):
 	if not is_selected:
-		return ;
+		return
 	if atlas_panel_script.is_in_second_panel:
-		return ;
+		return
 	if event.is_action_pressed("left"):
 		navigate_left()
 	elif event.is_action_pressed("right"):
@@ -51,63 +51,12 @@ func select_line(selected: bool):
 
 func load_bird_data():
 	# 加载所有小鸟数据
-	var bird_data_path = "res://resources/bird_data/"
-	var dir = DirAccess.open(bird_data_path)
-	
+	for bird_data in BirdManager.bird_data_list:
+		if bird_data.bird_type == bird_type:
+			bird_data_list.append(bird_data)
 	# 根据 bird_type 设置标题
-	var string_name = Enums.BirdType.keys()[bird_type].to_lower()
-	print("=== 开始加载鸟类数据 ===")
-	print("目标鸟类类型: %s" % string_name)
-	print("数据路径: %s" % bird_data_path)
-	
-	if not dir:
-		print("错误：无法打开目录 %s" % bird_data_path)
-		return
-	
-	if dir:
-		dir.list_dir_begin()
-		var file_name = dir.get_next()
-		var file_count = 0
-		var matched_files = 0
-		
-		while file_name != "":
-			file_count += 1
-			# print("发现文件: %s" % file_name)
-			
-			# 根据 bird_type 过滤小鸟
-			if file_name.ends_with(".tres"):
-				# print("  -> 是.tres文件")
-				# print("  -> 检查是否包含 '%s': %s" % [string_name, file_name.contains(string_name)])
-				if file_name.contains(string_name):
-					matched_files += 1
-					# 使用path_join确保路径正确拼接
-					var full_path = bird_data_path.path_join(file_name)
-					# print("  -> 匹配！完整路径: %s" % full_path)
-					
-					# 加载为BirdData资源
-					var bird_resource = load(full_path) as BirdData
-					
-					if bird_resource:
-						bird_data_list.append(bird_resource)
-						print("  -> 成功加载: %s" % bird_resource.name)
-					else:
-						print("  -> 加载失败！无法转换为BirdData类型")
-				else:
-					print("  -> 不匹配，跳过")
-			else:
-				print("  -> 不是.tres文件，跳过")
-			
-			file_name = dir.get_next()
-		
-		dir.list_dir_end()
-		print("=== 扫描完成 ===")
-		print("总文件数: %d" % file_count)
-		print("匹配文件数: %d" % matched_files)
-		print("成功加载: %d" % bird_data_list.size())
-	
-	title.text = string_name.capitalize()
-	# 按鸟名排序
-	bird_data_list.sort_custom(func(a, b): return a.name < b.name)
+	title.text = Enums.BirdType.keys()[bird_type].to_lower()
+
 
 func display_birds():
 	# 清除现有的小鸟项

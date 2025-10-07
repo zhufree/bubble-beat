@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="BirdData" load_steps=4 format=3 uid="uid://chirpy001"]
+
+[ext_resource type="Script" uid="uid://c3cuvsbvfuuy0" path="res://models/bird_data.gd" id="1_bjgww"]
+[ext_resource type="Texture2D" uid="uid://dbxhfk4f1nro" path="res://assets/sprites/birds/blue.png" id="1_fhqox"]
+
+[sub_resource type="Gradient" id="Gradient_fhqox"]
+colors = PackedColorArray(0, 0, 1, 1, 0.5, 0.6583334, 1, 1)
+
+[resource]
+script = ExtResource("1_bjgww")
+name = "蓝鹦鹉"
+bubble_color = 1
+skill_color = Array[int]([0])
+gradient = SubResource("Gradient_fhqox")
+icon = ExtResource("1_fhqox")
+description = "蓝色提供连击护盾。"

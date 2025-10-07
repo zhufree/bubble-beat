@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://dm8lfmbe8aqvf"]
+[gd_scene load_steps=3 format=3 uid="uid://dm8lfmbe8aqvf"]
 
 [ext_resource type="Script" uid="uid://u406w4e5bm40" path="res://views/atlas/atlas_bird_item.gd" id="2_2206x"]
-[ext_resource type="Texture2D" uid="uid://cf1uwiogbuhdj" path="res://assets/sprites/duck.png" id="2_fnoeh"]
-[ext_resource type="FontFile" uid="uid://t365v4x5q70g" path="res://assets/fonts/DynaPuff/DynaPuff-Medium.ttf" id="3_1aia7"]
+[ext_resource type="Texture2D" uid="uid://cf1uwiogbuhdj" path="res://assets/sprites/birds/green.png" id="2_fnoeh"]
 
 [node name="AtlasBirdItem" type="TextureButton"]
 offset_right = 128.0
@@ -38,7 +37,6 @@ offset_top = 95.0
 offset_right = 128.0
 offset_bottom = 121.0
 theme_override_colors/font_color = Color(0.3529412, 0.1882353, 0, 1)
-theme_override_fonts/font = ExtResource("3_1aia7")
 text = "NameOrLocked"
 horizontal_alignment = 1
 vertical_alignment = 1

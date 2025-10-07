@@ -15,13 +15,12 @@ const CHARACTER_KEY = {
 @onready var panel: Panel = $VboxContainer/Panel
 @onready var name_label: Label = $VboxContainer/NameLabel
 @onready var hit_label: Label = $VboxContainer/HitLabel
-@onready var h_color_container: HBoxContainer = $VboxContainer/Panel/HBoxContainer
+@onready var skill_ball_container: HBoxContainer = $VboxContainer/Panel/SkillBallContainer
 @export var key_code: Enums.PressKeyCode
 
 var _hit = 0
 var _original_style: StyleBox = null
 var bird_data: BirdData
-var color_icon_list: Array[TextureRect] = []
 
 
 func _ready():
@@ -32,26 +31,25 @@ func _ready():
 		_original_style = panel.get_theme_stylebox("panel")
 		panel.remove_theme_stylebox_override("panel")
 
-func setup_bird_data(data: BirdData):
-	bird_data = data
+func setup_bird_slot(slot: BirdSlot):
+	bird_data = slot.bird_data
 	avatar.texture = bird_data.get_icon_texture()
-	name_label.text = bird_data.name + " (" + Enums.press_key_code_to_string(key_code) + ")"
+	name_label.text = slot.get_bird_name()
+	# 显示技能球
 	_clear_bird_colors()
-	for color_id in bird_data.colors:
+	for skill_ball in slot.skill_balls:
 		var color_icon = TextureRect.new()
-		color_icon.texture = Enums.get_bubble_color_icon_sprite(color_id)
+		color_icon.texture = skill_ball.icon
 		# 使用 custom_minimum_size 而不是 size，并考虑缩放
 		color_icon.custom_minimum_size = Vector2(32, 32)
 		color_icon.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
 		if color_icon.texture:
-			h_color_container.add_child(color_icon)
+			skill_ball_container.add_child(color_icon)
 			color_icon.scale = Vector2(0.8, 0.8)
-			color_icon_list.append(color_icon)
 
 func _clear_bird_colors():
-	for icon in color_icon_list:
+	for icon in skill_ball_container.get_children():
 		icon.queue_free()
-	color_icon_list.clear()
 
 func update_hit(hit_amount: int):
 	_hit = _hit + hit_amount

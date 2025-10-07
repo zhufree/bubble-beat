@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="BirdData" load_steps=4 format=3 uid="uid://sunny001"]
+
+[ext_resource type="Script" uid="uid://c3cuvsbvfuuy0" path="res://models/bird_data.gd" id="1_bird_data"]
+[ext_resource type="Texture2D" uid="uid://f5dt6ydwxsxe" path="res://assets/sprites/birds/yellow.png" id="1_txlpp"]
+
+[sub_resource type="Gradient" id="Gradient_txlpp"]
+colors = PackedColorArray(1, 1, 0, 1, 1, 1, 0.5, 1)
+
+[resource]
+script = ExtResource("1_bird_data")
+name = "黄鹦鹉"
+bubble_color = 4
+skill_color = Array[int]([3])
+gradient = SubResource("Gradient_txlpp")
+icon = ExtResource("1_txlpp")
+description = "黄色提供固定得分加成。"

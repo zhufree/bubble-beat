@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="BirdData" load_steps=4 format=3 uid="uid://yrj6qf80vmdw"]
+
+[ext_resource type="Texture2D" uid="uid://bp2bw2qpwr5jr" path="res://assets/sprites/birds/red_blue.png" id="1_alf52"]
+[ext_resource type="Script" uid="uid://c3cuvsbvfuuy0" path="res://models/bird_data.gd" id="1_bird_data"]
+
+[sub_resource type="Gradient" id="Gradient_alf52"]
+colors = PackedColorArray(1, 0, 0, 1, 0, 0, 1, 1)
+
+[resource]
+script = ExtResource("1_bird_data")
+name = "红蓝鹦鹉"
+bubble_color = 7
+skill_color = Array[int]([2, 0])
+gradient = SubResource("Gradient_alf52")
+icon = ExtResource("1_alf52")
+description = "红蓝吸蜜鹦鹉，后背和胸为蓝色，羽毛为红色。"
+bird_type = 1

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="BirdData" load_steps=4 format=3 uid="uid://b0ey5lkgemem"]
+
+[ext_resource type="Texture2D" uid="uid://xcht6b0dh4x6" path="res://assets/sprites/birds/red_yellow_green.png" id="1_aljdd"]
+[ext_resource type="Script" uid="uid://c3cuvsbvfuuy0" path="res://models/bird_data.gd" id="1_ty0hu"]
+
+[sub_resource type="Gradient" id="Gradient_il1xi"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1)
+
+[resource]
+script = ExtResource("1_ty0hu")
+name = "太阳锥尾鹦鹉"
+bubble_color = 14
+skill_color = Array[int]([2, 3, 1])
+gradient = SubResource("Gradient_il1xi")
+icon = ExtResource("1_aljdd")
+description = "分布于巴西，以红黄色为主色，翅羽尖为绿色。"
+bird_type = 2

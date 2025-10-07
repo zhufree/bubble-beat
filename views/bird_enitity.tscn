@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://bgepodd3p86s5"]
+[gd_scene load_steps=4 format=3 uid="uid://c40qmm5klnxtj"]
 
-[ext_resource type="Texture2D" uid="uid://f5dt6ydwxsxe" path="res://assets/sprites/chick.png" id="1_agfs1"]
+[ext_resource type="Texture2D" uid="uid://f5dt6ydwxsxe" path="res://assets/sprites/birds/yellow.png" id="1_agfs1"]
 [ext_resource type="Script" uid="uid://qqruoa5sok2" path="res://views/bird_enitity.gd" id="1_rkhd4"]
-[ext_resource type="FontFile" uid="uid://de741csunxfys" path="res://assets/fonts/DynaPuff/DynaPuff_SemiCondensed-Regular.ttf" id="2_lrhn5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lrhn5"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -34,7 +33,6 @@ offset_bottom = 40.0
 
 [node name="NameLabel" type="Label" parent="VboxContainer"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_lrhn5")
 theme_override_font_sizes/font_size = 24
 horizontal_alignment = 1
 
@@ -55,23 +53,16 @@ grow_vertical = 2
 layout_mode = 2
 texture = ExtResource("1_agfs1")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VboxContainer/Panel"]
-layout_direction = 2
+[node name="SkillBallContainer" type="GridContainer" parent="VboxContainer/Panel"]
+custom_minimum_size = Vector2(128, 64)
 layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
+anchors_preset = 10
 anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 1.5
-offset_top = -31.0
-offset_right = 1.5
-offset_bottom = -1.0
 grow_horizontal = 2
-grow_vertical = 0
+columns = 4
 
 [node name="HitLabel" type="Label" parent="VboxContainer"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_lrhn5")
 theme_override_font_sizes/font_size = 24
 text = "Hit:"
 horizontal_alignment = 1

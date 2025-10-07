@@ -24,10 +24,6 @@ func _input(event):
 	if event.is_action_pressed("ui_cancel"): # ESC键
 		exit_to_index()
 		return
-	if is_in_second_panel:
-		# 如果在二级面板，输入事件传递给二级面板处理
-		second_panel._input(event)
-		return
 	if event.is_action_pressed("up"): # W键
 		navigate_up()
 	elif event.is_action_pressed("down"): # S键
@@ -65,17 +61,15 @@ func _on_bird_selected(atlas_line: AtlasLine, bird: BirdData):
 	if not bird:
 		return
 	cur_selected_item_line = atlas_line
-	var bird_progress = BirdManager.get_bird_progress(bird.name)
-	if not bird_progress:
-		return
-	
+	var is_unlocked = BirdManager.get_bird_atlas(bird.name)
+
 	is_in_second_panel = true
 	second_panel.visible = true
-	if bird_progress.is_unlocked:
+	if is_unlocked:
 		guide_intro.text = _get_guide_intro(2)
 	else:
 		guide_intro.text = _get_guide_intro(1)
-	second_panel.open(bird_progress.is_unlocked, bird)
+	second_panel.open(is_unlocked, bird)
 
 # 退出到主界面
 func exit_to_index():

@@ -29,7 +29,8 @@ func _input(event):
 	elif event.is_action_pressed("ok"):
 		if song_items.size() > current_selected_index:
 			_on_song_selected(songs[current_selected_index])
-			
+	elif event.is_action_pressed("ui_cancel"):
+		get_tree().change_scene_to_file("res://scenes/index.tscn")
 
 func load_songs():
 	# 加载所有歌曲数据

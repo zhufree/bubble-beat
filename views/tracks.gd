@@ -15,7 +15,7 @@ var song = preload("res://resources/song_data/waiting_for_love.tres")
 var beat_interval: float = 60.0 / song.BPM # 0.5秒/拍
 var time_since_last_spawn: float = 0.0
 var bubble_scene = preload("res://views/bubble.tscn")
-var colors = [Enums.BubbleColor.RED, Enums.BubbleColor.BLUE, Enums.BubbleColor.GREEN, Enums.BubbleColor.YELLOW, Enums.BubbleColor.PURPLE, Enums.BubbleColor.BLACK, Enums.BubbleColor.WHITE]
+var colors = Enums.BubbleColor.keys()
 var bubble_nodes = []
 
 # 判定线位置和时间计算
@@ -69,10 +69,10 @@ func _update_judgement_rules():
 	if Global.selected_birds.size() != 4:
 		print("Error: selected_birds size is not 4")
 		return
-	update_judgement_rules_by_single_data(Global.selected_birds[0], "E", 1)
-	update_judgement_rules_by_single_data(Global.selected_birds[1], "D", 2)
-	update_judgement_rules_by_single_data(Global.selected_birds[2], "O", 1)
-	update_judgement_rules_by_single_data(Global.selected_birds[3], "K", 2)
+	update_judgement_rules_by_single_data(Global.selected_birds[0].bird_data, "E", 1)
+	update_judgement_rules_by_single_data(Global.selected_birds[1].bird_data, "D", 2)
+	update_judgement_rules_by_single_data(Global.selected_birds[2].bird_data, "O", 1)
+	update_judgement_rules_by_single_data(Global.selected_birds[3].bird_data, "K", 2)
 
 
 func update_judgement_rules_by_single_data(bird_data: BirdData, key_action: String, line_rule: int):
@@ -356,12 +356,6 @@ func animate_judgment_line(target_color):
 			target_line_color = Color(0, 0, 1) # 蓝色
 		Enums.BubbleColor.GREEN:
 			target_line_color = Color(0, 1, 0) # 绿色
-		Enums.BubbleColor.PURPLE:
-			target_line_color = Color(0.5, 0, 0.5)
-		Enums.BubbleColor.BLACK:
-			target_line_color = Color(0, 0, 0)
-		Enums.BubbleColor.WHITE:
-			target_line_color = Color(1, 1, 1)
 	
 	# 选择要激活的判定线
 	if required_line == 1:

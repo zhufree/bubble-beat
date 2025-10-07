@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="BirdData" load_steps=3 format=3 uid="uid://16tg70pbj5w2"]
+
+[ext_resource type="Script" uid="uid://c3cuvsbvfuuy0" path="res://models/bird_data.gd" id="1_reu4q"]
+
+[sub_resource type="Gradient" id="Gradient_0uh6f"]
+colors = PackedColorArray(1, 1, 0, 1, 0, 1, 0, 1)
+
+[resource]
+script = ExtResource("1_reu4q")
+name = "黄绿鹦鹉"
+bubble_color = 8
+skill_color = Array[int]([3, 1])
+gradient = SubResource("Gradient_0uh6f")
+description = "虎皮鹦鹉，常见的黄绿色。"
+bird_type = 1

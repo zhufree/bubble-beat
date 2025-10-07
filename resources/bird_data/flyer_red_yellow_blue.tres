@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="BirdData" load_steps=4 format=3 uid="uid://bo06gu5ojo544"]
+
+[ext_resource type="Script" uid="uid://c3cuvsbvfuuy0" path="res://models/bird_data.gd" id="1_bird_data"]
+[ext_resource type="Texture2D" uid="uid://d060orexuqkgc" path="res://assets/sprites/birds/red_yellow_blue.png" id="1_yawa8"]
+
+[sub_resource type="Gradient" id="Gradient_ftjqj"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 1)
+
+[resource]
+script = ExtResource("1_bird_data")
+name = "绯红金刚鹦鹉"
+bubble_color = 13
+skill_color = Array[int]([2, 3, 0])
+gradient = SubResource("Gradient_ftjqj")
+icon = ExtResource("1_yawa8")
+description = "红黄蓝色的鹦鹉，栖息于南美洲。"
+bird_type = 2

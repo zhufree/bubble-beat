@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="BirdData" load_steps=4 format=3 uid="uid://bu3evg8x3ob1v"]
+
+[ext_resource type="Script" uid="uid://c3cuvsbvfuuy0" path="res://models/bird_data.gd" id="1_bird_data"]
+[ext_resource type="Texture2D" uid="uid://cqr8cis7py0b" path="res://assets/sprites/birds/yellow_green_blue.png" id="1_ppugr"]
+
+[sub_resource type="Gradient" id="Gradient_dsbow"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1)
+
+[resource]
+script = ExtResource("1_bird_data")
+name = "金领金刚鹦鹉"
+bubble_color = 11
+skill_color = Array[int]([3, 1, 0])
+gradient = SubResource("Gradient_dsbow")
+icon = ExtResource("1_ppugr")
+description = "脖子上有一圈黄色，翅羽尖为蓝色的绿鹦鹉。"
+bird_type = 2

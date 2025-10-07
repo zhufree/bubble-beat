@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="godot-template"
+config/name="Bubble-Beat"
 run/main_scene="uid://shgutmrejcwc"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
@@ -19,7 +19,20 @@ config/icon="res://icon.svg"
 
 EventBus="*res://scripts/event_bus.gd"
 Global="*res://scripts/global.gd"
-BirdManager="*res://scripts/atlas/bird_manager.gd"
+BirdManager="*res://scripts/bird_manager.gd"
+
+[file_customization]
+
+folder_colors={
+"res://assets/": "green",
+"res://scenes/": "orange",
+"res://scripts/": "red",
+"res://views/": "orange"
+}
+
+[gui]
+
+theme/custom_font="uid://bhhhsb3h2k10w"
 
 [input]
 

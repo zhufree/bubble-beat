@@ -1,6 +1,5 @@
-[gd_scene load_steps=3 format=3 uid="uid://bmdl1bfnmpevj"]
+[gd_scene load_steps=2 format=3 uid="uid://bmdl1bfnmpevj"]
 
-[ext_resource type="FontFile" uid="uid://dqreqag786lld" path="res://assets/fonts/DynaPuff/DynaPuff-Regular.ttf" id="1_j6ffa"]
 [ext_resource type="Script" uid="uid://byds10cty5yl" path="res://views/atlas/atlas_line.gd" id="1_vwbs5"]
 
 [node name="AtlasLine" type="ColorRect"]
@@ -18,12 +17,12 @@ color = Color(0.9254902, 0.5254902, 0.34509805, 1)
 script = ExtResource("1_vwbs5")
 
 [node name="Title" type="Label" parent="."]
+visible = false
 layout_mode = 0
 offset_left = 42.499992
 offset_top = 48.75
 offset_right = 189.5
 offset_bottom = 109.75
-theme_override_fonts/font = ExtResource("1_j6ffa")
 theme_override_font_sizes/font_size = 50
 text = "fledgling"
 horizontal_alignment = 1
@@ -32,7 +31,7 @@ vertical_alignment = 1
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 clip_contents = true
 layout_mode = 1
-offset_left = 296.24997
+offset_left = 19.99997
 offset_top = 15.0
 offset_right = 879.9999
 offset_bottom = 140.0

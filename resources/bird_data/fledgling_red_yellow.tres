@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="BirdData" load_steps=4 format=3 uid="uid://bm5k3j8h7wxy1"]
+
+[ext_resource type="Texture2D" uid="uid://bsij5u2kui2p" path="res://assets/sprites/birds/red_yellow.png" id="1_4wfgv"]
+[ext_resource type="Script" uid="uid://c3cuvsbvfuuy0" path="res://models/bird_data.gd" id="1_bird_data"]
+
+[sub_resource type="Gradient" id="Gradient_1o74l"]
+colors = PackedColorArray(1, 0, 0, 1, 1, 1, 0, 1)
+
+[resource]
+script = ExtResource("1_bird_data")
+name = "红黄鹦鹉"
+bubble_color = 5
+skill_color = Array[int]([2, 3])
+gradient = SubResource("Gradient_1o74l")
+icon = ExtResource("1_4wfgv")
+description = "黄桃脸牡丹鹦鹉，红脸黄色羽毛。"
+bird_type = 1
