@@ -15,11 +15,19 @@ run/main_scene="uid://shgutmrejcwc"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[audio]
+
+driver/output_latency=1
+
 [autoload]
 
 EventBus="*res://scripts/event_bus.gd"
 Global="*res://scripts/global.gd"
 BirdManager="*res://scripts/bird_manager.gd"
+
+[display]
+
+window/size/resizable=false
 
 [file_customization]
 

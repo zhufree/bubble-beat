@@ -1,10 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://c184obj7lqgbi"]
+[gd_scene load_steps=3 format=3 uid="uid://c184obj7lqgbi"]
 
 [ext_resource type="Script" uid="uid://dt1xw7fr4x1n6" path="res://views/bubble.gd" id="1_2vdav"]
-[ext_resource type="Texture2D" uid="uid://bnsjpv7lsnfet" path="res://assets/sprites/bubbles/blue.png" id="2_a6s18"]
-[ext_resource type="Texture2D" uid="uid://do0o0gb1u46od" path="res://assets/sprites/bubbles/green.png" id="3_ax11v"]
-[ext_resource type="Texture2D" uid="uid://h4jc4b1thq2a" path="res://assets/sprites/bubbles/red.png" id="4_8ycye"]
-[ext_resource type="Texture2D" uid="uid://c3c3jx1cp2ibg" path="res://assets/sprites/bubbles/yellow.png" id="5_6jlkr"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_a6s18"]
 radius = 26.019224
@@ -17,18 +13,4 @@ script = ExtResource("1_2vdav")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea"]
 shape = SubResource("CircleShape2D_a6s18")
 
-[node name="Blue" type="Sprite2D" parent="."]
-visible = false
-texture = ExtResource("2_a6s18")
-
-[node name="Green" type="Sprite2D" parent="."]
-visible = false
-texture = ExtResource("3_ax11v")
-
-[node name="Red" type="Sprite2D" parent="."]
-visible = false
-texture = ExtResource("4_8ycye")
-
-[node name="Yellow" type="Sprite2D" parent="."]
-visible = false
-texture = ExtResource("5_6jlkr")
+[node name="BubbleSprite" type="Sprite2D" parent="."]

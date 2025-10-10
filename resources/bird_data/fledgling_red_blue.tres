@@ -9,7 +9,7 @@ colors = PackedColorArray(1, 0, 0, 1, 0, 0, 1, 1)
 [resource]
 script = ExtResource("1_bird_data")
 name = "红蓝鹦鹉"
-bubble_color = 7
+bubble_color = 6
 skill_color = Array[int]([2, 0])
 gradient = SubResource("Gradient_alf52")
 icon = ExtResource("1_alf52")

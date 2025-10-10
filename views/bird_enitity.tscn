@@ -49,8 +49,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Avatar" type="TextureRect" parent="VboxContainer/Panel/CenterContainer"]
+[node name="Avatar" type="Control" parent="VboxContainer/Panel/CenterContainer"]
 layout_mode = 2
+
+[node name="Avatar" type="Sprite2D" parent="VboxContainer/Panel/CenterContainer/Avatar"]
 texture = ExtResource("1_agfs1")
 
 [node name="SkillBallContainer" type="GridContainer" parent="VboxContainer/Panel"]

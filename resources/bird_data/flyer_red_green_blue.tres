@@ -11,7 +11,7 @@ metadata/_snap_enabled = true
 [resource]
 script = ExtResource("1_yetgt")
 name = "军金刚鹦鹉"
-bubble_color = 12
+bubble_color = 11
 skill_color = Array[int]([2, 1, 0])
 gradient = SubResource("Gradient_x1ual")
 icon = ExtResource("1_2rkrd")

@@ -199,7 +199,7 @@ func _update_selected_birds_display():
 	for i in range(selected_indexs.size()):
 		if i < ready_bird_item_list.size():
 			var bird_index = selected_indexs[i]
-			ready_bird_item_list[i].setup_bird_data(bird_slot_list[bird_index])
+			ready_bird_item_list[i].setup_bird_slot(bird_slot_list[bird_index])
 			ready_bird_item_list[i].visible = true
 
 func _update_display_containers():

@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://bbtcojfy2fotr"]
+
+[ext_resource type="Script" uid="uid://biikmtxeoumdr" path="res://views/color_line.gd" id="1_jfdl1"]
+[ext_resource type="AudioStream" uid="uid://dwncl426sf8nx" path="res://assets/se/bo.ogg" id="2_6b7f5"]
+[ext_resource type="AudioStream" uid="uid://drbnb4xmsqf8m" path="res://assets/se/kick.ogg" id="3_myjv7"]
+
+[node name="ColorLine" type="Line2D"]
+points = PackedVector2Array(0, 0, 0, 0)
+width = 20.0
+default_color = Color(0.62352943, 0.68235296, 0.78431374, 1)
+script = ExtResource("1_jfdl1")
+
+[node name="Gradient" type="Line2D" parent="."]
+points = PackedVector2Array(0, 0, 0, 0)
+width = 20.0
+default_color = Color(0.62352943, 0.68235296, 0.78431374, 1)
+
+[node name="Bo" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_6b7f5")
+
+[node name="Kick" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_myjv7")

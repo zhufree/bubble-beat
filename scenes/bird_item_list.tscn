@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://c3c3jx1cp2ibg" path="res://assets/sprites/bubbles/yellow.png" id="6_prils"]
 [ext_resource type="Texture2D" uid="uid://h4jc4b1thq2a" path="res://assets/sprites/bubbles/red.png" id="7_qeop7"]
 
-[node name="BirdItemList" type="Control"]
+[node name="BirdItemList" type="Control" node_paths=PackedStringArray("ready_bird_item_list")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -16,6 +16,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ma62k")
+ready_bird_item_list = [NodePath("BirdsContainer/ChooseBirdItem"), NodePath("BirdsContainer/ChooseBirdItem2"), NodePath("BirdsContainer/ChooseBirdItem3"), NodePath("BirdsContainer/ChooseBirdItem4")]
 
 [node name="Background" type="ColorRect" parent="."]
 layout_mode = 1
@@ -114,7 +115,7 @@ offset_top = -42.222225
 offset_right = 86.666626
 offset_bottom = 7.777775
 theme_override_font_sizes/font_size = 32
-text = "(O)"
+text = "(K)"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -128,7 +129,7 @@ offset_top = -42.222225
 offset_right = 86.666626
 offset_bottom = 7.777775
 theme_override_font_sizes/font_size = 32
-text = "(K)"
+text = "(O)"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -139,7 +140,7 @@ offset_top = 531.0
 offset_right = 1116.0
 offset_bottom = 613.0
 theme_override_font_sizes/font_size = 30
-text = "E/D/O/K 操纵四只小鸟击打气泡
+text = "E/D/K/O 操纵四只小鸟击打气泡
 按下空格键开始游戏 :)"
 horizontal_alignment = 1
 
