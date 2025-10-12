@@ -8,12 +8,26 @@ extends Control
 @onready var left_down: Control = $MarginContainer/HBoxContainer/LeftCharContainer/LeftDown
 @onready var right_up: Control = $MarginContainer/HBoxContainer/RightCharContainer/RightUp
 @onready var right_down: Control = $MarginContainer/HBoxContainer/RightCharContainer/RightDown
+@onready var health_progress_bar: TextureProgressBar = $HBoxContainer/Health/HealthProgressBar
+@onready var shield_progress_bar: TextureProgressBar = $HBoxContainer/Shield/ShieldProgressBar
+@onready var game_pause_modal: Control = $UI/GamePauseModal
 @export var bird_entities: Array[BirdEntity]
 var song: SongData
 
 func _ready():
+	# 添加组标签以便其他节点可以找到主场景
+	add_to_group("main_scene")
+
 	_init_bird_entities()
 	EventBus.emit_signal("update_judgement_rules")
+
+	# 初始化生命值和护盾UI
+	if health_progress_bar:
+		health_progress_bar.max_value = Global.max_health
+		health_progress_bar.value = Global.health
+	if shield_progress_bar:
+		shield_progress_bar.max_value = int(Global.max_shields)
+		shield_progress_bar.value = int(Global.shields)
 
 	# 使用Global中选中的歌曲，如果没有则使用默认歌曲
 	Global.game_status = Enums.GameStatus.PLAYING
@@ -29,6 +43,8 @@ func _ready():
 	EventBus.connect("update_hit", _on_update_hit)
 	EventBus.connect("score_updated", _on_score_updated)
 	EventBus.connect("combo_updated", _on_combo_updated)
+	EventBus.connect("health_updated", _on_health_updated)
+	EventBus.connect("shield_updated", _on_shield_updated)
 	song_player.finished.connect(_on_song_finished)
 
 func _init_bird_entities():
@@ -53,5 +69,49 @@ func _on_score_updated(new_score: int):
 func _on_combo_updated(new_combo: int):
 	combo_label.text = "Combo:" + str(new_combo)
 
+# 生命值更新信号处理
+func _on_health_updated(current_health: int, max_health: int):
+	if health_progress_bar:
+		health_progress_bar.max_value = max_health
+		health_progress_bar.value = current_health
+
+# 护盾更新信号处理
+func _on_shield_updated(current_shields: int, max_shields: int):
+	if shield_progress_bar:
+		shield_progress_bar.max_value = max_shields
+		shield_progress_bar.value = current_shields
+
 func _on_song_finished():
 	Global.game_status = Enums.GameStatus.FINISHED
+
+# 输入处理
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"):  # ESC键
+		toggle_pause()
+
+# 暂停/恢复游戏
+func toggle_pause():
+	if Global.game_status == Enums.GameStatus.PLAYING:
+		pause_game()
+	elif Global.game_status == Enums.GameStatus.PAUSED:
+		resume_game()
+
+# 暂停游戏
+func pause_game():
+	Global.game_status = Enums.GameStatus.PAUSED
+	get_tree().paused = true
+	if game_pause_modal:
+		game_pause_modal.visible = true
+	# 暂停音乐
+	if song_player and song_player.playing:
+		song_player.stream_paused = true
+
+# 恢复游戏
+func resume_game():
+	Global.game_status = Enums.GameStatus.PLAYING
+	get_tree().paused = false
+	if game_pause_modal:
+		game_pause_modal.visible = false
+	# 恢复音乐
+	if song_player:
+		song_player.stream_paused = false

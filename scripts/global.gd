@@ -48,10 +48,14 @@ func update_score(amount: int):
 
 # 处理生命值变化
 func take_damage(amount: int):
+	var old_health = health
 	health -= amount
 	if health < 0:
 		health = 0
 	print("生命值: ", health, "/", max_health)
+	# 发射生命值更新信号
+	if health != old_health:
+		EventBus.health_updated.emit(health, max_health)
 	if health <= 0:
 		game_over()
 
@@ -64,6 +68,8 @@ func heal(amount: int):
 	var actual_heal = health - old_health
 	if actual_heal > 0:
 		print("回复生命值: ", actual_heal, ", 当前生命值: ", health, "/", max_health)
+	# 发射生命值更新信号
+	EventBus.health_updated.emit(health, max_health)
 
 # 游戏结束
 func game_over():
@@ -76,16 +82,22 @@ func game_over():
 
 # 添加护盾
 func add_shield(amount: float):
+	var old_shields = shields
 	shields += amount
 	if shields > max_shields:
 		shields = max_shields
 	print("护盾增加: ", amount, ", 当前护盾: ", shields)
+	# 发射护盾更新信号
+	if int(shields) != int(old_shields):
+		EventBus.shield_updated.emit(int(shields), int(max_shields))
 
 # 消耗护盾
 func consume_shield() -> bool:
 	if shields >= 1.0:
 		shields -= 1.0
 		print("护盾消耗1个, 剩余护盾: ", shields)
+		# 发射护盾更新信号
+		EventBus.shield_updated.emit(int(shields), int(max_shields))
 		return true
 	return false
 
