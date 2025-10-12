@@ -198,3 +198,5 @@ cache/
 .env.production
 .env.staging
 .env.*.local
+C:/Windows/System32/drivers/etc/hosts
+views/bird_house/bird_item.tscn
