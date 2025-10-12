@@ -1,0 +1,101 @@
+[gd_scene load_steps=4 format=3 uid="uid://dd4a5npe174xi"]
+
+[ext_resource type="Script" uid="uid://buhrmlv6ypuyq" path="res://views/bird_house/bird_house_panel.gd" id="1_bird_house"]
+[ext_resource type="FontFile" uid="uid://c2gmpg5wge37p" path="res://assets/fonts/RHR-CN-0.990/ResourceHanRoundedCN-Heavy.ttf" id="2_font"]
+[ext_resource type="PackedScene" path="res://views/bird_house/bird_detail_panel.tscn" id="3_detail"]
+
+[node name="BirdHousePanel" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_bird_house")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.4952073, 0.7397751, 0.47993726, 1)
+
+[node name="MainContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="HeaderContainer" type="HBoxContainer" parent="MainContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="Title" type="Label" parent="MainContainer/VBoxContainer/HeaderContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.3529412, 0.1882353, 0, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 40
+text = "鸟屋"
+vertical_alignment = 1
+
+[node name="KeyboardHints" type="Label" parent="MainContainer/VBoxContainer/HeaderContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.3529412, 0.1882353, 0, 1)
+theme_override_font_sizes/font_size = 16
+text = "WASD:上下左右 | Enter:详情 |ESC:返回"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ContentContainer" type="HBoxContainer" parent="MainContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 15
+
+[node name="LeftPanel" type="VBoxContainer" parent="MainContainer/VBoxContainer/ContentContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+theme_override_constants/separation = 6
+
+[node name="StatusBar" type="Label" parent="MainContainer/VBoxContainer/ContentContainer/LeftPanel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3529412, 0.1882353, 0, 1)
+theme_override_font_sizes/font_size = 18
+text = "已拥有：0/15"
+
+[node name="GridScrollContainer" type="ScrollContainer" parent="MainContainer/VBoxContainer/ContentContainer/LeftPanel"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="GridContainer" type="GridContainer" parent="MainContainer/VBoxContainer/ContentContainer/LeftPanel/GridScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+columns = 5
+
+[node name="RightPanel" type="Control" parent="MainContainer/VBoxContainer/ContentContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DetailPanel" parent="MainContainer/VBoxContainer/ContentContainer/RightPanel" instance=ExtResource("3_detail")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

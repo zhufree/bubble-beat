@@ -24,13 +24,19 @@ func _process(_delta):
 		update_button_selection()
 
 	elif Input.is_action_just_pressed("ok"):
+		print("按钮按下，当前索引: ", current_button_index)
 		if current_button_index == 0:
+			print("跳转到歌曲列表")
 			get_tree().change_scene_to_file("res://scenes/song_list.tscn")
 		elif current_button_index == 1:
-			print("还没有鸟房功能。")
+			print("跳转到鸟屋")
+			var result = get_tree().change_scene_to_file("res://views/bird_house/bird_house_panel.tscn")
+			print("场景切换结果: ", result)
 		elif current_button_index == 2:
+			print("跳转到图鉴")
 			get_tree().change_scene_to_file("res://views/atlas/atlas_panel.tscn")
 		else:
+			print("退出游戏")
 			get_tree().quit()
 
 func update_button_selection():

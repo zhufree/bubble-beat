@@ -5,9 +5,9 @@
 [node name="AddBird" type="Button"]
 offset_left = 117.0
 offset_top = 480.0
-offset_right = 189.0
+offset_right = 250.0
 offset_bottom = 511.0
-text = "测试按钮增加小鸟红红蓝"
+text = "测试：添加鸟 (0/15)"
 script = ExtResource("1_5j1e6")
 
 [connection signal="pressed" from="." to="." method="_on_pressed"]
