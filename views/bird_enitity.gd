@@ -5,12 +5,6 @@ class_name BirdEntity
 @export var character: BirdSlot
 
 
-const CHARACTER_KEY = {
-	"Chick": "E",
-	"Duck": "D",
-	"Hippo": "K",
-	"Parrot": "O"
-}
 @onready var avatar: Sprite2D = $VboxContainer/Panel/CenterContainer/Avatar/Avatar
 @onready var panel: Panel = $VboxContainer/Panel
 @onready var name_label: Label = $VboxContainer/NameLabel
@@ -33,6 +27,7 @@ func _ready():
 		panel.remove_theme_stylebox_override("panel")
 
 func setup_bird_slot(slot: BirdSlot):
+	character = slot
 	bird_data = slot.bird_data
 	avatar.texture = bird_data.get_icon_texture()
 	name_label.text = slot.get_bird_name()

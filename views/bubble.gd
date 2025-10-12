@@ -14,6 +14,8 @@ var pending_texture_path: String = "" # 待设置的贴图路径
 
 func _ready():
 	birth_time = Time.get_unix_time_from_system()
+	# 增加气泡计数（用于评级计算）
+	Global.increment_bubble_count()
 	# 如果有待设置的贴图路径，现在设置它
 	if pending_texture_path != "":
 		#print("Ready: Setting pending texture: ", pending_texture_path)

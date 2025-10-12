@@ -3,12 +3,13 @@ extends PanelContainer
 ## 鸟槽卡片组件
 ## 用于在网格中显示单个鸟槽（可能为空或已拥有）
 
+@warning_ignore("unused_signal")
 signal slot_selected(slot_index: int, bird_slot: BirdSlot)
 
 @onready var bird_icon: TextureRect = $MarginContainer/VBoxContainer/IconContainer/BirdIconWrapper/BirdIcon
 @onready var bird_name_overlay: Label = $MarginContainer/VBoxContainer/IconContainer/BirdIconWrapper/BirdNameOverlay
 @onready var nickname_label: Label = $MarginContainer/VBoxContainer/NicknameLabel
-@onready var skill_balls_container: HBoxContainer = $MarginContainer/VBoxContainer/SkillBallsContainer
+@onready var skill_balls_container: GridContainer = $MarginContainer/VBoxContainer/SkillBallsContainer
 @onready var selection_indicator: ColorRect = $SelectionIndicator
 
 var slot_index: int = -1

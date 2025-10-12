@@ -25,10 +25,9 @@ var beats_to_first_line: float = 4.0 # 从生成到第一根判定线4拍
 var bubbles_in_judgment_zone_1: Array = [] # 在第一条判定线区域内的气泡
 var bubbles_in_judgment_zone_2: Array = [] # 在第二条判定线区域内的气泡
 var input_actions = ["E", "D", "K", "O"] # 对应的输入动作
-var color_to_action: Dictionary = {}
 
-# 颜色对应的判定线规则
-var color_judgment_rules: Dictionary = {}
+# 判定线规则（每个轨道的判定线类型，0-4轨道对应EDKO）
+var judgment_rules: Array = [] # 存储1或2，表示对应的判定线
 
 
 func _ready():
@@ -41,10 +40,6 @@ func _ready():
 	_update_judgement_rules()
 
 func _update_judgement_rules():
-	# 从Global获取最新的判定规则
-	color_to_action.clear()
-	color_judgment_rules.clear()
-
 	# 使用Global.selected_song并更新beat_interval
 	if Global.selected_song:
 		colors = Global.selected_song.colors
@@ -57,17 +52,13 @@ func _update_judgement_rules():
 	if Global.selected_birds.size() != 4:
 		print("Error: selected_birds size is not 4")
 		return
-	update_judgement_rules_by_single_data(Global.selected_birds[0], "E", 1)
-	update_judgement_rules_by_single_data(Global.selected_birds[1], "D", 2)
-	update_judgement_rules_by_single_data(Global.selected_birds[2], "K", 2)
-	update_judgement_rules_by_single_data(Global.selected_birds[3], "O", 1)
 
-
-func update_judgement_rules_by_single_data(bird: BirdSlot, key_action: String, line_rule: int):
-	# 更新单个鸟类的判定规则
-	var color = bird.bird_data.bubble_color
-	color_to_action[color] = key_action
-	color_judgment_rules[color] = line_rule
+	# 设置判定线规则，索引0-3对应轨道0-3，直接使用Global.selected_birds的顺序
+	judgment_rules = []
+	judgment_rules.append(1) # 轨道0（E键）对应第一条线
+	judgment_rules.append(2) # 轨道1（D键）对应第二条线
+	judgment_rules.append(2) # 轨道2（K键）对应第二条线
+	judgment_rules.append(1) # 轨道3（O键）对应第一条线
 
 func _on_pat_received(pos: int):
 	# 当收到节拍信号时，检查是否应该生成气泡
@@ -235,37 +226,16 @@ func spawn_bubble():
 		printerr("Warning: bubble_speed is 0 or negative, using default")
 		bubble.set_speed(200.0)
 
-	# 随机选择一个按键（轨道）
-	var random_key_index = randi() % input_actions.size()
-	var selected_key = input_actions[random_key_index]
-
-	# 找到对应的鸟的颜色
-	var target_color = null
-	for color in color_to_action:
-		if color_to_action[color] == selected_key:
-			target_color = color
-			break
+	# 随机选择一个轨道索引（0-3）
+	var random_lane_index = randi() % 4
+	var _selected_key = input_actions[random_lane_index]
+	var bird = Global.selected_birds[random_lane_index]
+	var target_color = bird.bird_data.bubble_color
 
 	# 设置气泡颜色和轨道
-	if target_color != null:
-		bubble.set_color(target_color)
-		# 根据按键设置轨道索引（从左到右：E=1, D=2, K=3, O=4）
-		match selected_key:
-			"E":
-				bubble.setup_for_lane(1)  # 最左边
-			"D":
-				bubble.setup_for_lane(2)  # 第二个
-			"K":
-				bubble.setup_for_lane(3)  # 第三个
-			"O":
-				bubble.setup_for_lane(4)  # 最右边
-		# 设置显示颜色
-		bubble.set_display_color(target_color)
-	else:
-		# 如果找不到对应颜色，使用默认颜色和轨道
-		bubble.set_color(Enums.BubbleColor.DEFAULT)
-		bubble.setup_for_lane(1)
-		bubble.set_display_color(Enums.BubbleColor.DEFAULT)
+	bubble.set_color(target_color)
+	bubble.setup_for_lane(random_lane_index + 1)  # 转换为1-4的轨道索引
+	bubble.set_display_color(target_color)
 
 	bubble.set_bubble_position(area_width, spawn_y)
 	add_child(bubble)
@@ -380,24 +350,17 @@ func calculate_score(lane_index: int, base_score: int, combo: int) -> int:
 
 # 处理按键按下
 func handle_key_press(action: String):
-	var target_color = null
-	for color in color_to_action:
-		if color_to_action[color] == action:
-			target_color = color
-			break
-
-	if target_color == null:
+	# 通过action找到对应的索引
+	var index = input_actions.find(action)
+	if index < 0 or index >= input_actions.size():
+		printerr("handle_key_press未找到action的索引值。")
 		return
 
-	# 动画逻辑改了，分布在每条线里了
-	var index = input_actions.find(action)
-	if index >= 0:
-		color_lines[index].animate_line()
-	else:
-		printerr("handle_key_press未找到action的索引值。")
+	# 执行动画
+	color_lines[index].animate_line()
 
-	# 剩下的判定逻辑我不改了，虽然还是有点繁琐
-	var required_line = color_judgment_rules[target_color]
+	# 获取对应的判定线规则
+	var required_line = judgment_rules[index]
 	var target_bubbles_array = null
 
 	# 发送信号给对应的角色显示边框
@@ -411,6 +374,9 @@ func handle_key_press(action: String):
 	var hit_bubble = null
 	# 创建目标数组的副本，避免在遍历时修改原数组
 	var target_bubbles_copy = target_bubbles_array.duplicate()
+
+	# 获取该轨道对应鸟的颜色作为目标颜色
+	var target_color = Global.selected_birds[index].bird_data.bubble_color
 
 	for bubble in target_bubbles_copy:
 		# 验证气泡仍然存在且有效

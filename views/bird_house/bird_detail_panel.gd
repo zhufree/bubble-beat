@@ -174,7 +174,7 @@ func _scroll_to_current_option():
 		var scroll_height = scroll_container.size.y
 		
 		# 确保目标在可视区域内，留有边距
-		var margin = 20.0
+		var _margin = 20.0
 		var desired_scroll = target_pos - scroll_height / 2.0 + target_size / 2.0
 		
 		# 平滑滚动
@@ -257,8 +257,8 @@ func _update_display():
 	# 显示技能球
 	_update_skill_balls()
 
-func _get_bird_type_text(bird_type: Enums.BirdType) -> String:
-	match bird_type:
+func _get_bird_type_text(input_bird_type: Enums.BirdType) -> String:
+	match input_bird_type:
 		Enums.BirdType.CHICK:
 			return "🐣 雏鸟 (一级)"
 		Enums.BirdType.FLEDGLING:
@@ -288,7 +288,7 @@ func _update_skill_balls():
 			ball_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 			skill_balls_container.add_child(ball_icon)
 
-func _on_nickname_text_changed(new_text: String):
+func _on_nickname_text_changed(_new_text: String):
 	"""昵称文本改变"""
 	if not current_bird:
 		return

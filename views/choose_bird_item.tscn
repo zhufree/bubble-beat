@@ -4,9 +4,9 @@
 [ext_resource type="Texture2D" uid="uid://cf1uwiogbuhdj" path="res://assets/sprites/birds/green.png" id="2_0e2vg"]
 
 [node name="ChooseBirdItem" type="TextureButton"]
+custom_minimum_size = Vector2(128, 128)
 offset_right = 128.0
 offset_bottom = 128.0
-stretch_mode = 3
 script = ExtResource("1_gb8po")
 
 [node name="MarginLine" type="ColorRect" parent="."]
@@ -44,9 +44,9 @@ columns = 4
 
 [node name="StateLabel" type="Label" parent="."]
 layout_mode = 0
-offset_top = 95.0
+offset_top = 94.0
 offset_right = 128.0
-offset_bottom = 121.0
+offset_bottom = 118.0
 theme_override_colors/font_color = Color(0.3529412, 0.1882353, 0, 1)
 text = "NameOrLocked"
 horizontal_alignment = 1

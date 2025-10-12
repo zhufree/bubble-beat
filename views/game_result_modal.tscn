@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://bqscnchqapmui"]
+[gd_scene load_steps=7 format=3 uid="uid://bqscnchqapmui"]
 
 [ext_resource type="Script" uid="uid://dpvv2ewb7jl0v" path="res://views/game_result_modal.gd" id="1_modal"]
 [ext_resource type="FontFile" uid="uid://dnyg6pd3wordy" path="res://assets/fonts/RHR-CN-0.990/ResourceHanRoundedCN-Heavy.ttf" id="2_xh70q"]
+[ext_resource type="PackedScene" uid="uid://iwef11qesvie" path="res://views/bird_house/BirdSlotCard.tscn" id="3_q1jh0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xh70q"]
 bg_color = Color(0.8790061, 0.5875924, 0.30984393, 0.9490196)
@@ -22,6 +23,7 @@ bg_color = Color(0.5774341, 0.617245, 0.5326643, 1)
 bg_color = Color(0.44796455, 0.484429, 0.40744576, 1)
 
 [node name="GameResultModal" type="Control"]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -47,23 +49,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ModalPanel" type="Panel" parent="CenterContainer"]
+[node name="ModalPanel" type="PanelContainer" parent="CenterContainer"]
 custom_minimum_size = Vector2(400, 300)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_xh70q")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/ModalPanel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 20.0
-offset_top = 20.0
-offset_right = -20.0
-offset_bottom = -20.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 30
+layout_mode = 2
+theme_override_constants/separation = 20
 
 [node name="TitleLabel" type="Label" parent="CenterContainer/ModalPanel/VBoxContainer"]
 layout_mode = 2
@@ -83,6 +76,18 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "Max Combo: 0"
 horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/ModalPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="NewBirdLabel" type="Label" parent="CenterContainer/ModalPanel/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "——获得新鸟——"
+horizontal_alignment = 1
+
+[node name="BirdSlotCard" parent="CenterContainer/ModalPanel/VBoxContainer/VBoxContainer" instance=ExtResource("3_q1jh0")]
+layout_mode = 2
+size_flags_horizontal = 4
 
 [node name="ReturnButton" type="Button" parent="CenterContainer/ModalPanel/VBoxContainer"]
 custom_minimum_size = Vector2(200, 70)

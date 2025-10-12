@@ -20,7 +20,7 @@ func _ready():
 
 	load_game()
 	print("BirdManager初始化完成，game_save: ", game_save)
-	print("小鸟数量: ", game_save.birds.size() if game_save else "game_save为null")
+	print(("小鸟数量: "+str(game_save.birds.size())) if game_save else "game_save为null")
 
 
 
@@ -53,7 +53,7 @@ func get_bird_data(bird_name: String):
 
 
 # 增加小鸟
-func add_bird(skill_balls:Array[SkillBall]) -> void:
+func add_bird(skill_balls:Array[SkillBall]) -> BirdSlot:
 	var slot = BirdSlot.new()
 	slot.skill_balls = skill_balls
 	# 匹配技能球颜色和小鸟毛色
@@ -71,6 +71,7 @@ func add_bird(skill_balls:Array[SkillBall]) -> void:
 	if data and !get_bird_atlas(data.name):
 		set_bird_atlas(data.name)
 	save_game()
+	return slot
 
 # 匹配技能球和BirdData
 func _match_skill_color(skill_balls:Array[SkillBall]) -> BirdData:

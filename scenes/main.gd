@@ -18,6 +18,9 @@ func _ready():
 	# 添加组标签以便其他节点可以找到主场景
 	add_to_group("main_scene")
 
+	# 初始化游戏状态（重置护盾、分数、连击、生命值）
+	Global.initialize_game()
+
 	_init_bird_entities()
 	EventBus.emit_signal("update_judgement_rules")
 
@@ -29,15 +32,20 @@ func _ready():
 		shield_progress_bar.max_value = int(Global.max_shields)
 		shield_progress_bar.value = int(Global.shields)
 
+	# 初始化分数和连击标签
+	score_label.text = "Score:" + str(Global.score)
+	combo_label.text = "Combo:" + str(Global.combo)
+
 	# 使用Global中选中的歌曲，如果没有则使用默认歌曲
 	Global.game_status = Enums.GameStatus.PLAYING
 	if Global.selected_song:
 		song = Global.selected_song
 	else:
 		song = preload("res://resources/song_data/waiting_for_love.tres")
-	
+
 	song_player.stream = song.stream
 	song_player.bpm = song.BPM
+
 	song_player.play_with_beat_offset(8)
 	# 连接信号
 	EventBus.connect("update_hit", _on_update_hit)
@@ -82,7 +90,15 @@ func _on_shield_updated(current_shields: int, max_shields: int):
 		shield_progress_bar.value = current_shields
 
 func _on_song_finished():
+	# 歌曲结束时立即设置游戏状态为FINISHED，停止生成新气泡
 	Global.game_status = Enums.GameStatus.FINISHED
+	print("歌曲结束，停止生成新气泡，等待5秒后显示结果")
+
+	# 等待5秒让玩家处理剩余气泡
+	await get_tree().create_timer(5.0).timeout
+
+	# 调用游戏结束逻辑
+	Global.game_over("song")
 
 # 输入处理
 func _unhandled_input(event: InputEvent) -> void:

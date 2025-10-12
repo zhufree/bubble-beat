@@ -12,7 +12,7 @@ var choose_bird_item_list: Array[ChooseBirdItem] = []
 var bird_slot_list: Array[BirdSlot] = []
 var selected_indexs: Array[int] = []
 var current_selected_index: int = 0
-var grid_columns: int = 5 # 根据场景文件中的配置
+var grid_columns: int = 7 # 根据场景文件中的配置
 
 func _ready():
 	_init_birds_container() # 初始化右侧容器，默认隐藏所有item

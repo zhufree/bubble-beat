@@ -47,34 +47,35 @@ text = "Choose Your Beat Birds!"
 horizontal_alignment = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
-clip_contents = false
-custom_minimum_size = Vector2(800, 300)
-layout_mode = 0
-offset_left = 199.0
-offset_top = 102.0
-offset_right = 999.0
-offset_bottom = 410.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_top = 0.18
+anchor_right = 0.95
+anchor_bottom = 0.62
+grow_horizontal = 2
 size_flags_vertical = 3
 
 [node name="ChooseContainer" type="GridContainer" parent="ScrollContainer"]
+custom_minimum_size = Vector2(1036, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/h_separation = 150
-theme_override_constants/v_separation = 150
-columns = 5
+theme_override_constants/h_separation = 20
+theme_override_constants/v_separation = 20
+columns = 7
 
 [node name="BirdsContainer" type="GridContainer" parent="."]
 layout_mode = 0
 offset_left = 302.00003
-offset_top = 395.0
+offset_top = 438.0
 offset_right = 752.0
-offset_bottom = 395.0
+offset_bottom = 438.0
 scale = Vector2(0.9, 0.9)
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/h_separation = 150
-theme_override_constants/v_separation = 150
+theme_override_constants/h_separation = 20
+theme_override_constants/v_separation = 20
 columns = 5
 
 [node name="ChooseBirdItem" parent="BirdsContainer" instance=ExtResource("2_mlavv")]
@@ -136,9 +137,9 @@ vertical_alignment = 1
 [node name="beginLable" type="Label" parent="."]
 layout_mode = 0
 offset_left = 20.0
-offset_top = 531.0
+offset_top = 548.0
 offset_right = 1116.0
-offset_bottom = 613.0
+offset_bottom = 639.0
 theme_override_font_sizes/font_size = 30
 text = "E/D/K/O 操纵四只小鸟击打气泡
 按下空格键开始游戏 :)"
@@ -147,13 +148,12 @@ horizontal_alignment = 1
 [node name="GuideIntro" type="Label" parent="."]
 layout_mode = 0
 offset_left = 42.0
-offset_top = 510.0
+offset_top = 535.0
 offset_right = 1098.0
-offset_bottom = 627.0
+offset_bottom = 652.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 30
-text = "W/S/A/D: 高亮小鸟
-回车键选择/取消选择
+text = "W/S/A/D: 高亮小鸟  回车键选择/取消选择
 开始游戏需要选择四只小鸟"
 horizontal_alignment = 1
 vertical_alignment = 1
