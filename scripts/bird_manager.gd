@@ -15,10 +15,12 @@ const DEFAULT_BIRD_DATA = preload("uid://ruby001")
 
 func _ready():
 	_load_bird_data()
-	# 测试用,先删除
-	delete_save_file()
+	# 注释掉自动重置功能 - 改用Ctrl+R手动重置
+	# delete_save_file()
 
 	load_game()
+	print("BirdManager初始化完成，game_save: ", game_save)
+	print("小鸟数量: ", game_save.birds.size() if game_save else "game_save为null")
 
 
 
@@ -34,9 +36,13 @@ func _load_bird_data():
 				var bird = load("res://resources/bird_data/" + file_name)
 				if bird:
 					bird_data_list.append(bird)
+					print("加载小鸟数据: ", bird.name)
 			file_name = dir.get_next()
 		
 		dir.list_dir_end()
+		print("总共加载了 ", bird_data_list.size(), " 个小鸟数据")
+	else:
+		print("无法打开小鸟数据目录")
 
 # 获取小鸟静态数据
 func get_bird_data(bird_name: String):
@@ -60,9 +66,9 @@ func add_bird(skill_balls:Array[SkillBall]) -> void:
 			print(ball.skill_color)
 		slot.bird_data = DEFAULT_BIRD_DATA
 	game_save.birds.append(slot)
-	print(game_save.birds)
+	print("添加小鸟: ", slot.bird_data.name if slot.bird_data else "无数据")
 	# 开启图鉴
-	if !get_bird_atlas(data.name):
+	if data and !get_bird_atlas(data.name):
 		set_bird_atlas(data.name)
 	save_game()
 
@@ -86,9 +92,11 @@ func _match_skill_color(skill_balls:Array[SkillBall]) -> BirdData:
 		print("正在寻找一致的技能槽："+str(data_colors))
 		# 如果颜色组合完全匹配，则返回该BirdData
 		if slot_colors == data_colors:
+			print("找到匹配的小鸟数据: ", bird_data.name)
 			return bird_data
 	
 	# 如果没有找到完全匹配，返回null或默认值
+	print("未找到匹配的小鸟数据，返回默认值")
 	return null
 
 
@@ -103,7 +111,9 @@ func save_game() -> bool:
 func load_game():
 	if FileAccess.file_exists(DEFAULT_SAVE_PATH):
 		game_save = ResourceLoader.load(DEFAULT_SAVE_PATH)
+		print("加载存档成功，小鸟数量: ", game_save.birds.size())
 	else:#无存档时
+		print("无存档文件，创建新存档")
 		delete_save_file()
 
 # 删除存档（重置所有槽）
@@ -121,7 +131,7 @@ func delete_save_file():
 	add_bird([YELLOW_SKILL_BALL])
 	add_bird([GREEN_SKILL_BALL])
 	
-	print("存档已删除，槽已重置")
+	print("存档已删除，槽已重置，小鸟数量: ", game_save.birds.size())
 
 func get_bird_atlas(bird_name:String):
 	if game_save.atlas.has(bird_name):
