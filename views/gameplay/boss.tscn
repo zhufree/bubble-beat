@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=3 uid="uid://dkg3dewx7jyhm"]
+
+[ext_resource type="Script" uid="uid://bi7rohtdortak" path="res://views/gameplay/boss.gd" id="1_boss_script"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_boss_collision"]
+size = Vector2(120, 120)
+
+[node name="Boss" type="Node2D"]
+script = ExtResource("1_boss_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(2, 2)
+
+[node name="ColorRect" type="ColorRect" parent="Sprite2D"]
+offset_left = -30.0
+offset_top = -30.0
+offset_right = 30.0
+offset_bottom = 30.0
+color = Color(0.8, 0.2, 0.2, 1)
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_boss_collision")
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+offset_left = -60.0
+offset_top = -80.0
+offset_right = 60.0
+offset_bottom = -60.0
+value = 100.0
+show_percentage = false

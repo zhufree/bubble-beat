@@ -8,10 +8,15 @@ extends Node2D
 @onready var attack_zone = $Hinterland/AttackZone
 @onready var hinterland = $Hinterland
 @onready var score_ui: Control = $ScoreUI
+@onready var boss_container: Node2D = $BossContainer
 
 # 敌人数据
 var enemy_types: Array[EnemyData] = []
 var enemies_in_attack_zone: Array[Enemy] = []
+
+# BOSS数据
+var current_boss: Boss = null
+var boss_scene: PackedScene = preload("res://views/gameplay/boss.tscn")
 
 # 生成设置
 @export var spawn_interval: float = 2.0
@@ -40,6 +45,7 @@ func _ready() -> void:
 	W - 啄木鸟添加能量
 	E - 猫头鹰消耗能量
 	R - 啄木鸟消耗能量
+	B - 生成BOSS
 	"""
 	label.position = Vector2(20, 20)
 	label.add_theme_font_size_override("font_size", 14)
@@ -99,6 +105,9 @@ func _input(event: InputEvent) -> void:
 				if animal2:
 					animal2.consume_energy(1)
 					print("啄木鸟能量被消耗: ", animal2.energy, "/", animal2.animal_data.skill_energy_required)
+			KEY_B:
+				# 生成BOSS（测试用）
+				_spawn_boss()
 
 # 生成敌人
 func _spawn_enemy() -> void:
@@ -138,6 +147,13 @@ func _try_attack(animal) -> void:
 
 	if not animal.can_attack():
 		print(animal.animal_data.name, " 无法攻击（冷却中或次数耗尽）")
+		return
+
+	# 优先攻击BOSS
+	if current_boss and not current_boss.is_defeated:
+		var damage = animal.attack()
+		current_boss.take_damage(damage)
+		print(animal.animal_data.name, " 攻击了BOSS！伤害: ", damage, " | BOSS血量: ", current_boss.current_health, "/", current_boss.max_health)
 		return
 
 	# 查找攻击区域内的敌人
@@ -273,3 +289,75 @@ func _show_score_popup(pos: Vector2, score: int) -> void:
 	tween.tween_property(popup, "position:y", pos.y - 80, 1.0).set_ease(Tween.EASE_OUT)
 	tween.tween_property(popup, "modulate:a", 0.0, 0.5).set_delay(0.5)
 	tween.finished.connect(popup.queue_free)
+
+# ==================== BOSS相关 ====================
+
+## 生成BOSS
+func _spawn_boss() -> void:
+	# 如果BOSS已经存在，不重复生成
+	if current_boss and not current_boss.is_defeated:
+		print("[BOSS] BOSS已存在，无法重复生成")
+		return
+
+	# 实例化BOSS
+	var boss_instance = boss_scene.instantiate() as Boss
+	if not boss_instance:
+		push_error("Failed to instantiate boss!")
+		return
+
+	# 配置BOSS属性（可根据游戏进度调整）
+	boss_instance.boss_name = "恐怖BOSS"
+	boss_instance.max_health = 100.0
+	boss_instance.energy_damage = 10
+	boss_instance.score_value = 100
+	boss_instance.move_speed = 150.0
+	boss_instance.target_y = hinterland.position.y - 100.0
+
+	# 设置初始位置
+	boss_instance.position = Vector2(960, 100)
+
+	# 添加到场景
+	boss_container.add_child(boss_instance)
+	current_boss = boss_instance
+
+	# 连接信号
+	boss_instance.defeated.connect(_on_boss_defeated)
+	boss_instance.reached_hinterland.connect(_on_boss_reached_hinterland)
+
+	print("[BOSS] BOSS已生成：", boss_instance.boss_name)
+
+## BOSS被击败
+func _on_boss_defeated(boss: Boss, score: int) -> void:
+	# 增加 combo
+	current_combo += 5  # BOSS给予额外combo
+	combo_multiplier = _get_combo_multiplier(current_combo)
+
+	# 增加分数
+	var earned_score = int(score * combo_multiplier)
+	total_score += earned_score
+
+	print("击败BOSS！得分: ", earned_score, " (基础: ", score, " x ", combo_multiplier, ") | Combo: ", current_combo)
+
+	# 更新 UI
+	_update_score_ui()
+
+	# 显示飘字效果
+	_show_score_popup(boss.global_position, earned_score)
+
+	# 清空当前BOSS引用
+	current_boss = null
+
+## BOSS到达Hinterland
+func _on_boss_reached_hinterland(boss: Boss) -> void:
+	# 对所有动物造成伤害
+	var animals = animalList.get_children()
+	for animal in animals:
+		if animal as Control and animal.has_method("consume_energy"):
+			animal.consume_energy(boss.energy_damage)
+			print(animal.animal_data.name, " 受到BOSS ", boss.energy_damage, " 点伤害")
+
+	# 重置 combo
+	_reset_combo()
+
+	# 清空当前BOSS引用
+	current_boss = null

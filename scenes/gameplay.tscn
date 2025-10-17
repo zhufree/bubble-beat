@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://dk8vhn6l7ihh3"]
+[gd_scene load_steps=9 format=3 uid="uid://dk8vhn6l7ihh3"]
 
 [ext_resource type="PackedScene" uid="uid://d3n2b5wrjdhu0" path="res://views/gameplay/animal.tscn" id="1_7biu0"]
 [ext_resource type="Script" uid="uid://cxgfuigam05p6" path="res://scenes/gameplay.gd" id="1_gameplay"]
 [ext_resource type="Resource" uid="uid://b2yji08haqrxg" path="res://resources/animal_data/woodpecker.tres" id="3_ct7aa"]
 [ext_resource type="PackedScene" uid="uid://dh7mk3xbkv8rq" path="res://views/gameplay/score_ui.tscn" id="4_ct7aa"]
 [ext_resource type="Resource" uid="uid://b84opwkiml62f" path="res://resources/animal_data/balloon_bear.tres" id="4_ocj2s"]
+[ext_resource type="PackedScene" uid="uid://dkg3dewx7jyhm" path="res://views/gameplay/boss.tscn" id="6_din8e"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a6gd1"]
 size = Vector2(576, 166)
@@ -78,3 +79,6 @@ offset_top = 390.0
 offset_right = 300.0
 offset_bottom = 690.0
 size_flags_horizontal = 4
+
+[node name="BossContainer" parent="." instance=ExtResource("6_din8e")]
+position = Vector2(960, 100)
