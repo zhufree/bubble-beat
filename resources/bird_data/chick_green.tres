@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="BirdData" load_steps=4 format=3 uid="uid://sprout001"]
 
 [ext_resource type="Script" uid="uid://c3cuvsbvfuuy0" path="res://models/bird_data.gd" id="1_1qb11"]
-[ext_resource type="Texture2D" uid="uid://cf1uwiogbuhdj" path="res://assets/sprites/birds/green.png" id="1_45xt0"]
+[ext_resource type="Texture2D" uid="uid://bruyxp7aaqxm4" path="res://assets/sprites/birds/green.png" id="1_45xt0"]
 
 [sub_resource type="Gradient" id="Gradient_45xt0"]
 colors = PackedColorArray(0, 1, 0, 1, 0.5, 1, 0.5, 1)
@@ -14,3 +14,4 @@ skill_color = Array[int]([1])
 gradient = SubResource("Gradient_45xt0")
 icon = ExtResource("1_45xt0")
 description = "绿色提供生命值回复。"
+bird_type = 0

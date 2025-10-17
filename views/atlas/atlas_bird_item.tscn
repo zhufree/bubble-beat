@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dm8lfmbe8aqvf"]
 
 [ext_resource type="Script" uid="uid://u406w4e5bm40" path="res://views/atlas/atlas_bird_item.gd" id="2_2206x"]
-[ext_resource type="Texture2D" uid="uid://cf1uwiogbuhdj" path="res://assets/sprites/birds/green.png" id="2_fnoeh"]
+[ext_resource type="Texture2D" uid="uid://bruyxp7aaqxm4" path="res://assets/sprites/birds/green.png" id="2_fnoeh"]
 
 [node name="AtlasBirdItem" type="TextureButton"]
 offset_right = 128.0

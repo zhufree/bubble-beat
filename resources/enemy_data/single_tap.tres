@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=3 format=3 uid="uid://cd5da4nryvwcs"]
+
+[ext_resource type="Script" uid="uid://bkkhcsfw4x2f8" path="res://models/enemy_data.gd" id="1_fun17"]
+[ext_resource type="Texture2D" uid="uid://do0o0gb1u46od" path="res://assets/sprites/bubbles/green.png" id="2_alxru"]
+
+[resource]
+script = ExtResource("1_fun17")
+sprite = ExtResource("2_alxru")

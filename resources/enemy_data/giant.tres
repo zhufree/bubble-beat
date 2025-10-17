@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=3 format=3 uid="uid://jp5ya7xdp36s"]
+
+[ext_resource type="Script" uid="uid://bkkhcsfw4x2f8" path="res://models/enemy_data.gd" id="1_abhof"]
+[ext_resource type="Texture2D" uid="uid://k3pvnq5t2xwd" path="res://assets/sprites/bubbles/yellow_green.png" id="2_xpuqr"]
+
+[resource]
+script = ExtResource("1_abhof")
+name = "巨大化"
+sprite = ExtResource("2_xpuqr")
+description = "体型巨大的强敌，只有重型动物才能击败"
+energy_damage = 5
+score_value = 3
+health = 3.0
+metadata/_custom_type_script = "uid://bkkhcsfw4x2f8"

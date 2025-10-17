@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="CompositeEnemyData" load_steps=3 format=3 uid="uid://bx8jboco07k1dv"]
+
+[ext_resource type="Script" path="res://models/composite_enemy_data.gd" id="1_composite"]
+[ext_resource type="Resource" uid="uid://cd5da4nryvwcs" path="res://resources/enemy_data/single_tap.tres" id="2_single"]
+
+[resource]
+script = ExtResource("1_composite")
+name = "连点"
+description = "拥有三个身体部分，需要快速连续击败"
+child_enemy_datas = Array[Resource("res://models/enemy_data.gd")]([ExtResource("2_single"), ExtResource("2_single"), ExtResource("2_single")])
+formation_type = 0
+formation_spacing = 50.0

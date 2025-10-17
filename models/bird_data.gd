@@ -18,7 +18,6 @@ func get_icon_texture() -> Texture2D:
 	else:
 		return load(default_icon_path)
 
-
 # 获取星星颜色
 func get_bubble_color() -> Enums.BubbleColor:
 	if !bubble_color:

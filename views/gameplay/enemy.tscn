@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://0knxd5an4cf5"]
+
+[ext_resource type="Script" uid="uid://cws4jq684h1eq" path="res://views/gameplay/enemy.gd" id="1_r8fr4"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_collision"]
+radius = 32.0
+
+[node name="Enemy" type="Node2D"]
+script = ExtResource("1_r8fr4")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+visibility_layer = 2
+shape = SubResource("CircleShape2D_collision")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]

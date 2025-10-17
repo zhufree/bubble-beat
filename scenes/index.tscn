@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://shgutmrejcwc"]
 
 [ext_resource type="Script" uid="uid://cjm4fumgpipre" path="res://scenes/index.gd" id="1_74d6c"]
-[ext_resource type="FontFile" uid="uid://dnyg6pd3wordy" path="res://assets/fonts/RHR-CN-0.990/ResourceHanRoundedCN-Heavy.ttf" id="2_hhnvu"]
+[ext_resource type="FontFile" uid="uid://dka4pv05igpyj" path="res://assets/fonts/RHR-CN-0.990/ResourceHanRoundedCN-Heavy.ttf" id="2_hhnvu"]
 [ext_resource type="PackedScene" uid="uid://ct6uqela0dqu5" path="res://views/indicator_button.tscn" id="2_igtc1"]
 [ext_resource type="PackedScene" uid="uid://cvfd4katrol6k" path="res://views/test/add_bird.tscn" id="4_hhnvu"]
 
@@ -21,7 +21,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.41802424, 0.7307942, 0.48194933, 1)
+color = Color(0.418024, 0.730794, 0.481949, 1)
 
 [node name="MarginContainer" type="MarginContainer" parent="ColorRect"]
 layout_mode = 1
@@ -69,4 +69,3 @@ offset_left = 116.0
 offset_top = 467.0
 offset_right = 300.0
 offset_bottom = 498.0
-skill_ball = Array[int]([2, 2, 0])

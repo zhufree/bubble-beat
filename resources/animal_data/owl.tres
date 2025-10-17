@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="AnimalData" load_steps=3 format=3 uid="uid://d25us6tpdwjpm"]
+
+[ext_resource type="Texture2D" uid="uid://b0ve8ykr0jtuh" path="res://assets/sprites/animals/owl.png" id="1_o7ua7"]
+[ext_resource type="Script" uid="uid://drioww6lkppvv" path="res://models/animal_data.gd" id="1_v8aot"]
+
+[resource]
+script = ExtResource("1_v8aot")
+name = "猫头鹰"
+icon = ExtResource("1_o7ua7")
+bust = ExtResource("1_o7ua7")
+key_binding = "S"
+energy_color = Color(1, 0.8, 0.2, 1)
+metadata/_custom_type_script = "uid://drioww6lkppvv"
