@@ -87,7 +87,10 @@ func _update_energy_bar(old_value: int, new_value: int) -> void:
 
 	# 检查是否满能量
 	if new_value >= animal_data.skill_energy_required:
-		_start_full_energy_animation()
+		# 延迟启动脉动动画，等待填充动画完成
+		await get_tree().create_timer(0.3).timeout
+		if energy >= animal_data.skill_energy_required:  # 再次确认仍然满能量
+			_start_full_energy_animation()
 	elif old_value >= animal_data.skill_energy_required:
 		_stop_full_energy_animation()
 

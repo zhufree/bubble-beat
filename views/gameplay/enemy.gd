@@ -14,7 +14,7 @@ signal reached_hinterland(enemy: Enemy)
 
 @export var enemy_data: EnemyData
 @export var move_speed: float = 200.0  # 移动速度（像素/秒）
-@export var target_y: float = 880.0  # 目标Y坐标（Hinterland位置）
+@export var target_y: float = 780.0  # 目标Y坐标（Hinterland位置）
 
 var current_health: float
 var is_defeated: bool = false
@@ -41,7 +41,7 @@ func _initialize() -> void:
 	current_health = enemy_data.health
 	is_defeated = false
 
-## 设置视觉元素（虚函数）
+## 设置视觉元素
 ## @virtual
 func _setup_visual() -> void:
 	if sprite and enemy_data.sprite:

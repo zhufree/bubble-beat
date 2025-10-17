@@ -6,3 +6,4 @@
 [resource]
 script = ExtResource("1_fun17")
 sprite = ExtResource("2_alxru")
+energy_color = Color(0.4, 1, 0.4, 1)

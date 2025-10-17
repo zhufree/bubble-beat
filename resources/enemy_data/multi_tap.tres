@@ -7,6 +7,7 @@
 script = ExtResource("1_composite")
 name = "连点"
 description = "拥有三个身体部分，需要快速连续击败"
+energy_color = Color(0.3, 0.7, 1, 1)
 child_enemy_datas = Array[Resource("res://models/enemy_data.gd")]([ExtResource("2_single"), ExtResource("2_single"), ExtResource("2_single")])
 formation_type = 0
 formation_spacing = 50.0

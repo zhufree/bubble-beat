@@ -23,7 +23,7 @@ static var _scene_cache: Dictionary = {}
 static func spawn(
 	enemy_data: EnemyData,
 	parent: Node,
-	target_y: float = 880.0,
+	target_y: float = 780.0,
 	move_speed: float = 200.0
 ) -> Array[Enemy]:
 	if not enemy_data:
@@ -74,7 +74,7 @@ static func spawn(
 static func _spawn_composite_enemy(
 	enemy_data: EnemyData,
 	parent: Node,
-	target_y: float = 880.0,
+	target_y: float = 780.0,
 	move_speed: float = 200.0
 ) -> Array[Enemy]:	
 	var enemies: Array[Enemy] = []
@@ -119,7 +119,7 @@ static func _spawn_composite_enemy(
 static func spawn_weighted(
 	enemy_pool: Array,
 	parent: Node,
-	target_y: float = 880.0,
+	target_y: float = 780.0,
 	move_speed: float = 200.0
 ) -> Array[Enemy]:
 	if enemy_pool.is_empty():
@@ -157,7 +157,7 @@ static func spawn_with_weights(
 	enemy_datas: Array[EnemyData],
 	weights: Array[float],
 	parent: Node,
-	target_y: float = 880.0,
+	target_y: float = 780.0,
 	move_speed: float = 200.0
 ) -> Array[Enemy]:
 	if enemy_datas.is_empty():

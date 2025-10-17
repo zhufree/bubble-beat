@@ -106,14 +106,14 @@ func _spawn_enemy() -> void:
 		return
 
 	# 使用工厂的加权生成
-	var weights: Array[float] = [0.6, 0.3, 0.1]  # 单点:60%, 连点:30%, 巨大化:10%
+	var weights: Array[float] = [0.8, 0.1, 0.1]  # 单点:80%, 连点:10%, 巨大化:10%
 
 	# 使用 EnemySpawner 工厂生成敌人
 	var enemy_instance = EnemySpawner.spawn_with_weights(
 		enemy_types,
 		weights,
 		enemy_area,
-		hinterland.position.y,
+		hinterland.position.y - 100.0,
 		200.0  # move_speed
 	)
 
