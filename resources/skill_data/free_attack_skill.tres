@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://models/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_name = "无限连击"
+description = "持续5秒内，攻击不消耗攻击次数"
+duration = 5.0
+property_modifiers = [{
+	"property": "can_free_attack",
+	"value": true,
+	"operation": "set"
+}]
+effect_color = Color(0.0, 1.0, 0.0, 1.0)

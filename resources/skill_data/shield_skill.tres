@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=2 format=3 uid="uid://ntwayxbve6t1"]
+
+[ext_resource type="Script" uid="uid://bryqru1u6je4s" path="res://models/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_name = "无敌护盾"
+description = "持续5秒内，免疫所有敌人伤害"
+skill_type = 3
+effect_color = Color(0, 0.8, 1, 1)

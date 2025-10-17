@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=2 format=3 uid="uid://ht8nsao6r70s"]
+
+[ext_resource type="Script" uid="uid://bryqru1u6je4s" path="res://models/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_name = "积分狂潮"
+description = "持续5秒内，所有获得的积分翻倍"
+skill_type = 2
+effect_color = Color(1, 0.843, 0, 1)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dk8vhn6l7ihh3"]
+[gd_scene load_steps=10 format=3 uid="uid://dk8vhn6l7ihh3"]
 
 [ext_resource type="PackedScene" uid="uid://d3n2b5wrjdhu0" path="res://views/gameplay/animal.tscn" id="1_7biu0"]
 [ext_resource type="Script" uid="uid://cxgfuigam05p6" path="res://scenes/gameplay.gd" id="1_gameplay"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dh7mk3xbkv8rq" path="res://views/gameplay/score_ui.tscn" id="4_ct7aa"]
 [ext_resource type="Resource" uid="uid://b84opwkiml62f" path="res://resources/animal_data/balloon_bear.tres" id="4_ocj2s"]
 [ext_resource type="PackedScene" uid="uid://dkg3dewx7jyhm" path="res://views/gameplay/boss.tscn" id="6_din8e"]
+[ext_resource type="PackedScene" path="res://views/gameplay/shield_overlay.tscn" id="7_shield"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a6gd1"]
 size = Vector2(576, 166)
@@ -25,6 +26,12 @@ color = Color(0.45607007, 0.7278994, 0.75919205, 1)
 
 [node name="Hinterland" type="Area2D" parent="."]
 position = Vector2(960, 880)
+
+[node name="ShieldOverlay" parent="Hinterland" instance=ExtResource("7_shield")]
+offset_left = -300.0
+offset_top = -60.0
+offset_right = 300.0
+offset_bottom = 120.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hinterland"]
 position = Vector2(0, 33)
@@ -75,10 +82,10 @@ position = Vector2(960, 100)
 
 [node name="ScoreUI" parent="." instance=ExtResource("4_ct7aa")]
 offset_left = 100.0
-offset_top = 390.0
-offset_right = 300.0
-offset_bottom = 690.0
+offset_top = 400.0
+offset_right = 500.0
+offset_bottom = 700.0
 size_flags_horizontal = 4
 
-[node name="BossContainer" parent="." instance=ExtResource("6_din8e")]
+[node name="Boss" parent="." instance=ExtResource("6_din8e")]
 position = Vector2(960, 100)

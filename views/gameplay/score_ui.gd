@@ -4,10 +4,13 @@ extends Control
 @onready var combo_container: VBoxContainer = $Panel/MarginContainer/VBoxContainer/ComboContainer
 @onready var combo_label: Label = $Panel/MarginContainer/VBoxContainer/ComboContainer/ComboLabel
 @onready var multiplier_label: Label = $Panel/MarginContainer/VBoxContainer/ComboContainer/MultiplierLabel
+@onready var skill_multiplier_container: VBoxContainer = $Panel/MarginContainer/VBoxContainer/SkillMultiplierContainer
+@onready var skill_multiplier_label: Label = $Panel/MarginContainer/VBoxContainer/SkillMultiplierContainer/SkillMultiplierLabel
 
 var current_score: int = 0
 var current_combo: int = 0
 var current_multiplier: float = 1.0
+var current_skill_multiplier: float = 1.0
 
 func _ready() -> void:
 	update_score(0, 0, 1.0)
@@ -24,6 +27,10 @@ func update_score(score: int, combo: int, multiplier: float) -> void:
 		current_combo = combo
 		current_multiplier = multiplier
 		_update_combo_display()
+	
+func update_skill_multiplier(multiplier: float) -> void:
+	current_skill_multiplier = multiplier
+	_update_skill_multiplier_display()
 
 # 分数变化动画
 func _animate_score_change(from: int, to: int) -> void:
@@ -101,3 +108,47 @@ func _create_shake_effect() -> void:
 	tween.tween_property(combo_container, "position", original_pos + Vector2(5, 0), 0.05)
 	tween.tween_property(combo_container, "position", original_pos - Vector2(5, 0), 0.05)
 	tween.finished.connect(func(): combo_container.position = original_pos)
+
+# 更新技能倍率显示
+func _update_skill_multiplier_display() -> void:
+	# 当技能倍率大于1时显示
+	if current_skill_multiplier > 1.0:
+		skill_multiplier_container.visible = true
+		skill_multiplier_label.text = "x" + str(current_skill_multiplier)
+		
+		# 根据倍率设置颜色
+		var color: Color
+		if current_skill_multiplier >= 4.0:
+			color = Color(1.0, 0.2, 1.0, 1.0)  # 紫色
+		elif current_skill_multiplier >= 2.0:
+			color = Color(1.0, 0.5, 1.0, 1.0)  # 粉紫色
+		else:
+			color = Color(0.8, 0.8, 1.0, 1.0)  # 浅蓝色
+		
+		skill_multiplier_label.add_theme_color_override("font_color", color)
+		
+		# 出现动画
+		var appear_tween = create_tween()
+		appear_tween.set_parallel(true)
+		appear_tween.tween_property(skill_multiplier_label, "scale", Vector2(1.3, 1.3), 0.15)
+		appear_tween.tween_property(skill_multiplier_label, "scale", Vector2(1.0, 1.0), 0.2).set_delay(0.15)
+		
+		# 高倍率时添加脉冲效果
+		if current_skill_multiplier >= 2.0:
+			_create_skill_pulse_effect()
+	else:
+		# 倍率恢复为1时添加消失动画
+		if skill_multiplier_container.visible:
+			var fade_tween = create_tween()
+			fade_tween.tween_property(skill_multiplier_container, "modulate:a", 0.0, 0.3)
+			fade_tween.finished.connect(func():
+				skill_multiplier_container.visible = false
+				skill_multiplier_container.modulate.a = 1.0
+			)
+
+# 技能倍率脉冲效果
+func _create_skill_pulse_effect() -> void:
+	var pulse_tween = create_tween()
+	pulse_tween.set_loops(2)
+	pulse_tween.tween_property(skill_multiplier_label, "scale", Vector2(1.1, 1.1), 0.3)
+	pulse_tween.tween_property(skill_multiplier_label, "scale", Vector2(1.0, 1.0), 0.3)

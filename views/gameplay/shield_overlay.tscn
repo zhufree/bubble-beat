@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://cjb8n4xqy7yqv"]
+
+[ext_resource type="Script" path="res://views/gameplay/shield_overlay.gd" id="1_shield"]
+
+[node name="ShieldOverlay" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 600.0
+offset_bottom = 180.0
+mouse_filter = 2
+script = ExtResource("1_shield")
+

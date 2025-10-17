@@ -1,9 +1,9 @@
 [gd_scene load_steps=3 format=3 uid="uid://dh7mk3xbkv8rq"]
 
-[ext_resource type="Script" path="res://views/gameplay/score_ui.gd" id="1_score_ui"]
+[ext_resource type="Script" uid="uid://dmk7upb151cjq" path="res://views/gameplay/score_ui.gd" id="1_score_ui"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
-bg_color = Color(0.1, 0.1, 0.15, 0.85)
+bg_color = Color(0.12156863, 0.12156863, 0.17254902, 0.1882353)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -23,7 +23,7 @@ anchor_top = 0.5
 anchor_bottom = 0.5
 offset_left = 40.0
 offset_top = -150.0
-offset_right = 240.0
+offset_right = 440.0
 offset_bottom = 150.0
 grow_vertical = 2
 script = ExtResource("1_score_ui")
@@ -86,4 +86,24 @@ layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 0, 1)
 theme_override_font_sizes/font_size = 32
 text = "x1.5"
+horizontal_alignment = 1
+
+[node name="SkillMultiplierContainer" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 5
+alignment = 1
+
+[node name="SkillTitleLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/SkillMultiplierContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.7, 0.8, 1)
+theme_override_font_sizes/font_size = 16
+text = "SKILL"
+horizontal_alignment = 1
+
+[node name="SkillMultiplierLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/SkillMultiplierContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.5, 1, 1)
+theme_override_font_sizes/font_size = 36
+text = "x2.0"
 horizontal_alignment = 1

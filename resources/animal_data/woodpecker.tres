@@ -1,14 +1,18 @@
-[gd_resource type="Resource" script_class="AnimalData" load_steps=3 format=3 uid="uid://b2yji08haqrxg"]
+[gd_resource type="Resource" script_class="AnimalData" load_steps=4 format=3 uid="uid://b2yji08haqrxg"]
 
 [ext_resource type="Script" uid="uid://drioww6lkppvv" path="res://models/animal_data.gd" id="1_df6da"]
 [ext_resource type="Texture2D" uid="uid://d3x7an3uxcbiy" path="res://assets/sprites/animals/woodpecker.png" id="1_kuu1d"]
+[ext_resource type="Resource" path="res://resources/skill_data/score_multiplier_skill.tres" id="2_skill"]
 
 [resource]
 script = ExtResource("1_df6da")
 name = "啄木鸟"
 icon = ExtResource("1_kuu1d")
+bust = ExtResource("1_kuu1d")
+description = "敏捷的攻击者，能够让积分成倍增加"
 animal_type = 2
 energy_color = Color(0.2, 1, 0.4, 1)
 attack_cooldown = 0.15
 max_attack_count = 5
+skill = ExtResource("2_skill")
 metadata/_custom_type_script = "uid://drioww6lkppvv"

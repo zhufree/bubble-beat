@@ -22,3 +22,6 @@ enum AnimalType{
 @export var skill_energy_required: int = 7  # 释放技能所需能量
 @export var single_attack_damage: float = 1.0 # 单次攻击最大伤害
 @export var max_hold_time: float = 15.0 #最大长按时间（秒）
+
+# 技能属性
+@export var skill: SkillData  # 动物的技能数据

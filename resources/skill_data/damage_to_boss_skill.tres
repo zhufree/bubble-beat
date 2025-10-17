@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=2 format=3 uid="uid://cjn8m1dinpllf"]
+
+[ext_resource type="Script" uid="uid://bryqru1u6je4s" path="res://models/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+skill_name = "Boss猎手"
+description = "持续5秒内，所有获得的积分将直接对BOSS造成等量伤害"
+skill_type = 1
+effect_color = Color(1, 0.2, 0.2, 1)

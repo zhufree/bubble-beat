@@ -180,13 +180,61 @@ func on_enemy_attack(enemy) -> void:
 func consume_energy(amount: int = 1) -> void:
 	energy = max(energy - amount, 0)
 
+# 检查是否可以使用技能
+func can_use_skill() -> bool:
+	return energy >= animal_data.skill_energy_required and animal_data.skill != null
+
 # 释放技能
 func use_skill() -> bool:
-	if energy >= animal_data.skill_energy_required:
+	if can_use_skill():
 		energy = 0
-		# 技能释放效果可以在这里添加
+		# 播放释放动画
+		_play_skill_release_animation()
 		return true
 	return false
+
+# 播放技能动画效果
+func play_skill_animation(effect_color: Color) -> void:
+	# 创建闪光效果
+	var flash_duration = 0.3
+	var tween = create_tween()
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_trans(Tween.TRANS_SINE)
+	
+	# 保存原始调制颜色
+	var original_modulate = modulate
+	
+	# 闪光效果
+	tween.tween_property(self, "modulate", effect_color, flash_duration * 0.5)
+	tween.tween_property(self, "modulate", original_modulate, flash_duration * 0.5)
+	
+	# 缩放效果
+	var scale_tween = create_tween()
+	scale_tween.set_ease(Tween.EASE_OUT)
+	scale_tween.set_trans(Tween.TRANS_ELASTIC)
+	scale_tween.tween_property(icon, "scale", Vector2(1.2, 1.2), 0.2)
+	scale_tween.tween_property(icon, "scale", Vector2(1.0, 1.0), 0.3)
+
+# 播放技能释放动画
+func _play_skill_release_animation() -> void:
+	# 能量条清空动画已在 energy setter 中处理
+	
+	# 图标释放效果
+	var tween = create_tween()
+	tween.set_ease(Tween.EASE_OUT)
+	tween.set_trans(Tween.TRANS_BACK)
+	
+	# 脉冲效果
+	tween.tween_property(icon, "scale", Vector2(1.3, 1.3), 0.1)
+	tween.tween_property(icon, "scale", Vector2(0.9, 0.9), 0.1)
+	tween.tween_property(icon, "scale", Vector2(1.0, 1.0), 0.2)
+	
+	# 旋转效果
+	var rotate_tween = create_tween()
+	rotate_tween.set_ease(Tween.EASE_OUT)
+	rotate_tween.set_trans(Tween.TRANS_QUAD)
+	rotate_tween.tween_property(icon, "rotation", deg_to_rad(360), 0.5)
+	rotate_tween.tween_callback(func(): icon.rotation = 0)
 
 func _on_recovery_timer_timeout() -> void:
 	if attack_count < animal_data.max_attack_count:

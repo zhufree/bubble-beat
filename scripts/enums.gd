@@ -12,6 +12,14 @@ enum GameStatus {NOTSTARTED, PLAYING, PAUSED, FINISHED}
 enum BirdType {CHICK, FLEDGLING, FLYER, PHOENIX}
 enum PressKeyCode {DEFAULT, KEY_E, KEY_D, KEY_O, KEY_K}
 
+# 技能类型枚举
+enum SkillType {
+	FREE_ATTACK,       # 免费攻击（不消耗攻击次数）
+	DAMAGE_TO_BOSS,    # 积分转化为BOSS伤害
+	SCORE_MULTIPLIER,  # 分数倍率提升
+	SHIELD,            # 护盾（防止敌人到达后排时扣血）
+}
+
 
 static func bubble_color_icon_sprite(color: BubbleColor) -> String:
 	match color:
