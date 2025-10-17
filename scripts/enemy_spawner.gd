@@ -19,21 +19,26 @@ static var _scene_cache: Dictionary = {}
 ## @param spawn_position: 生成位置
 ## @param target_y: 目标Y坐标
 ## @param move_speed: 移动速度
-## @return: 生成的敌人实例（Enemy 或 CompositeEnemy）
+## @return: 生成的敌人实例（Enemy）或子敌人数组（CompositeEnemy）
 static func spawn(
 	enemy_data: EnemyData,
 	parent: Node,
 	target_y: float = 880.0,
 	move_speed: float = 200.0
-) -> Node2D:
+) -> Array[Enemy]:
 	if not enemy_data:
 		push_error("EnemySpawner: enemy_data is null!")
-		return null
+		return []
 
 	if not parent:
 		push_error("EnemySpawner: parent node is null!")
-		return null
+		return []
 
+	# 检查是否是组合敌人
+	if enemy_data is CompositeEnemyData:
+		return _spawn_composite_enemy(enemy_data, parent, target_y, move_speed)
+
+	# 普通敌人生成
 	# 通过数据对象的虚函数获取场景路径（多态）
 	var scene_path = enemy_data.get_scene_path()
 
@@ -41,7 +46,7 @@ static func spawn(
 	var scene: PackedScene = _get_cached_scene(scene_path)
 	if not scene:
 		push_error("EnemySpawner: Failed to load scene: " + scene_path)
-		return null
+		return []
 
 	# 实例化敌人
 	var enemy_instance: Node2D = scene.instantiate()
@@ -58,7 +63,51 @@ static func spawn(
 	# 添加到父节点
 	parent.add_child(enemy_instance)
 
-	return enemy_instance
+	return [enemy_instance]
+
+## 生成组合敌人（内部方法）
+## @param composite_data: 组合敌人数据
+## @param parent: 父节点
+## @param target_y: 目标Y坐标
+## @param move_speed: 移动速度
+## @return: 子敌人数组
+static func _spawn_composite_enemy(
+	enemy_data: EnemyData,
+	parent: Node,
+	target_y: float = 880.0,
+	move_speed: float = 200.0
+) -> Array[Enemy]:	
+	var enemies: Array[Enemy] = []
+	var offsets: Array[Vector2] = enemy_data.get_formation_offsets()
+
+	for i in range(enemy_data.child_enemy_datas.size()):
+		if i >= offsets.size():
+			push_warning("EnemySpawner: Not enough formation offsets for all children")
+			break
+
+		var child_data = enemy_data.child_enemy_datas[i]
+		var offset = offsets[i]
+	
+		# 使用场景路径加载子敌人
+		var scene_path = child_data.get_scene_path()
+		var scene = _get_cached_scene(scene_path)
+		if not scene:
+			push_error("EnemySpawner: Failed to load child enemy scene: " + scene_path)
+			continue
+
+		var child_enemy: Enemy = scene.instantiate()
+		child_enemy.enemy_data = child_data
+		child_enemy.target_y = target_y
+		child_enemy.move_speed = move_speed
+
+		# 设置子敌人的初始位置偏移
+		child_enemy.position = offset
+
+		# 添加到父节点
+		parent.add_child(child_enemy)
+		enemies.append(child_enemy)
+
+	return enemies
 
 ## 加权随机生成敌人
 ## @param enemy_pool: 敌人数据池 [{data: EnemyData, weight: float}]
@@ -66,16 +115,16 @@ static func spawn(
 ## @param spawn_position: 生成位置
 ## @param target_y: 目标Y坐标
 ## @param move_speed: 移动速度
-## @return: 生成的敌人实例
+## @return: 生成的敌人实例数组（Array[Enemy]）
 static func spawn_weighted(
 	enemy_pool: Array,
 	parent: Node,
 	target_y: float = 880.0,
 	move_speed: float = 200.0
-) -> Node2D:
+) -> Array[Enemy]:
 	if enemy_pool.is_empty():
 		push_error("EnemySpawner: enemy_pool is empty!")
-		return null
+		return []
 
 	# 计算总权重
 	var total_weight: float = 0.0
@@ -94,9 +143,7 @@ static func spawn_weighted(
 			var _enemy_data: EnemyData = entry.get("data")
 			return spawn(_enemy_data, parent, target_y, move_speed)
 
-	# 默认返回第一个（不应该到达这里）
-	var enemy_data: EnemyData = enemy_pool[0].get("data")
-	return spawn(enemy_data, parent, target_y, move_speed)
+	return []
 
 ## 简化的加权生成（使用数组和权重数组）
 ## @param enemy_datas: 敌人数据数组
@@ -105,21 +152,21 @@ static func spawn_weighted(
 ## @param spawn_position: 生成位置
 ## @param target_y: 目标Y坐标
 ## @param move_speed: 移动速度
-## @return: 生成的敌人实例
+## @return: 生成的敌人实例数组（Array[Enemy]）
 static func spawn_with_weights(
 	enemy_datas: Array[EnemyData],
 	weights: Array[float],
-	parent: Node,	
+	parent: Node,
 	target_y: float = 880.0,
 	move_speed: float = 200.0
-) -> Node2D:
+) -> Array[Enemy]:
 	if enemy_datas.is_empty():
 		push_error("EnemySpawner: enemy_datas is empty!")
-		return null
+		return []
 
 	if enemy_datas.size() != weights.size():
 		push_error("EnemySpawner: enemy_datas and weights size mismatch!")
-		return null
+		return []
 
 	# 构建 pool
 	var pool = []
@@ -155,5 +202,12 @@ static func preload_from_enemy_datas(enemy_datas: Array[EnemyData]) -> void:
 	var paths: Array[String] = []
 	for data in enemy_datas:
 		if data:
-			paths.append(data.get_scene_path())
+			# 如果是组合敌人，预加载所有子敌人的场景
+			if data is CompositeEnemyData:
+				var composite = data as CompositeEnemyData
+				for child_data in composite.child_enemy_datas:
+					if child_data:
+						paths.append(child_data.get_scene_path())
+			else:
+				paths.append(data.get_scene_path())
 	preload_scenes(paths)

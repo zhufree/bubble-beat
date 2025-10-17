@@ -30,9 +30,10 @@ func _init() -> void:
 	score_value = 0
 	energy_damage = 0
 
-## 返回组合敌人的场景路径
+## 返回空路径，组合敌人不使用场景文件
+## 实际生成逻辑在 EnemySpawner 中处理
 func get_scene_path() -> String:
-	return "res://views/gameplay/composite_enemy.tscn"
+	return ""  # 组合敌人不需要场景文件
 
 ## 计算子敌人的总分数
 func get_total_score() -> int:

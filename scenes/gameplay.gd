@@ -121,24 +121,15 @@ func _spawn_enemy() -> void:
 		push_error("Failed to spawn enemy!")
 		return
 
-	# 连接信号（统一处理 Enemy 和 CompositeEnemy）
+	# 连接信号
 	_connect_enemy_signals(enemy_instance)
 
-## 连接敌人信号（支持 Enemy 和 CompositeEnemy）
-func _connect_enemy_signals(enemy_instance: Node2D) -> void:
-	# 检查是否是 CompositeEnemy
-	if enemy_instance is CompositeEnemy:
-		var composite = enemy_instance as CompositeEnemy
-		# 连接子敌人信号
-		composite.child_defeated.connect(_on_enemy_defeated)
-		composite.child_reached_hinterland.connect(_on_enemy_reached_hinterland)
-	# 普通敌人
-	elif enemy_instance is Enemy:
-		var enemy = enemy_instance as Enemy
-		enemy.defeated.connect(_on_enemy_defeated)
-		enemy.reached_hinterland.connect(_on_enemy_reached_hinterland)
-	else:
-		push_error("Unknown enemy type!")
+## 连接敌人信号
+func _connect_enemy_signals(enemy_instance: Array[Enemy]) -> void:
+	for enemy in enemy_instance:
+		if enemy is Enemy:
+			enemy.defeated.connect(_on_enemy_defeated)
+			enemy.reached_hinterland.connect(_on_enemy_reached_hinterland)
 
 # 尝试攻击
 func _try_attack(animal) -> void:
@@ -242,15 +233,15 @@ func _remove_enemy_from_attack_zone(enemy: Enemy) -> void:
 
 # 获取 combo 倍率
 func _get_combo_multiplier(combo: int) -> float:
-	if combo <= 3:
+	if combo <= 5:
 		return 1.0
-	elif combo <= 6:
-		return 1.5
 	elif combo <= 10:
+		return 1.5
+	elif combo <= 20:
 		return 2.0
-	elif combo <= 15:
+	elif combo <= 30:
 		return 3.0
-	elif combo <= 25:
+	elif combo <= 50:
 		return 5.0
 	else:
 		return 10.0
