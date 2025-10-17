@@ -149,4 +149,3 @@ func hide_shield() -> void:
 	tween.set_ease(Tween.EASE_IN)
 	tween.set_trans(Tween.TRANS_CUBIC)
 	tween.tween_property(self, "modulate:a", 0.0, 0.3)
-

@@ -7,6 +7,7 @@ const COMBO_KEYS := ["S", "D", "F"]
 @onready var animalList: HBoxContainer = $Hinterland/Animals
 @onready var enemy_area = $EnemyArea
 @onready var attack_zone = $Hinterland/AttackZone
+@onready var heavy_attack_zone = $Hinterland/HeavyAttackZone
 @onready var hinterland = $Hinterland
 @onready var shield_overlay = $Hinterland/ShieldOverlay
 @onready var score_ui: Control = $ScoreUI
@@ -15,6 +16,7 @@ const COMBO_KEYS := ["S", "D", "F"]
 # 敌人数据
 var enemy_types: Array[EnemyData] = []
 var enemies_in_attack_zone: Array[Enemy] = []
+var enemies_in_heavy_zone: Array[Enemy] = []
 
 # 生成设置
 @export var spawn_interval: float = 1.5
@@ -61,15 +63,22 @@ func _ready() -> void:
 	D+J - 松开J时释放啄木鸟技能
 	F+J - 松开J时释放气球熊技能
 	S+D+J - 同时释放猫头鹰与啄木鸟技能
+	黄线是猫头鹰、啄木鸟的判定区域
+	紫环是气球熊的判定区域
 	"""
 	label.position = Vector2(20, 20)
-	label.add_theme_font_size_override("font_size", 14)
+	label.add_theme_font_size_override("font_size", 20)
 	add_child(label)
 
 	# 连接攻击区域信号
 	if attack_zone:
 		attack_zone.area_entered.connect(_on_attack_zone_area_entered)
 		attack_zone.area_exited.connect(_on_attack_zone_area_exited)
+	
+	# 连接重型攻击区域信号
+	if heavy_attack_zone:
+		heavy_attack_zone.area_entered.connect(_on_heavy_zone_area_entered)
+		heavy_attack_zone.area_exited.connect(_on_heavy_zone_area_exited)
 
 # 加载敌人类型
 func _load_enemy_types() -> void:
@@ -156,6 +165,11 @@ func _connect_enemy_signals(enemy_instance: Array[Enemy]) -> void:
 func _try_attack(animal) -> void:
 	if not animal.can_attack():
 		return
+	
+	# 检查是否为重型动物，使用特殊攻击逻辑
+	if animal.animal_data.animal_type == AnimalData.AnimalType.HEAVY:
+		_try_heavy_attack(animal)
+		return
 
 	# 查找攻击区域内的敌人
 	var hit_enemy: Enemy = null
@@ -169,6 +183,57 @@ func _try_attack(animal) -> void:
 		hit_enemy.take_damage(damage, EnemyData.DamageType.TAP)
 	else:
 		print("[Attack] 攻击区域内没有可攻击的敌人")
+
+# 重型动物范围攻击
+func _try_heavy_attack(animal) -> void:
+	if not animal.can_attack():
+		return
+	
+	var remaining_damage = animal.animal_data.single_attack_damage
+	var damage_enemies: Array[Dictionary] = [] # {enemy: Enemy, damage: float}
+	# 按顺序攻击圆形范围内的敌人
+	for enemy in enemies_in_heavy_zone:
+		if enemy and not enemy.is_defeated and remaining_damage > 0:
+			# 计算实际造成的伤害（不超过敌人当前生命值）
+			var damage_dealt = min(remaining_damage, enemy.current_health)
+			damage_enemies.append({"enemy": enemy, "damage": damage_dealt})
+			remaining_damage -= damage_dealt
+			
+			print("[Heavy Attack] 对 ", enemy.enemy_data.name, " 造成 ", damage_dealt, " 伤害，剩余攻击值: ", remaining_damage)
+	
+	for damage_enemy in damage_enemies:
+		damage_enemy["enemy"].take_damage(damage_enemy["damage"], EnemyData.DamageType.TAP)
+
+	# 消耗攻击次数（无论是否击中敌人）
+	if can_free_attack:
+		animal.free_attack()
+	else:
+		animal.attack()
+	
+	if enemies_in_heavy_zone.is_empty():
+		print("[Heavy Attack] 范围内没有敌人")
+
+# 辅助函数：从 Area2D 获取敌人实例
+func _get_enemy_from_area(area: Area2D) -> Enemy:
+	if area.has_meta("enemy_instance"):
+		return area.get_meta("enemy_instance")
+	else:
+		return area.get_parent() as Enemy
+
+# 重型攻击区域检测
+func _on_heavy_zone_area_entered(area: Area2D) -> void:
+	if area.is_in_group("enemies"):
+		var enemy = _get_enemy_from_area(area)
+		if enemy and not enemy.is_defeated:
+			enemies_in_heavy_zone.append(enemy)
+			print("[Heavy Zone] 敌人进入: ", enemy.enemy_data.name)
+
+func _on_heavy_zone_area_exited(area: Area2D) -> void:
+	if area.is_in_group("enemies"):
+		var enemy = _get_enemy_from_area(area)
+		if enemy:
+			enemies_in_heavy_zone.erase(enemy)
+			print("[Heavy Zone] 敌人离开: ", enemy.enemy_data.name)
 
 # 敌人被击败
 func _on_enemy_defeated(enemy: Enemy, score: int) -> void:
@@ -247,6 +312,8 @@ func _on_attack_zone_area_exited(area: Area2D) -> void:
 func _remove_enemy_from_attack_zone(enemy: Enemy) -> void:
 	if enemy in enemies_in_attack_zone:
 		enemies_in_attack_zone.erase(enemy)
+	if enemy in enemies_in_heavy_zone:
+		enemies_in_heavy_zone.erase(enemy)
 
 
 # 获取 combo 倍率
@@ -294,7 +361,7 @@ func _show_score_popup(pos: Vector2, score: int) -> void:
 
 # ==================== BOSS相关 ====================
 ## BOSS被击败
-func _on_boss_defeated(boss: Boss, score: int) -> void:
+func _on_boss_defeated(_boss: Boss, score: int) -> void:
 	# TODO 游戏获得胜利
 	pass
 
