@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="BirdData" load_steps=4 format=3 uid="uid://b2tl0a6yo8uwy"]
 
 [ext_resource type="Script" uid="uid://c3cuvsbvfuuy0" path="res://models/bird_data.gd" id="1_bird_data"]
-[ext_resource type="Texture2D" uid="uid://cv4q3qfnsg5ql" path="res://assets/sprites/birds/rainbow.png" id="1_ias1e"]
+[ext_resource type="Texture2D" uid="uid://d0hx3gcl5lwvn" path="res://assets/sprites/birds/rainbow.png" id="1_ias1e"]
 
 [sub_resource type="Gradient" id="Gradient_xq5gs"]
 offsets = PackedFloat32Array(0, 0.33333334, 0.6666667, 1)

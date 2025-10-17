@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://doo31l7wwwfuc"]
 
 [ext_resource type="Script" uid="uid://blopgojun6r0k" path="res://views/bird_item_list.gd" id="1_ma62k"]
-[ext_resource type="FontFile" uid="uid://dnyg6pd3wordy" path="res://assets/fonts/RHR-CN-0.990/ResourceHanRoundedCN-Heavy.ttf" id="2_ma62k"]
+[ext_resource type="FontFile" uid="uid://dka4pv05igpyj" path="res://assets/fonts/RHR-CN-0.990/ResourceHanRoundedCN-Heavy.ttf" id="2_ma62k"]
 [ext_resource type="PackedScene" uid="uid://d1qqej71vdgmr" path="res://views/choose_bird_item.tscn" id="2_mlavv"]
 [ext_resource type="Texture2D" uid="uid://bnsjpv7lsnfet" path="res://assets/sprites/bubbles/blue.png" id="4_npvcg"]
 [ext_resource type="Texture2D" uid="uid://do0o0gb1u46od" path="res://assets/sprites/bubbles/green.png" id="5_xavtn"]

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="BirdData" load_steps=4 format=3 uid="uid://bm5k3j8h7wxy1"]
 
-[ext_resource type="Texture2D" uid="uid://bsij5u2kui2p" path="res://assets/sprites/birds/red_yellow.png" id="1_4wfgv"]
+[ext_resource type="Texture2D" uid="uid://brwhkn377kqlv" path="res://assets/sprites/birds/red_yellow.png" id="1_4wfgv"]
 [ext_resource type="Script" uid="uid://c3cuvsbvfuuy0" path="res://models/bird_data.gd" id="1_bird_data"]
 
 [sub_resource type="Gradient" id="Gradient_1o74l"]

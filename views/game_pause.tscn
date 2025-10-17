@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://gg36lgyob47a"]
 
 [ext_resource type="Script" uid="uid://doiifxwkl5sxp" path="res://views/game_pause.gd" id="1_gejvn"]
-[ext_resource type="FontFile" uid="uid://dnyg6pd3wordy" path="res://assets/fonts/RHR-CN-0.990/ResourceHanRoundedCN-Heavy.ttf" id="2_kvolk"]
+[ext_resource type="FontFile" uid="uid://dka4pv05igpyj" path="res://assets/fonts/RHR-CN-0.990/ResourceHanRoundedCN-Heavy.ttf" id="2_kvolk"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xh70q"]
 bg_color = Color(0.8790061, 0.5875924, 0.30984393, 0.9490196)

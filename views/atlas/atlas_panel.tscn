@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c88vg4mlyuus1" path="res://views/atlas/atlas_panel.gd" id="1_spi2c"]
 [ext_resource type="PackedScene" uid="uid://bmdl1bfnmpevj" path="res://views/atlas/atlas_line.tscn" id="2_6c3e6"]
-[ext_resource type="FontFile" uid="uid://dnyg6pd3wordy" path="res://assets/fonts/RHR-CN-0.990/ResourceHanRoundedCN-Heavy.ttf" id="2_f6ls5"]
+[ext_resource type="FontFile" uid="uid://dka4pv05igpyj" path="res://assets/fonts/RHR-CN-0.990/ResourceHanRoundedCN-Heavy.ttf" id="2_f6ls5"]
 [ext_resource type="PackedScene" uid="uid://bawy7io253ooi" path="res://views/atlas/atlas_second_panel.tscn" id="4_f6ls5"]
 
 [node name="AtlasPanel" type="Control" node_paths=PackedStringArray("atlas_line_list")]

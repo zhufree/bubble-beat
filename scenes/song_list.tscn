@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://3o1p72ug57ro"]
 
 [ext_resource type="Script" uid="uid://x0wdcd854aqm" path="res://scenes/song_list.gd" id="1_oph07"]
-[ext_resource type="FontFile" uid="uid://dnyg6pd3wordy" path="res://assets/fonts/RHR-CN-0.990/ResourceHanRoundedCN-Heavy.ttf" id="2_sbo1c"]
+[ext_resource type="FontFile" uid="uid://dka4pv05igpyj" path="res://assets/fonts/RHR-CN-0.990/ResourceHanRoundedCN-Heavy.ttf" id="2_sbo1c"]
 
 [node name="SongList" type="Control"]
 layout_mode = 3

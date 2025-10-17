@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="BirdData" load_steps=4 format=3 uid="uid://sunny001"]
 
 [ext_resource type="Script" uid="uid://c3cuvsbvfuuy0" path="res://models/bird_data.gd" id="1_bird_data"]
-[ext_resource type="Texture2D" uid="uid://f5dt6ydwxsxe" path="res://assets/sprites/birds/yellow.png" id="1_txlpp"]
+[ext_resource type="Texture2D" uid="uid://bvt88t7c04tqe" path="res://assets/sprites/birds/yellow.png" id="1_txlpp"]
 
 [sub_resource type="Gradient" id="Gradient_txlpp"]
 colors = PackedColorArray(1, 1, 0, 1, 1, 1, 0.5, 1)

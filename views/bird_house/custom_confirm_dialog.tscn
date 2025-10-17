@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://custom_confirm_dialog"]
 
-[ext_resource type="FontFile" uid="uid://dnyg6pd3wordy" path="res://assets/fonts/RHR-CN-0.990/ResourceHanRoundedCN-Heavy.ttf" id="1_font"]
+[ext_resource type="FontFile" uid="uid://dka4pv05igpyj" path="res://assets/fonts/RHR-CN-0.990/ResourceHanRoundedCN-Heavy.ttf" id="1_font"]
 [ext_resource type="Script" path="res://views/bird_house/custom_confirm_dialog.gd" id="2_script"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1"]

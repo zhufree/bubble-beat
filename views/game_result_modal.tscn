@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://bqscnchqapmui"]
 
 [ext_resource type="Script" uid="uid://dpvv2ewb7jl0v" path="res://views/game_result_modal.gd" id="1_modal"]
-[ext_resource type="FontFile" uid="uid://dnyg6pd3wordy" path="res://assets/fonts/RHR-CN-0.990/ResourceHanRoundedCN-Heavy.ttf" id="2_xh70q"]
+[ext_resource type="FontFile" uid="uid://dka4pv05igpyj" path="res://assets/fonts/RHR-CN-0.990/ResourceHanRoundedCN-Heavy.ttf" id="2_xh70q"]
 [ext_resource type="PackedScene" uid="uid://iwef11qesvie" path="res://views/bird_house/BirdSlotCard.tscn" id="3_q1jh0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xh70q"]

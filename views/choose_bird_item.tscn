@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://d1qqej71vdgmr"]
 
 [ext_resource type="Script" uid="uid://cinr5u5flypjf" path="res://views/choose_bird_item.gd" id="1_gb8po"]
-[ext_resource type="Texture2D" uid="uid://cf1uwiogbuhdj" path="res://assets/sprites/birds/green.png" id="2_0e2vg"]
+[ext_resource type="Texture2D" uid="uid://bruyxp7aaqxm4" path="res://assets/sprites/birds/green.png" id="2_0e2vg"]
 
 [node name="ChooseBirdItem" type="TextureButton"]
 custom_minimum_size = Vector2(128, 128)
