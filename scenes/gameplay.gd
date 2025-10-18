@@ -245,7 +245,7 @@ func _try_attack(animal) -> void:
 ## 尝试并行攻击（处理同组敌人）
 ## @param animal: 攻击的动物
 ## @return: 是否成功执行了并行攻击
-func _try_parallel_attack(animal) -> bool:
+func _try_parallel_attack(_animal) -> bool:
 	# 查找攻击区域内的敌人
 	var hit_enemy: Enemy = null
 	for enemy in enemies_in_attack_zone:

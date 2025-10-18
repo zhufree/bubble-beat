@@ -15,7 +15,7 @@ extends Resource
 @export var description: String = "最基础的敌人，任何动物都可以轻松击败"  # 描述
 
 # ==================== 战斗属性 ====================
-@export var energy_damage: int = 3  # 对动物能量造成的伤害
+@export var energy_damage: int = 2  # 对动物能量造成的伤害
 @export var score_value: int = 1  # 击败后获得的分数
 @export var health: float = 1.0  # 生命值
 
