@@ -130,29 +130,93 @@ func _input(event: InputEvent) -> void:
 				KEY_F:
 					combo_key_state.erase(KEY_F)
 
-# 生成敌人
+# 生成敌人组
 func _spawn_enemy() -> void:
 	if enemy_types.is_empty():
 		return
 
-	# 使用工厂的加权生成
-	var weights: Array[float] = [0.8, 0.1, 0.1]  # 单点:80%, 连点:10%, 巨大化:10%
+	# 生成随机敌人组
+	var enemy_group = _generate_random_enemy_group()
 
-	# 使用 EnemySpawner 工厂生成敌人
-	var enemy_instance = EnemySpawner.spawn_with_weights(
-		enemy_types,
-		weights,
-		enemy_area,
-		hinterland.position.y - 100.0,
-		200.0  # move_speed
+	# 计算组内间距
+	var group_spacing = 100.0
+	var total_width = (enemy_group.size() - 1) * group_spacing
+	var start_x = -total_width / 2.0
+
+	# 生成组内每个敌人
+	for i in range(enemy_group.size()):
+		var enemy_data = enemy_group[i]
+		var offset_x = start_x + i * group_spacing
+
+		# 使用 EnemySpawner 工厂生成敌人
+		var enemy_instance = EnemySpawner.spawn(
+			enemy_data,
+			enemy_area,
+			hinterland.position.y - 100.0,
+			200.0  # move_speed
+		)
+
+		if not enemy_instance or enemy_instance.is_empty():
+			push_error("Failed to spawn enemy!")
+			continue
+
+		# 设置X轴偏移（组内间距）
+		for enemy in enemy_instance:
+			enemy.position.x += offset_x
+
+		# 连接信号
+		_connect_enemy_signals(enemy_instance)
+
+## 生成随机敌人组
+## 规则：
+## 1. 数组长度不超过动物数量（3个）
+## 2. 除了单点以外的敌人，不能在数组内出现两次及以上
+## @return: 敌人数据数组
+func _generate_random_enemy_group() -> Array[EnemyData]:
+	var group: Array[EnemyData] = []
+	var max_animals = 3  # 动物数量
+
+	# 加权随机选择组的大小 (1-3)
+	var group_size = floor(sqrt(randi_range(1, max_animals * max_animals)))
+
+	# 跟踪已使用的非单点敌人
+	var used_non_single: Dictionary = {}  # enemy_type -> bool
+
+	for i in range(group_size):
+		var available_types: Array[EnemyData] = []
+
+		# 筛选可用的敌人类型
+		for enemy_data in enemy_types:
+			# 单点敌人总是可用
+			if enemy_data.name == "单点" or not enemy_data.name:
+				available_types.append(enemy_data)
+			# 非单点敌人检查是否已使用
+			elif not used_non_single.has(enemy_data.name):
+				available_types.append(enemy_data)
+
+		if available_types.is_empty():
+			# 如果没有可用类型，使用单点敌人
+			available_types.append(enemy_types[0])  # 单点敌人
+
+		# 加权随机选择一个敌人类型
+		var selected_enemy = EnemySpawner.select_weighted(available_types, [0.8, 0.1, 0.1])
+		group.append(selected_enemy)
+
+	# 排序 单点->连按->巨大化
+	group.sort_custom(func(a, b):
+		if a.name == "单点":
+			return true
+		elif b.name == "单点":
+			return false
+		elif a.name == "连按":
+			return true
+		elif b.name == "巨大化":
+			return true
+		else:
+			return false
 	)
 
-	if not enemy_instance:
-		push_error("Failed to spawn enemy!")
-		return
-
-	# 连接信号
-	_connect_enemy_signals(enemy_instance)
+	return group
 
 ## 连接敌人信号
 func _connect_enemy_signals(enemy_instance: Array[Enemy]) -> void:
@@ -165,12 +229,69 @@ func _connect_enemy_signals(enemy_instance: Array[Enemy]) -> void:
 func _try_attack(animal) -> void:
 	if not animal.can_attack():
 		return
-	
+
 	# 检查是否为重型动物，使用特殊攻击逻辑
 	if animal.animal_data.animal_type == AnimalData.AnimalType.HEAVY:
 		_try_heavy_attack(animal)
 		return
 
+	# 对于普通动物，先尝试并行攻击组内敌人
+	if _try_parallel_attack(animal):
+		return
+
+	# 如果没有组内攻击，执行常规单个攻击
+	_try_single_attack(animal)
+
+## 尝试并行攻击（处理同组敌人）
+## @param animal: 攻击的动物
+## @return: 是否成功执行了并行攻击
+func _try_parallel_attack(animal) -> bool:
+	# 查找攻击区域内的敌人
+	var hit_enemy: Enemy = null
+	for enemy in enemies_in_attack_zone:
+		if enemy and not enemy.is_defeated:
+			hit_enemy = enemy
+			break
+
+	if not hit_enemy:
+		return false
+
+	# 检查是否有同组的其他敌人在攻击区域内
+	var group_enemies: Array[Enemy] = _find_enemy_group(hit_enemy)
+
+	if group_enemies.size() <= 1:
+		# 只有单个敌人，不是并行攻击
+		return false
+
+	# 并行攻击：检查每个组内敌人对应的动物是否按下了按键
+	var all_keys_pressed = true
+	var animals_to_attack: Array = []
+
+	for group_enemy in group_enemies:
+		var target_animal = _find_animal_for_enemy(group_enemy)
+		if target_animal and _is_animal_key_pressed(target_animal):
+			animals_to_attack.append({"animal": target_animal, "enemy": group_enemy})
+		else:
+			all_keys_pressed = false
+			break
+
+	# 如果所有对应的按键都被按下，执行并行攻击
+	if all_keys_pressed and animals_to_attack.size() == group_enemies.size():
+		for attack_data in animals_to_attack:
+			var atk_animal = attack_data["animal"]
+			var atk_enemy = attack_data["enemy"]
+
+			if atk_animal.can_attack():
+				var damage = atk_animal.free_attack() if can_free_attack else atk_animal.attack()
+				atk_enemy.take_damage(damage, EnemyData.DamageType.TAP)
+
+		print("[Parallel Attack] 同时攻击 ", group_enemies.size(), " 个组内敌人")
+		return true
+
+	return false
+
+## 尝试单个攻击
+func _try_single_attack(animal) -> void:
 	# 查找攻击区域内的敌人
 	var hit_enemy: Enemy = null
 	for enemy in enemies_in_attack_zone:
@@ -184,23 +305,84 @@ func _try_attack(animal) -> void:
 	else:
 		print("[Attack] 攻击区域内没有可攻击的敌人")
 
+## 查找敌人所在的组（基于X轴位置接近的敌人）
+func _find_enemy_group(enemy: Enemy) -> Array[Enemy]:
+	var group: Array[Enemy] = [enemy]
+	var group_threshold = 150.0  # 组内敌人的最大间距
+
+	for other_enemy in enemies_in_attack_zone:
+		if other_enemy != enemy and not other_enemy.is_defeated:
+			var distance = abs(other_enemy.global_position.x - enemy.global_position.x)
+			if distance <= group_threshold:
+				group.append(other_enemy)
+
+	return group
+
+## 根据敌人位置找到对应的动物（基于X轴位置）
+func _find_animal_for_enemy(enemy: Enemy) -> Control:
+	var animals = animalList.get_children()
+	if animals.is_empty():
+		return null
+
+	# 简化逻辑：根据敌人的X位置找到最接近的动物
+	var enemy_x = enemy.global_position.x
+	var screen_center_x = get_viewport_rect().size.x / 2.0
+	var relative_x = enemy_x - screen_center_x
+
+	# 将屏幕分成3个区域（对应3个动物）
+	var zone_width = 200.0
+	var zone_index = 0
+
+	if relative_x < -zone_width / 2:
+		zone_index = 0  # 左侧
+	elif relative_x > zone_width / 2:
+		zone_index = 2  # 右侧
+	else:
+		zone_index = 1  # 中间
+
+	zone_index = clamp(zone_index, 0, animals.size() - 1)
+	return animals[zone_index]
+
+## 检查动物对应的按键是否被按下
+func _is_animal_key_pressed(animal) -> bool:
+	if not animal or not animal.has_method("key_binding"):
+		return false
+
+	var key_code = _get_key_by_string(animal.key_binding)
+	return combo_key_state.has(key_code)
+
 # 重型动物范围攻击
 func _try_heavy_attack(animal) -> void:
 	if not animal.can_attack():
 		return
-	
+
 	var remaining_damage = animal.animal_data.single_attack_damage
 	var damage_enemies: Array[Dictionary] = [] # {enemy: Enemy, damage: float}
-	# 按顺序攻击圆形范围内的敌人
+
+	# 优先攻击巨大化敌人
+	var giant_enemies: Array[Enemy] = []
+	var normal_enemies: Array[Enemy] = []
+
 	for enemy in enemies_in_heavy_zone:
-		if enemy and not enemy.is_defeated and remaining_damage > 0:
+		if enemy and not enemy.is_defeated:
+			if enemy.enemy_data.name == "巨大化":
+				giant_enemies.append(enemy)
+			else:
+				normal_enemies.append(enemy)
+
+	# 先处理巨大化敌人，再处理普通敌人
+	var sorted_enemies = giant_enemies + normal_enemies
+
+	# 按顺序攻击圆形范围内的敌人
+	for enemy in sorted_enemies:
+		if remaining_damage > 0:
 			# 计算实际造成的伤害（不超过敌人当前生命值）
 			var damage_dealt = min(remaining_damage, enemy.current_health)
 			damage_enemies.append({"enemy": enemy, "damage": damage_dealt})
 			remaining_damage -= damage_dealt
-			
+
 			print("[Heavy Attack] 对 ", enemy.enemy_data.name, " 造成 ", damage_dealt, " 伤害，剩余攻击值: ", remaining_damage)
-	
+
 	for damage_enemy in damage_enemies:
 		damage_enemy["enemy"].take_damage(damage_enemy["damage"], EnemyData.DamageType.TAP)
 
@@ -209,7 +391,7 @@ func _try_heavy_attack(animal) -> void:
 		animal.free_attack()
 	else:
 		animal.attack()
-	
+
 	if enemies_in_heavy_zone.is_empty():
 		print("[Heavy Attack] 范围内没有敌人")
 

@@ -1,5 +1,4 @@
 extends Line2D
-class_name ColorLine
 
 @onready var gradient_line: Line2D = $Gradient
 @export var line_index:int = 1  ## line1为上面那根线，line2为下面那根线

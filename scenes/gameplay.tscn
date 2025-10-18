@@ -1,9 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://dk8vhn6l7ihh3"]
+[gd_scene load_steps=11 format=3 uid="uid://dk8vhn6l7ihh3"]
 
 [ext_resource type="PackedScene" uid="uid://d3n2b5wrjdhu0" path="res://views/gameplay/animal.tscn" id="1_7biu0"]
 [ext_resource type="Script" uid="uid://cxgfuigam05p6" path="res://scenes/gameplay.gd" id="1_gameplay"]
 [ext_resource type="Resource" uid="uid://b2yji08haqrxg" path="res://resources/animal_data/woodpecker.tres" id="3_ct7aa"]
-[ext_resource type="Script" uid="uid://biikmtxeoumdr" path="res://views/color_line.gd" id="3_e124b"]
 [ext_resource type="PackedScene" uid="uid://dh7mk3xbkv8rq" path="res://views/gameplay/score_ui.tscn" id="4_ct7aa"]
 [ext_resource type="Resource" uid="uid://b84opwkiml62f" path="res://resources/animal_data/balloon_bear.tres" id="4_ocj2s"]
 [ext_resource type="PackedScene" uid="uid://dkg3dewx7jyhm" path="res://views/gameplay/boss.tscn" id="6_din8e"]
@@ -13,10 +12,10 @@
 size = Vector2(576, 166)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l1v76"]
-size = Vector2(567, 10)
+size = Vector2(576, 10)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_heavy"]
-radius = 70.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4bh5q"]
+size = Vector2(576, 80)
 
 [node name="Gameplay" type="Node2D"]
 script = ExtResource("1_gameplay")
@@ -58,15 +57,13 @@ position = Vector2(0, -158)
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hinterland/HeavyAttackZone"]
-shape = SubResource("CircleShape2D_heavy")
+position = Vector2(0, -10)
+shape = SubResource("RectangleShape2D_4bh5q")
 
-[node name="ColorLine" type="Line2D" parent="Hinterland/HeavyAttackZone"]
-scale = Vector2(0.87206864, 0.87206864)
-points = PackedVector2Array(-62.036743, -21.029419, -45.213257, -48.367676, -18.926453, -64.13971, 18.926514, -64.13971, 47.316162, -47.316162, 64.13965, -21.029419, 63.088257, 21.029419, 45.213257, 48.367615, 19.977905, 62.036743, -19.977966, 60.98529, -46.26471, 44.161743, -63.088257, 15.772095, -62.036743, -21.029419)
-width = 5.0
-default_color = Color(0.81960785, 0.41960785, 0.99607843, 0.2)
-script = ExtResource("3_e124b")
-metadata/_custom_type_script = "uid://biikmtxeoumdr"
+[node name="Line2D2" type="Line2D" parent="Hinterland/HeavyAttackZone"]
+points = PackedVector2Array(-288, -15, 288, -15)
+width = 70.0
+default_color = Color(0.8352941, 0.5019608, 0.9490196, 0.2627451)
 
 [node name="Animals" type="HBoxContainer" parent="Hinterland"]
 offset_left = -287.0

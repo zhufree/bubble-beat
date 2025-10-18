@@ -12,6 +12,7 @@ extends Node
 
 # 场景缓存
 static var _scene_cache: Dictionary = {}
+static var single_tap = load("res://resources/enemy_data/single_tap.tres")
 
 ## 生成单个敌人
 ## @param enemy_data: 敌人数据
@@ -109,6 +110,29 @@ static func _spawn_composite_enemy(
 
 	return enemies
 
+## 加权选择随机敌人类型
+static func select_weighted(
+	enemy_datas: Array[EnemyData],
+	weights: Array[float]
+) -> EnemyData:
+	# 计算总权重
+	var total_weight: float = 0.0
+	for i in range(enemy_datas.size()):
+		total_weight += weights[i] if weights[i] else 0.1
+
+	# 随机选择
+	var rand_value = randf() * total_weight
+	var accumulated_weight: float = 0.0
+
+	for i in range(enemy_datas.size()):
+		var weight = weights[i] if weights[i] else 0.1
+		accumulated_weight += weight
+
+		if rand_value <= accumulated_weight:
+			return enemy_datas[i]
+
+	return single_tap
+
 ## 加权随机生成敌人
 ## @param enemy_pool: 敌人数据池 [{data: EnemyData, weight: float}]
 ## @param parent: 父节点
@@ -117,46 +141,9 @@ static func _spawn_composite_enemy(
 ## @param move_speed: 移动速度
 ## @return: 生成的敌人实例数组（Array[Enemy]）
 static func spawn_weighted(
-	enemy_pool: Array,
 	parent: Node,
-	target_y: float = 780.0,
-	move_speed: float = 200.0
-) -> Array[Enemy]:
-	if enemy_pool.is_empty():
-		push_error("EnemySpawner: enemy_pool is empty!")
-		return []
-
-	# 计算总权重
-	var total_weight: float = 0.0
-	for entry in enemy_pool:
-		total_weight += entry.get("weight", 1.0)
-
-	# 随机选择
-	var rand_value = randf() * total_weight
-	var accumulated_weight: float = 0.0
-
-	for entry in enemy_pool:
-		var weight = entry.get("weight", 1.0)
-		accumulated_weight += weight
-
-		if rand_value <= accumulated_weight:
-			var _enemy_data: EnemyData = entry.get("data")
-			return spawn(_enemy_data, parent, target_y, move_speed)
-
-	return []
-
-## 简化的加权生成（使用数组和权重数组）
-## @param enemy_datas: 敌人数据数组
-## @param weights: 权重数组（与 enemy_datas 对应）
-## @param parent: 父节点
-## @param spawn_position: 生成位置
-## @param target_y: 目标Y坐标
-## @param move_speed: 移动速度
-## @return: 生成的敌人实例数组（Array[Enemy]）
-static func spawn_with_weights(
 	enemy_datas: Array[EnemyData],
-	weights: Array[float],
-	parent: Node,
+	weights: Array[float] = [0.8, 0.1, 0.1],
 	target_y: float = 780.0,
 	move_speed: float = 200.0
 ) -> Array[Enemy]:
@@ -164,16 +151,9 @@ static func spawn_with_weights(
 		push_error("EnemySpawner: enemy_datas is empty!")
 		return []
 
-	if enemy_datas.size() != weights.size():
-		push_error("EnemySpawner: enemy_datas and weights size mismatch!")
-		return []
+	var selected_enemy = select_weighted(enemy_datas, weights)
+	return spawn(selected_enemy, parent, target_y, move_speed)
 
-	# 构建 pool
-	var pool = []
-	for i in range(enemy_datas.size()):
-		pool.append({"data": enemy_datas[i], "weight": weights[i]})
-
-	return spawn_weighted(pool, parent, target_y, move_speed)
 
 ## 从缓存获取场景
 static func _get_cached_scene(scene_path: String) -> PackedScene:
