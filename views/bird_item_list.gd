@@ -112,7 +112,7 @@ func select_bird_item(index: int):
 		return
 	
 	# 清除所有选中状态（导航高亮）
-	for i in range(choose_bird_item_list.size()):
+	for i in range8(choose_bird_item_list.size()):
 		choose_bird_item_list[i].set_navigation_selected(i == index)
 	
 	current_selected_index = index

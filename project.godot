@@ -44,6 +44,7 @@ folder_colors={
 
 [gui]
 
+common/snap_controls_to_pixels=false
 theme/custom_font="uid://dka4pv05igpyj"
 
 [input]

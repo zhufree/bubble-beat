@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://dd4a5npe174xi"]
 
 [ext_resource type="Script" uid="uid://buhrmlv6ypuyq" path="res://views/bird_house/bird_house_panel.gd" id="1_bird_house"]
-[ext_resource type="FontFile" uid="uid://c2gmpg5wge37p" path="res://assets/fonts/RHR-CN-0.990/ResourceHanRoundedCN-Heavy.ttf" id="2_font"]
-[ext_resource type="PackedScene" path="res://views/bird_house/bird_detail_panel.tscn" id="3_detail"]
+[ext_resource type="FontFile" uid="uid://buind0bjjxy2b" path="res://assets/fonts/RHR-CN-0.990/ResourceHanRoundedCN-Heavy.ttf" id="2_font"]
+[ext_resource type="PackedScene" uid="uid://dlslulb4l0i4j" path="res://views/bird_house/bird_detail_panel.tscn" id="3_detail"]
 
 [node name="BirdHousePanel" type="Control"]
 layout_mode = 3
