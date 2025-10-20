@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="SongData" load_steps=3 format=3 uid="uid://0e72ukilkx8d"]
 
 [ext_resource type="Script" uid="uid://d0eeck06d6u3" path="res://models/song_data.gd" id="1_dtycw"]
-[ext_resource type="AudioStream" uid="uid://dhvmxp0xy6tly" path="res://assets/songs/Viva La Vida.mp3" id="2_hr8xa"]
+[ext_resource type="AudioStream" uid="uid://qil5oxr3q5kh" path="res://assets/songs/Viva La Vida.mp3" id="2_hr8xa"]
 
 [resource]
 script = ExtResource("1_dtycw")

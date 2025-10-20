@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="SongData" load_steps=3 format=3 uid="uid://53gws7er866r"]
 
 [ext_resource type="Script" uid="uid://d0eeck06d6u3" path="res://models/song_data.gd" id="1_okcj8"]
-[ext_resource type="AudioStream" uid="uid://cl0pnigsc65b3" path="res://assets/songs/心要野.mp3" id="2_lstfd"]
+[ext_resource type="AudioStream" uid="uid://bfh31fp63v4ro" path="res://assets/songs/心要野.mp3" id="2_lstfd"]
 
 [resource]
 script = ExtResource("1_okcj8")
