@@ -19,6 +19,10 @@ var last_emitted_beat = -999  # Track the last integer beat that was emitted
 func _ready():
 	if bpm > 0:
 		sec_per_beat = 60.0 / bpm
+	if owner.ready:
+		stream = owner.song_data.stream
+		bpm = owner.song_data.BPM
+		play_with_beat_offset(8)
 
 func _physics_process(delta):
 # 模拟播放开始
@@ -36,14 +40,12 @@ func _physics_process(delta):
 				first_time = false
 				play()
 		_report_beat()
-		
 
 func _report_beat():
 	var current_integer_beat = int(song_pos_in_beats)
 	if current_integer_beat > last_emitted_beat:
-		EventBus.pat.emit(current_integer_beat)
 		last_emitted_beat = current_integer_beat
-
+		#owner._spawn_enemy()
 
 func play_with_beat_offset(num):
 	beats_before_start = float(num)
@@ -52,7 +54,6 @@ func play_with_beat_offset(num):
 	if bpm > 0:
 		sec_per_beat = 60.0 / bpm
 	start = true
-
 
 func _on_finished() -> void:
 	start = false

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dk8vhn6l7ihh3"]
+[gd_scene load_steps=12 format=3 uid="uid://dk8vhn6l7ihh3"]
 
 [ext_resource type="PackedScene" uid="uid://d3n2b5wrjdhu0" path="res://views/gameplay/animal.tscn" id="1_7biu0"]
 [ext_resource type="Script" uid="uid://cxgfuigam05p6" path="res://scenes/gameplay.gd" id="1_gameplay"]
@@ -7,6 +7,7 @@
 [ext_resource type="Resource" uid="uid://b84opwkiml62f" path="res://resources/animal_data/balloon_bear.tres" id="4_ocj2s"]
 [ext_resource type="PackedScene" uid="uid://dkg3dewx7jyhm" path="res://views/gameplay/boss.tscn" id="6_din8e"]
 [ext_resource type="PackedScene" uid="uid://cjb8n4xqy7yqv" path="res://views/gameplay/shield_overlay.tscn" id="7_shield"]
+[ext_resource type="Script" uid="uid://dndp8f8567uia" path="res://views/gameplay/song_player.gd" id="8_e124b"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a6gd1"]
 size = Vector2(576, 166)
@@ -105,3 +106,6 @@ size_flags_horizontal = 4
 
 [node name="Boss" parent="." instance=ExtResource("6_din8e")]
 position = Vector2(960, 100)
+
+[node name="SongPlayer" type="AudioStreamPlayer2D" parent="."]
+script = ExtResource("8_e124b")

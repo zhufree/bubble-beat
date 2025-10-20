@@ -12,17 +12,29 @@ const COMBO_KEYS := ["S", "D", "F"]
 @onready var shield_overlay = $Hinterland/ShieldOverlay
 @onready var score_ui: Control = $ScoreUI
 @onready var boss: Node2D = $Boss
+@onready var song_player: AudioStreamPlayer2D = $SongPlayer
 
 # 敌人数据
 var enemy_types: Array[EnemyData] = []
 var enemies_in_attack_zone: Array[Enemy] = []
 var enemies_in_heavy_zone: Array[Enemy] = []
 
+# 歌曲
+var song_data: SongData = preload("res://resources/song_data/waiting_for_love.tres") :
+	set(value):
+		song_data = value
+		if song_player:
+			song_player.stream = song_data.stream
+			song_player.bpm = song_data.BPM
+			song_player.play_with_beat_offset(8)
+		# 根据 BPM 计算生成间隔
+		_calculate_spawn_interval_from_bpm()
+
 # 生成设置
-@export var spawn_interval: float = 1.5
-@export var min_spawn_interval: float = 0.8
-@export var spawn_positions: Array[float] = [-200.0, -100.0, 0.0, 100.0, 200.0]
-var spawn_timer: float = 0.0
+@export var beats_per_spawn: float = 4.0  # 每几拍生成一次敌人
+@export var difficulty_multiplier: float = 1.0  # 难度倍数，越小生成越快
+var spawn_interval: float = 1.5  # 根据 BPM 动态计算
+var spawn_timer: float = 12.0
 var current_wave: int = 0
 
 # 计分系统
@@ -59,12 +71,12 @@ func _ready() -> void:
 	F - 气球熊攻击
 	J - 技能触发键（需与位键组合）
 	O - 作弊模式（无伤）
-	S+J - 松开J时释放猫头鹰技能
-	D+J - 松开J时释放啄木鸟技能
-	F+J - 松开J时释放气球熊技能
+	S+J - 释放猫头鹰技能
+	D+J - 释放啄木鸟技能
+	F+J - 释放气球熊技能
 	S+D+J - 同时释放猫头鹰与啄木鸟技能
-	黄线是猫头鹰、啄木鸟的判定区域
-	紫环是气球熊的判定区域
+	黄色是猫头鹰、啄木鸟的判定区域
+	紫色是气球熊的判定区域
 	"""
 	label.position = Vector2(20, 20)
 	label.add_theme_font_size_override("font_size", 20)
@@ -79,6 +91,13 @@ func _ready() -> void:
 	if heavy_attack_zone:
 		heavy_attack_zone.area_entered.connect(_on_heavy_zone_area_entered)
 		heavy_attack_zone.area_exited.connect(_on_heavy_zone_area_exited)
+
+	# 连接歌曲结束信号
+	if song_player:
+		song_player.finished.connect(_on_song_player_finished)
+	
+	# 初始化生成间隔
+	_calculate_spawn_interval_from_bpm()
 
 # 加载敌人类型
 func _load_enemy_types() -> void:
@@ -97,11 +116,6 @@ func _process(delta: float) -> void:
 	if spawn_timer >= spawn_interval:
 		spawn_timer = 0.0
 		_spawn_enemy()
-
-		## 随着波次增加，生成速度加快
-		#current_wave += 1
-		#if current_wave % 5 == 0:
-			#spawn_interval = max(min_spawn_interval, spawn_interval - 0.1)
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey:
@@ -129,6 +143,25 @@ func _input(event: InputEvent) -> void:
 					combo_key_state.erase(KEY_D)
 				KEY_F:
 					combo_key_state.erase(KEY_F)
+
+# 根据 BPM 计算生成间隔
+func _calculate_spawn_interval_from_bpm() -> void:
+	if not song_data or song_data.BPM <= 0:
+		spawn_interval = 1.5  # 默认值
+		return
+	
+	# 计算每拍的时间（秒）
+	var beat_duration = 60.0 / float(song_data.BPM)
+	
+	# 根据难度和节拍数计算生成间隔
+	spawn_interval = beat_duration * beats_per_spawn * difficulty_multiplier
+	
+	# 确保生成间隔在合理范围内
+	spawn_interval = clamp(spawn_interval, 0.5, 4.0)
+	
+	print("[Gameplay] BPM: %d, 每拍时间: %.2fs, 生成间隔: %.2fs (每 %.1f 拍)" % [
+		song_data.BPM, beat_duration, spawn_interval, beats_per_spawn
+	])
 
 # 生成敌人组
 func _spawn_enemy() -> void:
@@ -201,6 +234,10 @@ func _generate_random_enemy_group() -> Array[EnemyData]:
 		# 加权随机选择一个敌人类型
 		var selected_enemy = EnemySpawner.select_weighted(available_types, [0.8, 0.1, 0.1])
 		group.append(selected_enemy)
+		
+		# 标记非单点敌人为已使用
+		if selected_enemy.name != "单点" and selected_enemy.name:
+			used_non_single[selected_enemy.name] = true
 
 	# 排序 单点->连按->巨大化
 	group.sort_custom(func(a, b):
@@ -408,14 +445,12 @@ func _on_heavy_zone_area_entered(area: Area2D) -> void:
 		var enemy = _get_enemy_from_area(area)
 		if enemy and not enemy.is_defeated:
 			enemies_in_heavy_zone.append(enemy)
-			print("[Heavy Zone] 敌人进入: ", enemy.enemy_data.name)
 
 func _on_heavy_zone_area_exited(area: Area2D) -> void:
 	if area.is_in_group("enemies"):
 		var enemy = _get_enemy_from_area(area)
 		if enemy:
 			enemies_in_heavy_zone.erase(enemy)
-			print("[Heavy Zone] 敌人离开: ", enemy.enemy_data.name)
 
 # 敌人被击败
 func _on_enemy_defeated(enemy: Enemy, score: int) -> void:
@@ -543,7 +578,7 @@ func _show_score_popup(pos: Vector2, score: int) -> void:
 
 # ==================== BOSS相关 ====================
 ## BOSS被击败
-func _on_boss_defeated(_boss: Boss, score: int) -> void:
+func _on_boss_defeated(_boss: Boss, _score: int) -> void:
 	# TODO 游戏获得胜利
 	pass
 
@@ -723,3 +758,7 @@ func _play_skill_effect(animal, skill: SkillData) -> void:
 	# 动物闪光效果
 	if animal.has_method("play_skill_animation"):
 		animal.play_skill_animation(skill.effect_color)
+
+# ==================== 歌曲相关 ====================
+func _on_song_player_finished() -> void:
+	print("[Song] 歌曲结束")

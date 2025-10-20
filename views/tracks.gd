@@ -5,7 +5,7 @@ extends Control
 @onready var collision_shape_2d_1: CollisionShape2D = $JudgmentLineContainer/JudgmentLine1/CollisionShape2D1
 @onready var judgment_line_2: Area2D = $JudgmentLineContainer/JudgmentLine2
 @onready var collision_shape_2d_2: CollisionShape2D = $JudgmentLineContainer/JudgmentLine2/CollisionShape2D2
-@export var color_lines:Array[ColorLine]
+@export var color_lines:Array[Line2D]
 
 var area_width: float = 400.0 # 默认，稍后更新
 var beat_interval: float

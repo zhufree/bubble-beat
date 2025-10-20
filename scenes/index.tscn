@@ -1,9 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://shgutmrejcwc"]
+[gd_scene load_steps=4 format=3 uid="uid://shgutmrejcwc"]
 
 [ext_resource type="Script" uid="uid://cjm4fumgpipre" path="res://scenes/index.gd" id="1_74d6c"]
 [ext_resource type="FontFile" uid="uid://dka4pv05igpyj" path="res://assets/fonts/RHR-CN-0.990/ResourceHanRoundedCN-Heavy.ttf" id="2_hhnvu"]
 [ext_resource type="PackedScene" uid="uid://ct6uqela0dqu5" path="res://views/indicator_button.tscn" id="2_igtc1"]
-[ext_resource type="PackedScene" uid="uid://cvfd4katrol6k" path="res://views/test/add_bird.tscn" id="4_hhnvu"]
 
 [node name="Index" type="Control"]
 layout_mode = 3
@@ -62,10 +61,3 @@ button_text = "小鸟图册"
 [node name="QuitButton" parent="ColorRect/MarginContainer/VBoxContainer" instance=ExtResource("2_igtc1")]
 layout_mode = 2
 button_text = "退出游戏"
-
-[node name="AddBird" parent="." instance=ExtResource("4_hhnvu")]
-layout_mode = 0
-offset_left = 116.0
-offset_top = 467.0
-offset_right = 300.0
-offset_bottom = 498.0

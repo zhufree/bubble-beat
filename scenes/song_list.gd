@@ -3,7 +3,8 @@ extends Control
 @onready var song_container: GridContainer = $VBoxContainer/ScrollContainer/GridContainer
 @onready var scroll_container: ScrollContainer = $VBoxContainer/ScrollContainer
 
-var song_item_scene = preload("res://views/song_item.tscn")
+var song_item_scene: PackedScene = preload("res://views/song_item.tscn")
+var gameplay_scene = preload("res://scenes/gameplay.tscn")
 var songs: Array[SongData] = []
 var song_items: Array[SongItem] = []
 var current_selected_index: int = 0
@@ -121,5 +122,8 @@ func navigate_right():
 
 func _on_song_selected(song: SongData):
 	print("选中歌曲: ", song.name, " BPM: ", song.BPM)
-	Global.selected_song = songs[current_selected_index]
-	get_tree().change_scene_to_file("res://scenes/bird_item_list.tscn")
+	var gameplay = gameplay_scene.instantiate()
+	gameplay.song_data = song
+	get_tree().root.add_child(gameplay)
+	get_tree().current_scene.queue_free()
+	get_tree().current_scene = gameplay
