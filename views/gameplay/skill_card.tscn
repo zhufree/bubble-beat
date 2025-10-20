@@ -1,0 +1,68 @@
+[gd_scene load_steps=3 format=3 uid="uid://cw3h8x7n5jk3l"]
+
+[ext_resource type="Script" uid="uid://didyinyfuqm4b" path="res://views/gameplay/skill_card.gd" id="1_skill_card"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card"]
+bg_color = Color(0.12156863, 0.12156863, 0.17254902, 0.75)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8, 0.5, 1, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_size = 3
+shadow_offset = Vector2(0, 2)
+
+[node name="SkillCard" type="PanelContainer"]
+custom_minimum_size = Vector2(300, 100)
+theme_override_styles/panel = SubResource("StyleBoxFlat_card")
+script = ExtResource("1_skill_card")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TopRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="AnimalIcon" type="TextureRect" parent="MarginContainer/VBoxContainer/TopRow"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="InfoContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TopRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="SkillName" type="Label" parent="MarginContainer/VBoxContainer/TopRow/InfoContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 20
+text = "技能名称"
+
+[node name="Description" type="Label" parent="MarginContainer/VBoxContainer/TopRow/InfoContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 0.9, 1)
+theme_override_font_sizes/font_size = 14
+text = "技能描述"
+autowrap_mode = 3
+
+[node name="TimeProgress" type="ProgressBar" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+max_value = 1.0
+value = 1.0
+show_percentage = false

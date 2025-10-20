@@ -14,6 +14,7 @@ const COMBO_KEYS := ["S", "D", "F"]
 @onready var boss: Node2D = $Boss
 @onready var song_player: AudioStreamPlayer2D = $SongPlayer
 @onready var game_over_ui: Control = $GameOverUI
+@onready var active_skills_ui: Control = $ActiveSkillsUI
 
 # 敌人数据
 var enemy_types: Array[EnemyData] = []
@@ -711,18 +712,22 @@ func _execute_pending_skills() -> void:
 func _activate_skill(animal) -> void:
 	var skill: SkillData = animal.animal_data.skill
 	print("[Skill] ", animal.animal_data.name, " 释放技能: ", skill.skill_name, " (类型: ", skill.skill_type, ")")
-	
+
 	# 检查是否已有相同类型的技能激活
 	var existing_skill_index = -1
 	for i in range(active_skills.size()):
 		if active_skills[i].skill.skill_type == skill.skill_type:
 			existing_skill_index = i
 			break
-	
+
 	if existing_skill_index >= 0:
 		# 延长现有技能时间
 		active_skills[existing_skill_index].timer += skill.duration
 		print("[Skill] 延长技能时间: +", skill.duration, "秒")
+
+		# 更新UI显示
+		if active_skills_ui and active_skills_ui.has_method("add_skill"):
+			active_skills_ui.add_skill(animal.animal_data, skill, active_skills[existing_skill_index].timer)
 	else:
 		# 激活新技能
 		var skill_data = {
@@ -730,13 +735,17 @@ func _activate_skill(animal) -> void:
 			"skill": skill,
 			"timer": skill.duration
 		}
-		
+
 		# 根据技能类型激活效果
 		_apply_skill_effect(skill)
-		
+
 		active_skills.append(skill_data)
 		print("[Skill] 激活新技能，持续: ", skill.duration, "秒")
-	
+
+		# 添加到UI显示
+		if active_skills_ui and active_skills_ui.has_method("add_skill"):
+			active_skills_ui.add_skill(animal.animal_data, skill, skill.duration)
+
 	# 播放技能特效和音效
 	_play_skill_effect(animal, skill)
 
@@ -809,25 +818,33 @@ func _remove_skill_effect(skill: SkillData) -> void:
 ## 更新技能效果（每帧调用）
 func _update_skill_effects(delta: float) -> void:
 	var skills_to_remove = []
-	
+
 	# 更新所有激活的技能
 	for i in range(active_skills.size()):
 		var skill_data = active_skills[i]
-		
+
 		# 检查动物是否还有效
 		if not is_instance_valid(skill_data.animal):
 			skills_to_remove.append(i)
 			continue
-		
+
 		# 更新计时器
 		skill_data.timer -= delta
-		
+
+		# 更新UI显示的剩余时间
+		if active_skills_ui and active_skills_ui.has_method("update_skill_time"):
+			active_skills_ui.update_skill_time(skill_data.skill.skill_type, skill_data.timer)
+
 		# 技能时间结束
 		if skill_data.timer <= 0:
 			print("[Skill] ", skill_data.animal.animal_data.name, " 的技能 ", skill_data.skill.skill_name, " 结束")
 			_remove_skill_effect(skill_data.skill)
 			skills_to_remove.append(i)
-	
+
+			# 从UI移除
+			if active_skills_ui and active_skills_ui.has_method("remove_skill"):
+				active_skills_ui.remove_skill(skill_data.skill.skill_type)
+
 	# 移除结束的技能（从后往前删除避免索引错误）
 	for i in range(skills_to_remove.size() - 1, -1, -1):
 		active_skills.remove_at(skills_to_remove[i])
