@@ -25,13 +25,11 @@ var attack_timer: float = 0.0
 
 # ==================== 节点引用 ====================
 @onready var sprite: Sprite2D = $Sprite2D
-@onready var body_area: Area2D = $Area2D
 @onready var health_bar: ProgressBar = $HealthBar
 
 func _ready() -> void:
 	_initialize()
 	_setup_visual()
-	_setup_collision()
 	_setup_health_bar()
 
 ## 初始化基础属性
@@ -45,12 +43,6 @@ func _setup_visual() -> void:
 	if sprite:
 		# 使用占位符颜色
 		sprite.modulate = Color(0.8, 0.2, 0.2, 1.0)  # 红色表示BOSS
-
-## 设置碰撞区域
-func _setup_collision() -> void:
-	if body_area:
-		body_area.add_to_group("boss")
-		body_area.set_meta("boss_instance", self)
 
 ## 设置血量条
 func _setup_health_bar() -> void:
