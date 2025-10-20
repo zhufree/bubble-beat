@@ -13,6 +13,7 @@ const COMBO_KEYS := ["S", "D", "F"]
 @onready var score_ui: Control = $ScoreUI
 @onready var boss: Node2D = $Boss
 @onready var song_player: AudioStreamPlayer2D = $SongPlayer
+@onready var game_over_ui: Control = $GameOverUI
 
 # 敌人数据
 var enemy_types: Array[EnemyData] = []
@@ -26,15 +27,16 @@ var song_data: SongData = preload("res://resources/song_data/waiting_for_love.tr
 		if song_player:
 			song_player.stream = song_data.stream
 			song_player.bpm = song_data.BPM
-			song_player.play_with_beat_offset(8)
+			song_player.play_with_beat_offset(0)
 		# 根据 BPM 计算生成间隔
 		_calculate_spawn_interval_from_bpm()
+var song_duration: float = 0.0  # 歌曲总时长（秒）
 
 # 生成设置
 @export var beats_per_spawn: float = 4.0  # 每几拍生成一次敌人
 @export var difficulty_multiplier: float = 1.0  # 难度倍数，越小生成越快
 var spawn_interval: float = 1.5  # 根据 BPM 动态计算
-var spawn_timer: float = 12.0
+var spawn_timer: float = 1.0
 var current_wave: int = 0
 
 # 计分系统
@@ -58,6 +60,9 @@ var combo_key_state: Dictionary = {}  # KEY_CODE -> press_time
 # 作弊
 var cheat_mode: bool = false
 
+# 游戏状态
+var game_ended: bool = false
+
 func _ready() -> void:
 	# 加载所有敌人类型
 	_load_enemy_types()
@@ -65,7 +70,11 @@ func _ready() -> void:
 
 	# 添加测试说明
 	var label = Label.new()
-	label.text = """测试说明:
+	label.text = """获胜条件:
+	在歌曲结束前，击败BOSS。
+	游戏提示:
+	只有猫头鹰的技能才会对BOSS产生伤害。
+	测试说明:
 	S - 猫头鹰攻击
 	D - 啄木鸟攻击
 	F - 气球熊攻击
@@ -79,7 +88,7 @@ func _ready() -> void:
 	紫色是气球熊的判定区域
 	"""
 	label.position = Vector2(20, 20)
-	label.add_theme_font_size_override("font_size", 20)
+	label.add_theme_font_size_override("font_size", 18)
 	add_child(label)
 
 	# 连接攻击区域信号
@@ -95,7 +104,20 @@ func _ready() -> void:
 	# 连接歌曲结束信号
 	if song_player:
 		song_player.finished.connect(_on_song_player_finished)
+		# 获取歌曲总时长
+		if song_player.stream:
+			song_duration = song_player.stream.get_length()
+			print("[Gameplay] 歌曲总时长: %.2f 秒" % song_duration)
 	
+	# 连接BOSS被击败信号
+	if boss:
+		boss.defeated.connect(_on_boss_defeated)
+
+	# 连接游戏结束UI信号
+	if game_over_ui:
+		game_over_ui.restart_requested.connect(_on_restart_requested)
+		game_over_ui.back_to_menu_requested.connect(_on_back_to_menu_requested)
+
 	# 初始化生成间隔
 	_calculate_spawn_interval_from_bpm()
 
@@ -109,6 +131,10 @@ func _load_enemy_types() -> void:
 	EnemySpawner.preload_from_enemy_datas(enemy_types)
 
 func _process(delta: float) -> void:
+	# 游戏结束后停止所有逻辑
+	if game_ended:
+		return
+	
 	_update_skill_effects(delta)
 
 	# 敌人生成逻辑
@@ -134,7 +160,11 @@ func _input(event: InputEvent) -> void:
 				_:
 					if key_bindings.has(event.keycode):
 						combo_key_state[event.keycode] = 0.0
-						_try_attack(key_bindings[event.keycode])
+						if enemies_in_attack_zone.is_empty() and enemies_in_heavy_zone.is_empty():
+							_show_score_popup(attack_zone.global_position, 0)
+							_reset_combo()
+						else:
+							_try_attack(key_bindings[event.keycode])
 		elif event.is_released():
 			match event.keycode:
 				KEY_S:
@@ -578,9 +608,73 @@ func _show_score_popup(pos: Vector2, score: int) -> void:
 
 # ==================== BOSS相关 ====================
 ## BOSS被击败
-func _on_boss_defeated(_boss: Boss, _score: int) -> void:
-	# TODO 游戏获得胜利
-	pass
+func _on_boss_defeated(_boss: Boss, boss_score: int) -> void:
+	if game_ended:
+		return
+
+	game_ended = true
+	print("[Gameplay] BOSS被击败！游戏胜利！")
+
+	var time_bonus = 0
+
+	# 停止歌曲并计算时间奖励
+	if song_player and song_player.playing:
+		var remaining_time = _get_remaining_song_time()
+		print("[Gameplay] 剩余歌曲时间: %.2f 秒" % remaining_time)
+
+		# 计算剩余时间奖励
+		time_bonus = _calculate_time_bonus(remaining_time)
+		print("[Gameplay] 时间奖励: %d 分" % time_bonus)
+
+		# 添加时间奖励到总分
+		total_score += time_bonus
+
+		# 添加boss分数
+		total_score += boss_score
+
+		# 更新UI显示最终分数
+		_update_score_ui()
+
+		# 停止播放歌曲
+		song_player.stop()
+
+	# 停止敌人生成
+	# 游戏状态已经通过 game_ended = true 控制
+
+	# 显示游戏胜利UI
+	if game_over_ui and game_over_ui.has_method("show_victory"):
+		game_over_ui.show_victory(total_score, current_combo, time_bonus)
+
+	# # 调用全局游戏胜利逻辑
+	# Global.final_score = total_score
+	# Global.max_combo = current_combo
+	# Global.game_over("song")  # 使用 "song" 表示歌曲完成（胜利）
+
+## 获取剩余歌曲时间
+func _get_remaining_song_time() -> float:
+	if not song_player or not song_player.playing:
+		return 0.0
+	
+	var current_pos = song_player.get_playback_position()
+	var remaining = song_duration - current_pos
+	return max(0.0, remaining)
+
+## 计算剩余时间奖励
+## 公式：剩余秒数 × (1/难度倍数) × 10
+## 难度倍数越小表示越难，奖励倍数越高
+func _calculate_time_bonus(remaining_seconds: float) -> int:
+	# 难度倍数：difficulty_multiplier 越小表示越难，奖励越高
+	# 将其转换为奖励倍数：1.0 / difficulty_multiplier
+	var bonus_multiplier = 1.0 / max(difficulty_multiplier, 0.1)
+
+	# 基础分数：每秒10分
+	var bonus = remaining_seconds * bonus_multiplier * 10.0
+
+	print("[Gameplay] 剩余时间奖励计算: %.2fs × %.2f × 10 = %d 分" % [
+		remaining_seconds, bonus_multiplier, int(bonus)
+	])
+
+	return int(bonus)
 
 # ==================== 按键绑定 ====================
 
@@ -761,4 +855,40 @@ func _play_skill_effect(animal, skill: SkillData) -> void:
 
 # ==================== 歌曲相关 ====================
 func _on_song_player_finished() -> void:
-	print("[Song] 歌曲结束")
+	if game_ended:
+		return
+
+	game_ended = true
+	print("[Song] 歌曲结束，游戏失败")
+
+	# 停止敌人生成
+	# 游戏状态已经通过 game_ended = true 控制
+
+	# 显示游戏失败UI
+	if game_over_ui and game_over_ui.has_method("show_defeat"):
+		game_over_ui.show_defeat(total_score, current_combo)
+
+	# 调用全局游戏失败逻辑
+	# Global.final_score = total_score
+	# Global.max_combo = current_combo
+	# Global.game_over("health")  # 使用 "health" 表示失败
+
+# ==================== 游戏控制 ====================
+## 重新开始游戏 (Enter键)
+func _on_restart_requested() -> void:
+	print("[Gameplay] 重新开始游戏")
+	# 重新加载当前场景
+	var sence = preload("res://scenes/gameplay.tscn")
+	var gameplay = sence.instantiate()
+	gameplay.song_data = song_data
+	get_tree().root.add_child(gameplay)
+	get_tree().current_scene.queue_free()
+	get_tree().current_scene = gameplay
+
+
+## 返回列表 (Esc键)
+func _on_back_to_menu_requested() -> void:
+	print("[Gameplay] 返回列表")
+	# TODO: 这里应该切换到歌曲选择场景
+	# 如果有主菜单场景，切换到主菜单；否则退出游戏
+	get_tree().change_scene_to_file("res://scenes/song_list.tscn")
