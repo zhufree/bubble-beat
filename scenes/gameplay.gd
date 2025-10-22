@@ -1,7 +1,6 @@
 extends Node2D
 
-const COMBO_INPUT_BUFFER := 0.12
-const SKILL_TRIGGER_KEY := KEY_J
+
 const COMBO_KEYS := ["S", "D", "F"]
 
 @onready var animalList: HBoxContainer = $Hinterland/Animals
@@ -15,6 +14,7 @@ const COMBO_KEYS := ["S", "D", "F"]
 @onready var song_player: AudioStreamPlayer2D = $SongPlayer
 @onready var game_over_ui: Control = $GameOverUI
 @onready var active_skills_ui: Control = $ActiveSkillsUI
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 # 敌人数据
 var enemy_types: Array[EnemyData] = []
@@ -100,7 +100,7 @@ func _ready() -> void:
 	# 连接重型攻击区域信号
 	if heavy_attack_zone:
 		heavy_attack_zone.area_entered.connect(_on_heavy_zone_area_entered)
-		heavy_attack_zone.area_exited.connect(_on_heavy_zone_area_exited)
+		heavy_attack_zone.area_exited.connect(_on_attack_zone_area_exited)
 
 	# 连接歌曲结束信号
 	if song_player:
@@ -121,6 +121,8 @@ func _ready() -> void:
 
 	# 初始化生成间隔
 	_calculate_spawn_interval_from_bpm()
+	
+	animation_player.play("loop")
 
 # 加载敌人类型
 func _load_enemy_types() -> void:
@@ -161,11 +163,7 @@ func _input(event: InputEvent) -> void:
 				_:
 					if key_bindings.has(event.keycode):
 						combo_key_state[event.keycode] = 0.0
-						if enemies_in_attack_zone.is_empty() and enemies_in_heavy_zone.is_empty():
-							_show_score_popup(attack_zone.global_position, 0)
-							_reset_combo()
-						else:
-							_try_attack(key_bindings[event.keycode])
+						_try_attack(key_bindings[event.keycode])
 		elif event.is_released():
 			match event.keycode:
 				KEY_S:
@@ -298,68 +296,16 @@ func _try_attack(animal) -> void:
 	if not animal.can_attack():
 		return
 
+	print("[Try Attack] 尝试攻击动物: ", animal.animal_data.name)
+
 	# 检查是否为重型动物，使用特殊攻击逻辑
 	if animal.animal_data.animal_type == AnimalData.AnimalType.HEAVY:
 		_try_heavy_attack(animal)
-		return
-
-	# 对于普通动物，先尝试并行攻击组内敌人
-	if _try_parallel_attack(animal):
-		return
-
-	# 如果没有组内攻击，执行常规单个攻击
-	_try_single_attack(animal)
-
-## 尝试并行攻击（处理同组敌人）
-## @param animal: 攻击的动物
-## @return: 是否成功执行了并行攻击
-func _try_parallel_attack(_animal) -> bool:
-	# 查找攻击区域内的敌人
-	var hit_enemy: Enemy = null
-	for enemy in enemies_in_attack_zone:
-		if enemy and not enemy.is_defeated:
-			hit_enemy = enemy
-			break
-
-	if not hit_enemy:
-		return false
-
-	# 检查是否有同组的其他敌人在攻击区域内
-	var group_enemies: Array[Enemy] = _find_enemy_group(hit_enemy)
-
-	if group_enemies.size() <= 1:
-		# 只有单个敌人，不是并行攻击
-		return false
-
-	# 并行攻击：检查每个组内敌人对应的动物是否按下了按键
-	var all_keys_pressed = true
-	var animals_to_attack: Array = []
-
-	for group_enemy in group_enemies:
-		var target_animal = _find_animal_for_enemy(group_enemy)
-		if target_animal and _is_animal_key_pressed(target_animal):
-			animals_to_attack.append({"animal": target_animal, "enemy": group_enemy})
-		else:
-			all_keys_pressed = false
-			break
-
-	# 如果所有对应的按键都被按下，执行并行攻击
-	if all_keys_pressed and animals_to_attack.size() == group_enemies.size():
-		for attack_data in animals_to_attack:
-			var atk_animal = attack_data["animal"]
-			var atk_enemy = attack_data["enemy"]
-
-			if atk_animal.can_attack():
-				var damage = atk_animal.free_attack() if can_free_attack else atk_animal.attack()
-				atk_enemy.take_damage(damage, EnemyData.DamageType.TAP)
-
-		print("[Parallel Attack] 同时攻击 ", group_enemies.size(), " 个组内敌人")
-		return true
-
-	return false
+	else:
+		_try_normal_attack(animal)
 
 ## 尝试单个攻击
-func _try_single_attack(animal) -> void:
+func _try_normal_attack(animal) -> void:
 	# 查找攻击区域内的敌人
 	var hit_enemy: Enemy = null
 	for enemy in enemies_in_attack_zone:
@@ -373,92 +319,25 @@ func _try_single_attack(animal) -> void:
 	else:
 		print("[Attack] 攻击区域内没有可攻击的敌人")
 
-## 查找敌人所在的组（基于X轴位置接近的敌人）
-func _find_enemy_group(enemy: Enemy) -> Array[Enemy]:
-	var group: Array[Enemy] = [enemy]
-	var group_threshold = 150.0  # 组内敌人的最大间距
-
-	for other_enemy in enemies_in_attack_zone:
-		if other_enemy != enemy and not other_enemy.is_defeated:
-			var distance = abs(other_enemy.global_position.x - enemy.global_position.x)
-			if distance <= group_threshold:
-				group.append(other_enemy)
-
-	return group
-
-## 根据敌人位置找到对应的动物（基于X轴位置）
-func _find_animal_for_enemy(enemy: Enemy) -> Control:
-	var animals = animalList.get_children()
-	if animals.is_empty():
-		return null
-
-	# 简化逻辑：根据敌人的X位置找到最接近的动物
-	var enemy_x = enemy.global_position.x
-	var screen_center_x = get_viewport_rect().size.x / 2.0
-	var relative_x = enemy_x - screen_center_x
-
-	# 将屏幕分成3个区域（对应3个动物）
-	var zone_width = 200.0
-	var zone_index = 0
-
-	if relative_x < -zone_width / 2:
-		zone_index = 0  # 左侧
-	elif relative_x > zone_width / 2:
-		zone_index = 2  # 右侧
-	else:
-		zone_index = 1  # 中间
-
-	zone_index = clamp(zone_index, 0, animals.size() - 1)
-	return animals[zone_index]
-
-## 检查动物对应的按键是否被按下
-func _is_animal_key_pressed(animal) -> bool:
-	if not animal or not animal.has_method("key_binding"):
-		return false
-
-	var key_code = _get_key_by_string(animal.key_binding)
-	return combo_key_state.has(key_code)
-
 # 重型动物范围攻击
 func _try_heavy_attack(animal) -> void:
 	if not animal.can_attack():
 		return
 
-	var remaining_damage = animal.animal_data.single_attack_damage
-	var damage_enemies: Array[Dictionary] = [] # {enemy: Enemy, damage: float}
+	var damage = animal.free_attack() if can_free_attack else animal.attack()
 
-	# 优先攻击巨大化敌人
-	var giant_enemies: Array[Enemy] = []
-	var normal_enemies: Array[Enemy] = []
-
-	for enemy in enemies_in_heavy_zone:
-		if enemy and not enemy.is_defeated:
-			if enemy.enemy_data.name == "巨大化":
-				giant_enemies.append(enemy)
-			else:
-				normal_enemies.append(enemy)
-
-	# 先处理巨大化敌人，再处理普通敌人
-	var sorted_enemies = giant_enemies + normal_enemies
-
+	# 重排后的敌人列表
+	var sorted_enemies: Array[Enemy] = enemies_in_heavy_zone.duplicate() as Array[Enemy]
+	sorted_enemies.reverse()
+	
 	# 按顺序攻击圆形范围内的敌人
 	for enemy in sorted_enemies:
-		if remaining_damage > 0:
-			# 计算实际造成的伤害（不超过敌人当前生命值）
-			var damage_dealt = min(remaining_damage, enemy.current_health)
-			damage_enemies.append({"enemy": enemy, "damage": damage_dealt})
-			remaining_damage -= damage_dealt
-
-			print("[Heavy Attack] 对 ", enemy.enemy_data.name, " 造成 ", damage_dealt, " 伤害，剩余攻击值: ", remaining_damage)
-
-	for damage_enemy in damage_enemies:
-		damage_enemy["enemy"].take_damage(damage_enemy["damage"], EnemyData.DamageType.TAP)
-
-	# 消耗攻击次数（无论是否击中敌人）
-	if can_free_attack:
-		animal.free_attack()
-	else:
-		animal.attack()
+		if damage <= 0:
+			return
+		# 计算实际造成的伤害（不超过敌人当前生命值）
+		var damage_dealt = min(damage, enemy.current_health)
+		enemy.take_damage(damage_dealt, EnemyData.DamageType.TAP)
+		damage -= damage_dealt
 
 	if enemies_in_heavy_zone.is_empty():
 		print("[Heavy Attack] 范围内没有敌人")
@@ -470,18 +349,36 @@ func _get_enemy_from_area(area: Area2D) -> Enemy:
 	else:
 		return area.get_parent() as Enemy
 
-# 重型攻击区域检测
+# 进入重型攻击区域
 func _on_heavy_zone_area_entered(area: Area2D) -> void:
 	if area.is_in_group("enemies"):
 		var enemy = _get_enemy_from_area(area)
 		if enemy and not enemy.is_defeated:
+			enemy.enter_attack_zone()
 			enemies_in_heavy_zone.append(enemy)
-
-func _on_heavy_zone_area_exited(area: Area2D) -> void:
+	
+# 进入普通攻击区域
+func _on_attack_zone_area_entered(area: Area2D) -> void:
 	if area.is_in_group("enemies"):
-		var enemy = _get_enemy_from_area(area)
-		if enemy:
-			enemies_in_heavy_zone.erase(enemy)
+		var enemy: Enemy = _get_enemy_from_area(area)
+		if enemy and not enemy.is_defeated:
+			enemy.enter_attack_zone()
+			enemies_in_attack_zone.append(enemy)
+
+# 离开攻击区域
+func _on_attack_zone_area_exited(area: Area2D) -> void:
+	if area.is_in_group("enemies"):
+		var enemy: Enemy = _get_enemy_from_area(area)
+		if enemy and not enemy.is_defeated:
+			enemy.exit_attack_zone()
+			_remove_enemy_from_attack_zone(enemy)
+
+# 移除攻击区域的敌人
+func _remove_enemy_from_attack_zone(enemy: Enemy) -> void:
+	if enemy in enemies_in_attack_zone:
+		enemies_in_attack_zone.erase(enemy)
+	if enemy in enemies_in_heavy_zone:
+		enemies_in_heavy_zone.erase(enemy)
 
 # 敌人被击败
 func _on_enemy_defeated(enemy: Enemy, score: int) -> void:
@@ -524,46 +421,6 @@ func _on_enemy_reached_hinterland(enemy: Enemy) -> void:
 	# 从列表中移除
 	_remove_enemy_from_attack_zone(enemy)
 
-# 进入攻击区域
-func _on_attack_zone_area_entered(area: Area2D) -> void:
-	if area.is_in_group("enemies"):
-		# 使用元数据获取正确的敌人实例（支持组合敌人的子敌人）
-		var enemy: Enemy = null
-		if area.has_meta("enemy_instance"):
-			enemy = area.get_meta("enemy_instance")
-		else:
-			enemy = area.get_parent() as Enemy
-
-		if enemy and not enemy.is_defeated:
-			enemy.enter_attack_zone()
-			enemies_in_attack_zone.append(enemy)
-		else:
-			print("[AttackZone] Enemy invalid or already defeated")
-	else:
-		print("[AttackZone] Area is not in 'enemies' group")
-
-# 离开攻击区域
-func _on_attack_zone_area_exited(area: Area2D) -> void:
-	if area.is_in_group("enemies"):
-		# 使用元数据获取正确的敌人实例（支持组合敌人的子敌人）
-		var enemy: Enemy = null
-		if area.has_meta("enemy_instance"):
-			enemy = area.get_meta("enemy_instance")
-		else:
-			enemy = area.get_parent() as Enemy
-
-		if enemy:
-			enemy.exit_attack_zone()
-			_remove_enemy_from_attack_zone(enemy)
-
-# 移除攻击区域的敌人
-func _remove_enemy_from_attack_zone(enemy: Enemy) -> void:
-	if enemy in enemies_in_attack_zone:
-		enemies_in_attack_zone.erase(enemy)
-	if enemy in enemies_in_heavy_zone:
-		enemies_in_heavy_zone.erase(enemy)
-
-
 # 获取 combo 倍率
 func _get_combo_multiplier(combo: int) -> float:
 	if combo <= 5:
@@ -592,6 +449,9 @@ func _update_score_ui() -> void:
 
 # 显示分数弹出
 func _show_score_popup(pos: Vector2, score: int) -> void:
+	if score == 0:
+		_reset_combo()
+
 	var popup = Label.new()
 	popup.text = "+" + str(score)
 	popup.position = pos

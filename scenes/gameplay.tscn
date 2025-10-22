@@ -1,7 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://dk8vhn6l7ihh3"]
+[gd_scene load_steps=18 format=3 uid="uid://dk8vhn6l7ihh3"]
 
 [ext_resource type="PackedScene" uid="uid://d3n2b5wrjdhu0" path="res://views/gameplay/animal.tscn" id="1_7biu0"]
 [ext_resource type="Script" uid="uid://cxgfuigam05p6" path="res://scenes/gameplay.gd" id="1_gameplay"]
+[ext_resource type="Texture2D" uid="uid://swcnscmdf2tt" path="res://assets/sprites/cloud.png" id="2_ctvyo"]
 [ext_resource type="Resource" uid="uid://b2yji08haqrxg" path="res://resources/animal_data/woodpecker.tres" id="3_ct7aa"]
 [ext_resource type="PackedScene" uid="uid://dh7mk3xbkv8rq" path="res://views/gameplay/score_ui.tscn" id="4_ct7aa"]
 [ext_resource type="Resource" uid="uid://b84opwkiml62f" path="res://resources/animal_data/balloon_bear.tres" id="4_ocj2s"]
@@ -11,14 +12,124 @@
 [ext_resource type="PackedScene" uid="uid://cw8h3x7n5jk2l" path="res://views/gameplay/game_over_ui.tscn" id="9_game_over"]
 [ext_resource type="PackedScene" uid="uid://dkg3dewx8k0hm" path="res://views/gameplay/active_skills_ui.tscn" id="10_skills_ui"]
 
+[sub_resource type="Animation" id="Animation_qixtg"]
+resource_name = "loop"
+length = 26.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D2:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 23, 24, 25, 26),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(959, -470), Vector2(959, 1370), Vector2(959, 1450), Vector2(959, -550), Vector2(959, -470)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 10, 11, 12, 13),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(959, 550), Vector2(959, 1350), Vector2(959, 1430), Vector2(959, -530), Vector2(959, -450)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:self_modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(10, 11, 12, 13),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D2:self_modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(23, 24, 25, 26),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_nt65e"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D2:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(959.87494, 549.5)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(959, 549.5)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:self_modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D2:self_modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bhmdk"]
+_data = {
+&"RESET": SubResource("Animation_nt65e"),
+&"loop": SubResource("Animation_qixtg")
+}
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a6gd1"]
 size = Vector2(576, 166)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_l1v76"]
-size = Vector2(576, 10)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4bh5q"]
 size = Vector2(576, 80)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l1v76"]
+size = Vector2(576, 10)
 
 [node name="Gameplay" type="Node2D"]
 script = ExtResource("1_gameplay")
@@ -28,7 +139,23 @@ offset_right = 1920.0
 offset_bottom = 1080.0
 size_flags_horizontal = 6
 size_flags_vertical = 6
-color = Color(0.45607007, 0.7278994, 0.75919205, 1)
+color = Color(0.69411767, 0.8980392, 0.972549, 1)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+self_modulate = Color(1, 1, 1, 0)
+position = Vector2(959, 549.5)
+scale = Vector2(1.4283854, 1.4283854)
+texture = ExtResource("2_ctvyo")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(959.87494, 549.5)
+scale = Vector2(1.4283854, 1.4283854)
+texture = ExtResource("2_ctvyo")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_bhmdk")
+}
 
 [node name="Hinterland" type="Area2D" parent="."]
 position = Vector2(960, 880)
@@ -43,18 +170,6 @@ offset_bottom = 120.0
 position = Vector2(0, 33)
 shape = SubResource("RectangleShape2D_a6gd1")
 
-[node name="AttackZone" type="Area2D" parent="Hinterland"]
-position = Vector2(0, -158)
-collision_mask = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hinterland/AttackZone"]
-shape = SubResource("RectangleShape2D_l1v76")
-
-[node name="Line2D" type="Line2D" parent="Hinterland/AttackZone"]
-points = PackedVector2Array(-288, 0, 288, 0)
-width = 5.0
-default_color = Color(0.8352941, 0.8117647, 0.5803922, 0.92156863)
-
 [node name="HeavyAttackZone" type="Area2D" parent="Hinterland"]
 position = Vector2(0, -158)
 collision_mask = 2
@@ -66,7 +181,19 @@ shape = SubResource("RectangleShape2D_4bh5q")
 [node name="Line2D2" type="Line2D" parent="Hinterland/HeavyAttackZone"]
 points = PackedVector2Array(-288, -15, 288, -15)
 width = 70.0
-default_color = Color(0.8352941, 0.5019608, 0.9490196, 0.2627451)
+default_color = Color(0.8352941, 0.5019608, 0.9490196, 0.6156863)
+
+[node name="AttackZone" type="Area2D" parent="Hinterland"]
+position = Vector2(0, -158)
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hinterland/AttackZone"]
+shape = SubResource("RectangleShape2D_l1v76")
+
+[node name="Line2D" type="Line2D" parent="Hinterland/AttackZone"]
+points = PackedVector2Array(-288, 0, 288, 0)
+width = 5.0
+default_color = Color(0.93647534, 0.9358888, 0.78327036, 1)
 
 [node name="Animals" type="HBoxContainer" parent="Hinterland"]
 offset_left = -287.0
@@ -113,6 +240,7 @@ position = Vector2(960, 100)
 script = ExtResource("8_e124b")
 
 [node name="GameOverUI" parent="." instance=ExtResource("9_game_over")]
+visible = false
 offset_left = 960.0
 offset_top = 600.0
 offset_right = 960.0
