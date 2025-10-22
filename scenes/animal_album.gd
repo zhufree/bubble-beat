@@ -39,6 +39,9 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
+	# ESC 键返回主菜单
+	if Input.is_action_just_pressed("ui_cancel"):
+		_back_to_menu()
 
 	if Input.is_action_just_pressed("left"):
 		$CarouselContainer._left()
@@ -50,3 +53,8 @@ func _process(_delta: float) -> void:
 
 func _on_timer_timeout() -> void:
 	$ColorRect.visible = false
+
+# 返回主菜单
+func _back_to_menu() -> void:
+	print("[AnimalAlbum] 返回主菜单")
+	get_tree().change_scene_to_file("res://scenes/index.tscn")

@@ -18,6 +18,29 @@ func _ready():
 	if song_items.size() > 0:
 		select_song_item(0)
 
+	# 添加测试说明
+	var label = Label.new()
+	label.text = """获胜条件:
+	在歌曲结束前，击败BOSS。
+	游戏提示:
+	只有猫头鹰的技能才会对BOSS产生伤害。
+	黄色是猫头鹰、啄木鸟的判定区域。
+	紫色是气球熊的判定区域。
+	按键说明:
+	S - 猫头鹰攻击
+	D - 啄木鸟攻击
+	F - 气球熊攻击
+	J - 技能触发键（需与位键组合）
+	O - 作弊模式（无伤）
+	S+J - 释放猫头鹰技能
+	D+J - 释放啄木鸟技能
+	F+J - 释放气球熊技能
+	S+D+J - 同时释放猫头鹰与啄木鸟技能
+	"""
+	label.position = Vector2(36, 300)
+	label.add_theme_font_size_override("font_size", 22)
+	add_child(label)
+
 func _input(event):
 	if event.is_action_pressed("up"):
 		navigate_up()

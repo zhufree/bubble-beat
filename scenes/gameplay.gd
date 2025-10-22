@@ -75,20 +75,22 @@ func _ready() -> void:
 	在歌曲结束前，击败BOSS。
 	游戏提示:
 	只有猫头鹰的技能才会对BOSS产生伤害。
-	测试说明:
+	黄色是猫头鹰、啄木鸟的判定区域。
+	紫色是气球熊的判定区域。
+	按键说明:
 	S - 猫头鹰攻击
 	D - 啄木鸟攻击
 	F - 气球熊攻击
 	J - 技能触发键（需与位键组合）
 	O - 作弊模式（无伤）
+	ESC - 返回歌曲选择界面
 	S+J - 释放猫头鹰技能
 	D+J - 释放啄木鸟技能
 	F+J - 释放气球熊技能
 	S+D+J - 同时释放猫头鹰与啄木鸟技能
-	黄色是猫头鹰、啄木鸟的判定区域
-	紫色是气球熊的判定区域
 	"""
-	label.position = Vector2(20, 20)
+	label.position = Vector2(36, 10)
+	label.add_theme_color_override("font_color", Color("424242"))
 	label.add_theme_font_size_override("font_size", 18)
 	add_child(label)
 
@@ -150,6 +152,8 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventKey:
 		if event.is_pressed():
 			match event.keycode:
+				KEY_ESCAPE:
+					_on_back_to_menu_requested()
 				KEY_J:
 					_execute_pending_skills()
 				KEY_O:

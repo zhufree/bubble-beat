@@ -50,13 +50,9 @@ layout_mode = 2
 button_text = "开始游戏"
 selected = true
 
-[node name="BirdHouseButton" parent="ColorRect/MarginContainer/VBoxContainer" instance=ExtResource("2_igtc1")]
+[node name="AnimalAlbumButton" parent="ColorRect/MarginContainer/VBoxContainer" instance=ExtResource("2_igtc1")]
 layout_mode = 2
-button_text = "鸟屋"
-
-[node name="AtlasButton" parent="ColorRect/MarginContainer/VBoxContainer" instance=ExtResource("2_igtc1")]
-layout_mode = 2
-button_text = "小鸟图册"
+button_text = "动物之家"
 
 [node name="QuitButton" parent="ColorRect/MarginContainer/VBoxContainer" instance=ExtResource("2_igtc1")]
 layout_mode = 2

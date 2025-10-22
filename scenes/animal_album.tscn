@@ -43,7 +43,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.44660002, 0.61368996, 0.77, 1)
 theme_override_fonts/font = ExtResource("1_xwhsi")
 theme_override_font_sizes/font_size = 30
-text = "按E合成动物进行升级，左右键切换动物"
+text = "按E合成动物进行升级，左右键切换动物，ESC返回主菜单"
 horizontal_alignment = 1
 
 [node name="CarouselContainer" type="Node2D" parent="." node_paths=PackedStringArray("position_offset_node")]

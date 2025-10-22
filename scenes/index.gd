@@ -1,15 +1,14 @@
 extends Control
 
 @onready var play_button: HBoxContainer = $ColorRect/MarginContainer/VBoxContainer/PlayButton
-@onready var bird_house_button: HBoxContainer = $ColorRect/MarginContainer/VBoxContainer/BirdHouseButton
-@onready var atlas_button: HBoxContainer = $ColorRect/MarginContainer/VBoxContainer/AtlasButton
+@onready var animal_album_button: HBoxContainer = $ColorRect/MarginContainer/VBoxContainer/AnimalAlbumButton
 @onready var quit_button: HBoxContainer = $ColorRect/MarginContainer/VBoxContainer/QuitButton
 
 var current_button_index: int = 0
 var buttons = []
 
 func _ready():
-	buttons = [play_button,bird_house_button, atlas_button, quit_button]
+	buttons = [play_button, animal_album_button, quit_button]
 	update_button_selection()
 
 func _process(_delta):
@@ -29,12 +28,9 @@ func _process(_delta):
 			print("跳转到歌曲列表")
 			get_tree().change_scene_to_file("res://scenes/song_list.tscn")
 		elif current_button_index == 1:
-			print("跳转到鸟屋")
-			var result = get_tree().change_scene_to_file("res://views/bird_house/bird_house_panel.tscn")
+			print("跳转到动物之家")
+			var result = get_tree().change_scene_to_file("res://scenes/animal_album.tscn")
 			print("场景切换结果: ", result)
-		elif current_button_index == 2:
-			print("跳转到图鉴")
-			get_tree().change_scene_to_file("res://views/atlas/atlas_panel.tscn")
 		else:
 			print("退出游戏")
 			get_tree().quit()
