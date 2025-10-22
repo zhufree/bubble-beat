@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://cxgfuigam05p6" path="res://scenes/gameplay.gd" id="1_gameplay"]
 [ext_resource type="Texture2D" uid="uid://swcnscmdf2tt" path="res://assets/sprites/cloud.png" id="2_ctvyo"]
 [ext_resource type="Resource" uid="uid://b2yji08haqrxg" path="res://resources/animal_data/woodpecker.tres" id="3_ct7aa"]
+
 [ext_resource type="PackedScene" uid="uid://dh7mk3xbkv8rq" path="res://views/gameplay/score_ui.tscn" id="4_ct7aa"]
 [ext_resource type="Resource" uid="uid://b84opwkiml62f" path="res://resources/animal_data/balloon_bear.tres" id="4_ocj2s"]
 [ext_resource type="PackedScene" uid="uid://dkg3dewx7jyhm" path="res://views/gameplay/boss.tscn" id="6_din8e"]

@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://bwm5v3dhqkicd"]
+
+[ext_resource type="Texture2D" uid="uid://c1y6iaphuw2hk" path="res://assets/sprites/ui/鞄.png" id="1_p78ge"]
+
+[node name="Lock" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 336.0
+offset_bottom = 336.0
+color = Color(0.6789437, 0.6789437, 0.6789436, 0.6392157)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(167, 167)
+scale = Vector2(0.265, 0.265)
+texture = ExtResource("1_p78ge")

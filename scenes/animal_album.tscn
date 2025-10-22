@@ -1,0 +1,117 @@
+[gd_scene load_steps=5 format=3 uid="uid://b8ebyw85yd8j6"]
+
+[ext_resource type="Script" uid="uid://dgigq2fqlbo5l" path="res://scenes/animal_album.gd" id="1_ru1lc"]
+[ext_resource type="FontFile" uid="uid://dka4pv05igpyj" path="res://assets/fonts/RHR-CN-0.990/ResourceHanRoundedCN-Heavy.ttf" id="1_xwhsi"]
+[ext_resource type="Script" uid="uid://dj1w08i676mhd" path="res://views/animal_album/carousel_container.gd" id="2_cikfe"]
+[ext_resource type="PackedScene" uid="uid://c5x80a01a2b3c" path="res://views/animal_album/animal_card.tscn" id="4_card"]
+
+[node name="AnimalAlbum" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ru1lc")
+
+[node name="Background" type="ColorRect" parent="."]
+light_mask = 512
+visibility_layer = 512
+z_index = -100
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0.8428, 0.8771, 0.98, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 1904.0
+offset_bottom = 1064.0
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.4441667, 0.65, 1)
+theme_override_fonts/font = ExtResource("1_xwhsi")
+theme_override_font_sizes/font_size = 100
+text = "Animal House"
+horizontal_alignment = 1
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.44660002, 0.61368996, 0.77, 1)
+theme_override_fonts/font = ExtResource("1_xwhsi")
+theme_override_font_sizes/font_size = 30
+text = "按E合成动物进行升级，左右键切换动物"
+horizontal_alignment = 1
+
+[node name="CarouselContainer" type="Node2D" parent="." node_paths=PackedStringArray("position_offset_node")]
+top_level = true
+position = Vector2(960, 522)
+scale = Vector2(8, 8)
+script = ExtResource("2_cikfe")
+selected_index = 1
+position_offset_node = NodePath("Control")
+metadata/_custom_type_script = "uid://dj1w08i676mhd"
+
+[node name="Control" type="Control" parent="CarouselContainer"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -80.0
+offset_right = -40.0
+offset_bottom = 40.0
+
+[node name="Card1" parent="CarouselContainer/Control" instance=ExtResource("4_card")]
+modulate = Color(1, 1, 1, 0.65)
+z_index = -1
+layout_mode = 0
+offset_left = 0.0
+offset_right = 40.0
+scale = Vector2(0.75, 0.75)
+
+[node name="Card2" parent="CarouselContainer/Control" instance=ExtResource("4_card")]
+z_index = 1
+layout_mode = 0
+offset_left = 60.0
+offset_right = 100.0
+
+[node name="Card3" parent="CarouselContainer/Control" instance=ExtResource("4_card")]
+modulate = Color(1, 1, 1, 0.65)
+z_index = -1
+layout_mode = 0
+offset_left = 120.0
+offset_right = 160.0
+scale = Vector2(0.75, 0.75)
+
+[node name="Card4" parent="CarouselContainer/Control" instance=ExtResource("4_card")]
+modulate = Color(1, 1, 1, 0.3)
+z_index = -2
+layout_mode = 0
+offset_left = 180.0
+offset_right = 220.0
+scale = Vector2(0.5, 0.5)
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+layout_mode = 0
+offset_top = 958.0
+offset_right = 1920.0
+offset_bottom = 1014.0
+color = Color(0.6989, 0.69600004, 0.87, 0.49411765)
+
+[node name="Label" type="Label" parent="ColorRect"]
+layout_mode = 0
+offset_top = 8.0
+offset_right = 1920.0
+offset_bottom = 48.0
+theme_override_colors/font_color = Color(0.4446, 0.46695998, 0.78, 1)
+theme_override_fonts/font = ExtResource("1_xwhsi")
+theme_override_font_sizes/font_size = 25
+text = "暂时不具备合成条件"
+horizontal_alignment = 1
+
+[node name="Timer" type="Timer" parent="ColorRect"]
+wait_time = 0.5
+
+[connection signal="timeout" from="ColorRect/Timer" to="." method="_on_timer_timeout"]
