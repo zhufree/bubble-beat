@@ -1,12 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://b8ebyw85yd8j6"]
+[gd_scene load_steps=5 format=3 uid="uid://b8ebyw85yd8j6"]
 
 [ext_resource type="Script" uid="uid://dgigq2fqlbo5l" path="res://views/animal_album/animal_album.gd" id="1_ru1lc"]
-[ext_resource type="FontFile" uid="uid://buind0bjjxy2b" path="res://assets/fonts/RHR-CN-0.990/ResourceHanRoundedCN-Heavy.ttf" id="1_xwhsi"]
+[ext_resource type="FontFile" uid="uid://dka4pv05igpyj" path="res://assets/fonts/RHR-CN-0.990/ResourceHanRoundedCN-Heavy.ttf" id="1_xwhsi"]
 [ext_resource type="Script" uid="uid://dj1w08i676mhd" path="res://views/animal_album/carousel_container.gd" id="2_cikfe"]
-[ext_resource type="Texture2D" uid="uid://b0ve8ykr0jtuh" path="res://assets/sprites/animals/owl.png" id="4_3u6m3"]
-[ext_resource type="Texture2D" uid="uid://b8qho8e0yulth" path="res://assets/sprites/animals/panda.png" id="5_3y1t0"]
-[ext_resource type="PackedScene" uid="uid://bwm5v3dhqkicd" path="res://views/animal_album/lock.tscn" id="5_4netq"]
-[ext_resource type="Texture2D" uid="uid://d3x7an3uxcbiy" path="res://assets/sprites/animals/woodpecker.png" id="6_4netq"]
+[ext_resource type="PackedScene" path="res://views/animal_album/animal_card.tscn" id="4_card"]
 
 [node name="AnimalAlbum" type="Control"]
 layout_mode = 3
@@ -20,6 +17,7 @@ script = ExtResource("1_ru1lc")
 [node name="Background" type="ColorRect" parent="."]
 light_mask = 512
 visibility_layer = 512
+z_index = -100
 layout_mode = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
@@ -40,19 +38,16 @@ theme_override_font_sizes/font_size = 100
 text = "Animal House"
 horizontal_alignment = 1
 
-[node name="Label" type="Label" parent="VBoxContainer/TitleLabel"]
-layout_mode = 0
-offset_left = 784.0
-offset_top = 144.0
-offset_right = 1104.0
-offset_bottom = 216.0
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
 theme_override_colors/font_color = Color(0.44660002, 0.61368996, 0.77, 1)
 theme_override_fonts/font = ExtResource("1_xwhsi")
 theme_override_font_sizes/font_size = 30
-text = "按E合成动物进行升级"
+text = "按E合成动物进行升级，左右键切换动物"
 horizontal_alignment = 1
 
 [node name="CarouselContainer" type="Node2D" parent="." node_paths=PackedStringArray("position_offset_node")]
+top_level = true
 position = Vector2(960, 522)
 scale = Vector2(8, 8)
 script = ExtResource("2_cikfe")
@@ -67,213 +62,35 @@ offset_left = -80.0
 offset_right = -40.0
 offset_bottom = 40.0
 
-[node name="Panel" type="Panel" parent="CarouselContainer/Control"]
+[node name="Card1" parent="CarouselContainer/Control" instance=ExtResource("4_card")]
 modulate = Color(1, 1, 1, 0.65)
 z_index = -1
 layout_mode = 0
-offset_top = -20.0
+offset_left = 0.0
 offset_right = 40.0
-offset_bottom = 20.0
 scale = Vector2(0.75, 0.75)
-pivot_offset = Vector2(20, 20)
 
-[node name="Sprite2D" type="Sprite2D" parent="CarouselContainer/Control/Panel"]
-position = Vector2(19.999998, 19.999998)
-scale = Vector2(0.165, 0.165)
-texture = ExtResource("4_3u6m3")
-
-[node name="animalLabel" type="Label" parent="CarouselContainer/Control/Panel/Sprite2D"]
-offset_left = -115.12469
-offset_top = -213.63647
-offset_right = 115.17835
-offset_bottom = -159.09102
-theme_override_colors/font_color = Color(0.3526, 0.71094006, 0.82, 1)
-theme_override_fonts/font = ExtResource("1_xwhsi")
-theme_override_font_sizes/font_size = 35
-text = "猫头鹰"
-horizontal_alignment = 1
-
-[node name="Label2" type="Label" parent="CarouselContainer/Control/Panel/Sprite2D"]
-offset_left = -127.272736
-offset_top = -165.1515
-offset_right = 128.72726
-offset_bottom = -128.1515
-theme_override_colors/font_color = Color(0.468, 0.6612001, 0.72, 1)
-theme_override_fonts/font = ExtResource("1_xwhsi")
-theme_override_font_sizes/font_size = 25
-text = "拥有数量1/3"
-horizontal_alignment = 1
-
-[node name="Label" type="Label" parent="CarouselContainer/Control/Panel/Sprite2D"]
-offset_left = -127.27272
-offset_top = 133.33336
-offset_right = 127.27269
-offset_bottom = 370.33337
-theme_override_colors/font_color = Color(0.468, 0.6612001, 0.72, 1)
-theme_override_fonts/font = ExtResource("1_xwhsi")
-theme_override_font_sizes/font_size = 25
-text = "攻击方式：
-攻击频率：
-连击上限：
-特殊技能：
-特殊技能消耗能量：
-"
-horizontal_alignment = 1
-
-[node name="Panel2" type="Panel" parent="CarouselContainer/Control"]
+[node name="Card2" parent="CarouselContainer/Control" instance=ExtResource("4_card")]
 z_index = 1
 layout_mode = 0
 offset_left = 60.0
-offset_top = -20.0
 offset_right = 100.0
-offset_bottom = 20.0
-pivot_offset = Vector2(20, 20)
 
-[node name="Sprite2D" type="Sprite2D" parent="CarouselContainer/Control/Panel2"]
-position = Vector2(19.999998, 19.999998)
-scale = Vector2(0.165, 0.165)
-texture = ExtResource("5_3y1t0")
-
-[node name="animalLabel" type="Label" parent="CarouselContainer/Control/Panel2/Sprite2D"]
-offset_left = -115.24701
-offset_top = -213.63646
-offset_right = 115.05603
-offset_bottom = -159.091
-theme_override_colors/font_color = Color(0.3526, 0.82, 0.75768006, 1)
-theme_override_fonts/font = ExtResource("1_xwhsi")
-theme_override_font_sizes/font_size = 35
-text = "熊猫"
-horizontal_alignment = 1
-
-[node name="Label" type="Label" parent="CarouselContainer/Control/Panel2/Sprite2D"]
-offset_left = -127.27272
-offset_top = 133.33336
-offset_right = 127.27269
-offset_bottom = 330.33337
-theme_override_colors/font_color = Color(0.468, 0.72, 0.67380005, 1)
-theme_override_fonts/font = ExtResource("1_xwhsi")
-theme_override_font_sizes/font_size = 25
-text = "攻击方式：
-攻击频率：
-连击上限：
-特殊技能：
-特殊技能消耗能量："
-horizontal_alignment = 1
-
-[node name="Label2" type="Label" parent="CarouselContainer/Control/Panel2/Sprite2D"]
-offset_left = -127.272736
-offset_top = -165.1515
-offset_right = 128.72726
-offset_bottom = -128.1515
-theme_override_colors/font_color = Color(0.468, 0.72, 0.6528, 1)
-theme_override_fonts/font = ExtResource("1_xwhsi")
-theme_override_font_sizes/font_size = 25
-text = "拥有数量1/3"
-horizontal_alignment = 1
-
-[node name="Panel3" type="Panel" parent="CarouselContainer/Control"]
+[node name="Card3" parent="CarouselContainer/Control" instance=ExtResource("4_card")]
 modulate = Color(1, 1, 1, 0.65)
 z_index = -1
 layout_mode = 0
 offset_left = 120.0
-offset_top = -20.0
 offset_right = 160.0
-offset_bottom = 20.0
 scale = Vector2(0.75, 0.75)
-pivot_offset = Vector2(20, 20)
 
-[node name="Sprite2D" type="Sprite2D" parent="CarouselContainer/Control/Panel3"]
-position = Vector2(19.999998, 19.999998)
-scale = Vector2(0.165, 0.165)
-texture = ExtResource("6_4netq")
-
-[node name="animalLabel" type="Label" parent="CarouselContainer/Control/Panel3/Sprite2D"]
-offset_left = -115.15244
-offset_top = -213.63635
-offset_right = 115.1506
-offset_bottom = -159.0909
-theme_override_colors/font_color = Color(0.82, 0.51619, 0.3526, 1)
-theme_override_fonts/font = ExtResource("1_xwhsi")
-theme_override_font_sizes/font_size = 35
-text = "啄木鸟"
-horizontal_alignment = 1
-
-[node name="Label2" type="Label" parent="CarouselContainer/Control/Panel3/Sprite2D"]
-offset_left = -127.272705
-offset_top = -165.15149
-offset_right = 128.7273
-offset_bottom = -128.15149
-theme_override_colors/font_color = Color(0.72, 0.5478, 0.468, 1)
-theme_override_fonts/font = ExtResource("1_xwhsi")
-theme_override_font_sizes/font_size = 25
-text = "拥有数量0/3"
-horizontal_alignment = 1
-
-[node name="Label" type="Label" parent="CarouselContainer/Control/Panel3/Sprite2D"]
-visible = false
-offset_left = -127.272705
-offset_top = 133.33337
-offset_right = 127.272705
-offset_bottom = 330.33337
-theme_override_colors/font_color = Color(0.72, 0.56460005, 0.468, 1)
-theme_override_fonts/font = ExtResource("1_xwhsi")
-theme_override_font_sizes/font_size = 25
-text = "攻击方式：
-攻击频率：
-连击上限：
-特殊技能：
-特殊技能消耗能量："
-horizontal_alignment = 1
-
-[node name="Lock" parent="CarouselContainer/Control/Panel3/Sprite2D" instance=ExtResource("5_4netq")]
-position = Vector2(-127.27272, -127.27272)
-scale = Vector2(0.76, 0.76)
-
-[node name="Panel4" type="Panel" parent="CarouselContainer/Control"]
+[node name="Card4" parent="CarouselContainer/Control" instance=ExtResource("4_card")]
 modulate = Color(1, 1, 1, 0.3)
 z_index = -2
 layout_mode = 0
 offset_left = 180.0
-offset_top = -20.0
 offset_right = 220.0
-offset_bottom = 20.0
 scale = Vector2(0.5, 0.5)
-pivot_offset = Vector2(20, 20)
-
-[node name="Sprite2D" type="Sprite2D" parent="CarouselContainer/Control/Panel4"]
-position = Vector2(19.999998, 19.999998)
-scale = Vector2(0.165, 0.165)
-
-[node name="animalLabel" type="Label" parent="CarouselContainer/Control/Panel4/Sprite2D"]
-offset_left = -115.15203
-offset_top = -213.6364
-offset_right = 115.15101
-offset_bottom = -159.09094
-theme_override_colors/font_color = Color(0.33, 0.33, 0.33, 1)
-theme_override_fonts/font = ExtResource("1_xwhsi")
-theme_override_font_sizes/font_size = 35
-text = "???"
-horizontal_alignment = 1
-
-[node name="Label" type="Label" parent="CarouselContainer/Control/Panel4/Sprite2D"]
-visible = false
-offset_left = -127.272705
-offset_top = 133.33337
-offset_right = 127.272705
-offset_bottom = 330.33337
-theme_override_colors/font_color = Color(0.72, 0.72, 0.72, 1)
-theme_override_fonts/font = ExtResource("1_xwhsi")
-theme_override_font_sizes/font_size = 25
-text = "攻击方式：
-攻击频率：
-连击上限：
-特殊技能：
-"
-horizontal_alignment = 1
-
-[node name="Lock" parent="CarouselContainer/Control/Panel4/Sprite2D" instance=ExtResource("5_4netq")]
-position = Vector2(-127.27272, -127.27272)
-scale = Vector2(0.76, 0.76)
 
 [node name="ColorRect" type="ColorRect" parent="."]
 visible = false
@@ -291,7 +108,7 @@ offset_bottom = 48.0
 theme_override_colors/font_color = Color(0.4446, 0.46695998, 0.78, 1)
 theme_override_fonts/font = ExtResource("1_xwhsi")
 theme_override_font_sizes/font_size = 25
-text = "暂时不具备升级条件"
+text = "暂时不具备合成条件"
 horizontal_alignment = 1
 
 [node name="Timer" type="Timer" parent="ColorRect"]

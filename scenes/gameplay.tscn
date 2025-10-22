@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://d3n2b5wrjdhu0" path="res://views/gameplay/animal.tscn" id="1_7biu0"]
 [ext_resource type="Script" uid="uid://cxgfuigam05p6" path="res://scenes/gameplay.gd" id="1_gameplay"]
 [ext_resource type="Resource" uid="uid://b2yji08haqrxg" path="res://resources/animal_data/woodpecker.tres" id="3_ct7aa"]
-[ext_resource type="Script" uid="uid://biikmtxeoumdr" path="res://views/color_line.gd" id="3_e124b"]
+[ext_resource type="Script" path="res://views/color_line.gd" id="3_e124b"]
 [ext_resource type="PackedScene" uid="uid://dh7mk3xbkv8rq" path="res://views/gameplay/score_ui.tscn" id="4_ct7aa"]
 [ext_resource type="Resource" uid="uid://b84opwkiml62f" path="res://resources/animal_data/balloon_bear.tres" id="4_ocj2s"]
 [ext_resource type="PackedScene" uid="uid://dkg3dewx7jyhm" path="res://views/gameplay/boss.tscn" id="6_din8e"]
@@ -66,7 +66,6 @@ points = PackedVector2Array(-62.036743, -21.029419, -45.213257, -48.367676, -18.
 width = 5.0
 default_color = Color(0.81960785, 0.41960785, 0.99607843, 0.2)
 script = ExtResource("3_e124b")
-metadata/_custom_type_script = "uid://biikmtxeoumdr"
 
 [node name="Animals" type="HBoxContainer" parent="Hinterland"]
 offset_left = -287.0

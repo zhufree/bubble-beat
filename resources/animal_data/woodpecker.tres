@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://drioww6lkppvv" path="res://models/animal_data.gd" id="1_df6da"]
 [ext_resource type="Texture2D" uid="uid://d3x7an3uxcbiy" path="res://assets/sprites/animals/woodpecker.png" id="1_kuu1d"]
-[ext_resource type="Resource" path="res://resources/skill_data/score_multiplier_skill.tres" id="2_skill"]
+[ext_resource type="Resource" uid="uid://ht8nsao6r70s" path="res://resources/skill_data/score_multiplier_skill.tres" id="2_skill"]
 
 [resource]
 script = ExtResource("1_df6da")
